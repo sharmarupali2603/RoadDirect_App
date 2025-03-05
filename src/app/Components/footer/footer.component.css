@@ -1,0 +1,21 @@
+.bg-orange {
+    background: #FF9800;
+  }
+  
+  footer {
+    height: 60px;
+  }
+  
+  footer nav a {
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+  }
+  
+  footer .btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+  

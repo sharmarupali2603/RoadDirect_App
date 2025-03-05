@@ -1,0 +1,69 @@
+header {
+    background: linear-gradient(to right, #4CAF50, #FF9800) !important; /* Smooth gradient */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    height: 60px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+  }
+  
+  .header-logo {
+    width: 40px;
+    height: 40px;
+  }
+  
+  /* .timer-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.15); 
+    padding: 5px 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    font-weight: bold;
+  }
+  
+  .timer-container i {
+    margin-right: 5px;
+  } */
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .user-info i {
+    font-size: 1.5rem;
+    margin-left: 5px;
+  }
+  .timer-container {
+    display: flex;
+    align-items: center; /* Ensures vertical alignment */
+    justify-content: center; /* Centers content */
+    background: rgba(255, 255, 255, 0.15); /* Transparent box */
+    padding: 5px 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    font-weight: bold;
+    color: white;
+    min-width: 120px; /* Ensures proper width */
+    height: 40px; /* Adjust height to fit */
+    white-space: nowrap; /* Prevents line breaks */
+  }
+  
+  .timer-container i {
+    margin-right: 8px;
+    font-size: 1.2rem; /* Adjust icon size */
+  }
+  
+  .timer-text {
+    font-size: 1.2rem; /* Ensures same size as icon */
+    font-weight: bold;
+  }
+  

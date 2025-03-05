@@ -1,6 +1,6 @@
 {
-  "name": "PWA_RoadDirect",
-  "short_name": "PWA_RoadDirect",
+  "name": "MyProject",
+  "short_name": "MyProject",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",

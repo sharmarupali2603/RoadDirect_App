@@ -1,0 +1,9 @@
+{
+    "/api": {
+      "target": "https://fabricate.mockaroo.com/api/v1/databases/eboard/api/",
+      "secure": true,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    }
+}
+  
