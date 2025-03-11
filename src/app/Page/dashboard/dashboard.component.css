@@ -95,6 +95,7 @@
     margin: auto; /* Centers the calendar horizontally */
     text-align: center; /* Aligns text properly */
     font-family: 'Poppins';
+    padding-top:10%;
   }
   .month-header {
     display: flex;
@@ -117,7 +118,7 @@
     align-items: center;
     /* background-color: #78c2ad; */
     color: black;
-    padding: 15px;
+    /* padding: 15px; */
     border-radius: 30px;
     border: 2px solid #e48745;
     width: 100%;
@@ -147,7 +148,7 @@
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     /* gap: 10px; */
-    padding: 15px;
+    /* padding: 15px; */
     /* background-color: #f8f9fa; */
     width: 100%;
     /* border-radius: 10px; */
