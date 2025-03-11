@@ -95,6 +95,7 @@
     margin: auto; /* Centers the calendar horizontally */
     text-align: center; /* Aligns text properly */
     font-family: 'Poppins';
+    /* padding-top:10%; */
   }
   .month-header {
     display: flex;
@@ -115,10 +116,11 @@
     /* display: flex; */
     justify-content: center;
     align-items: center;
-    background-color: #78c2ad;
-    color: white;
-    padding: 15px;
+    /* background-color: #78c2ad; */
+    color: black;
+    /* padding: 15px; */
     border-radius: 30px;
+    border: 2px solid #e48745;
     width: 100%;
   }
   
@@ -146,7 +148,7 @@
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     /* gap: 10px; */
-    padding: 15px;
+    /* padding: 15px; */
     /* background-color: #f8f9fa; */
     width: 100%;
     /* border-radius: 10px; */
@@ -438,7 +440,7 @@ select {
 
 .week-container div {
   text-align: center;
-  padding: 10px;
+  /* padding: 10px; */
   border-radius: 10px;
   cursor: pointer;
 }
@@ -468,3 +470,64 @@ flex:0.4
 .Location{
 justify-content: flex-end !important;  
 }
+.card-header {
+  background-color: #f8f9fa;
+  font-weight: bold;
+}
+
+.bi {
+  font-size: 1.2rem;
+}
+
+.badge {
+  margin-right: 5px;
+}
+ /* Header Bar Styling */
+.header-bar {
+  background: #a7dfc3;
+  color: #000;
+  font-weight: bold;
+}
+
+ /* Color circles in header */
+.circle {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+.blue { background: blue; }
+.yellow { background: yellow; }
+.green { background: green; }
+
+/* Search Icon */
+.search-icon {
+  font-size: 1.2rem;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+ /* Card Custom Styling */
+.card-header {
+  font-weight: bold;
+}
+
+/* FontAwesome Icon Styling */
+.fas {
+  margin-right: 5px;
+}
+
+/* Badges and Spacing */
+.badge {
+  font-size: 14px;
+  padding: 5px 10px;
+}
+@media (max-width: 576px ){ /* Styles for small devices (phones) */ 
+  .container {
+    padding-top:10%;
+  }}
+
+@media (min-width: 768px) { /* Styles for medium devices (tablets) */ }
+
+@media (min-width: 992px) { /* Styles for large devices (desktops) */ }

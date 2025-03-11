@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent } from './Page/dashboard/dashboard.component';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -13,14 +13,17 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 
 import { HttpClientModule } from '@angular/common/http';
-import { SiteInspectionComponent } from './Components/site-inspection/site-inspection.component';
-import { TSLComponent } from './Components/tsl/tsl.component';
+import { SiteInspectionComponent } from './Page/site-inspection/site-inspection.component';
+import { TSLComponent } from './Page/tsl/tsl.component';
 import { CalenderComponent } from './Components/calender/calender.component';
 import { HeaderComponent } from './Components/header/header.component';
 import { FooterComponent } from './Components/footer/footer.component';
 import { StopwatchComponent } from './Components/stopwatch/stopwatch.component';
 
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { JobCardComponent } from './Components/job-card/job-card.component';
+import { JobExpandComponent } from './Page/job-expand/job-expand.component';
+import { TasksComponent } from './Page/tasks/tasks.component';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
@@ -31,7 +34,10 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     CalenderComponent,
     HeaderComponent,
     FooterComponent,
-    StopwatchComponent
+    StopwatchComponent,
+    JobCardComponent,
+    JobExpandComponent,
+    TasksComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +55,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     MatNativeDateModule,MatDatepickerModule,
     HttpClientModule,
     BrowserAnimationsModule, 
-    BsDatepickerModule.forRoot()
+    BsDatepickerModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],
