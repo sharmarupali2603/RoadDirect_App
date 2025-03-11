@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CalendarEvent } from 'angular-calendar';
 import { format, startOfWeek, addDays, isToday } from 'date-fns';
-import { JobsService } from '../Services/Jobs/jobs.service';
+import { JobsService } from '../../Services/Jobs/jobs.service';
 import { SwUpdate } from '@angular/service-worker';
-import { DatabaseService, DataItem } from '../Services/Database/database.service';
+import { DatabaseService } from '../../Services/Database/database.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -59,7 +59,7 @@ export class DashboardComponent {
 
 
   clearCache() {
-    this.dbService.clearData().then(() => {
+    this.dbService.clearclientData().then(() => {
       this.cachedjobData = [];
       console.log('Cache Cleared');
     });

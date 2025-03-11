@@ -34,17 +34,17 @@ export class JobsService {
     }).pipe(
           tap((response) => {
             // Store API response in IndexedDB
-            from(this.db.saveData(response)).subscribe();
+            from(this.db.saveJobData(response)).subscribe();
           }),
           catchError(() => {
             // If offline, return cached data
-            return from(this.db.getAllData()).pipe(map((items) => items.map((item) => item.data)));
+            return from(this.db.getAllJobData()).pipe(map((items) => items.map((item) => item.data)));
           })
         );
   }
   
   getCachedData() {
-    return from(this.db.getAllData());
+    return from(this.db.getAllJobData());
   }
 
 }

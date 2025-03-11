@@ -1,12 +1,18 @@
-header {
-    background: linear-gradient(to right, #4CAF50, #FF9800) !important; /* Smooth gradient */
+@media (min-width: 10px) {
+  /* Styles for small devices (phones) */
+  header {
+    background: linear-gradient(
+      to right,
+      #7dccba,
+      #f68a33
+    ) !important; /* Smooth gradient */
     color: white;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px 15px;
     height: 60px;
-    position: fixed;
+    /* position: fixed ; */
     top: 0;
     left: 0;
     width: 100%;
@@ -19,19 +25,19 @@ header {
   }
   
   /* .timer-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.15); 
-    padding: 5px 15px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    font-weight: bold;
-  }
-  
-  .timer-container i {
-    margin-right: 5px;
-  } */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.15); 
+      padding: 5px 15px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      font-weight: bold;
+    }
+    
+    .timer-container i {
+      margin-right: 5px;
+    } */
   
   .user-info {
     display: flex;
@@ -66,4 +72,13 @@ header {
     font-size: 1.2rem; /* Ensures same size as icon */
     font-weight: bold;
   }
-  
+
+}
+
+@media (min-width: 768px) {
+  /* Styles for medium devices (tablets) */
+}
+
+@media (min-width: 992px) {
+  /* Styles for large devices (desktops) */
+}

@@ -1,6 +1,29 @@
 .offline-banner {
-    background-color: red;
-    color: white;
-    text-align: center;
-    padding: 10px;
+  background-color: red;
+  color: white;
+  text-align: center;
+  padding: 10px;
+}
+
+@media (max-width: 576px ){
+  /* Styles for small devices (phones) */
+
+  app-header{
+    position: fixed;
+    width:75%;
+    z-index: 1000;
+  };
+  app-footer{
+    position: fixed;
+    width:75%;
+    z-index: 1000;
   }
+}
+
+@media (min-width: 768px) {
+  /* Styles for medium devices (tablets) */
+}
+
+@media (min-width: 992px) {
+  /* Styles for large devices (desktops) */
+}

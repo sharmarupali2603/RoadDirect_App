@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { JobsService } from './Services/Jobs/jobs.service';
 import { ClientService } from './Services/Client/client.service';
 import { SwUpdate } from '@angular/service-worker';
-import { DatabaseService, DataItem } from './Services/Database/database.service';
+import { DatabaseService, clientItem } from './Services/Database/database.service';
+import { VehicleService } from './Services/Vehicle/vehicle.service';
 
 @Component({
   selector: 'app-root',
@@ -15,17 +16,18 @@ export class AppComponent implements OnInit{
   data: any;
   isOnline = navigator.onLine;
   apiData: any[] = [];
-  cachedData: DataItem[] = [];
+  cachedData: clientItem[] = [];
   constructor(public jobsService: JobsService,
               public clientService: ClientService,
               private swUpdate: SwUpdate,
-              private dbService: DatabaseService) { 
+              private dbService: DatabaseService,
+              private vehicleService: VehicleService) { 
     this.fetchCurrentUser();
     this.fetchAllClient();
+    this.fetchAllVehicle();
   }
   
   ngOnInit() {
-    // this.fetchAllClient();
     // Detect online/offline status
     window.addEventListener('online', () => this.isOnline = true);
     window.addEventListener('offline', () => this.isOnline = false);
@@ -72,11 +74,31 @@ export class AppComponent implements OnInit{
     });
   }
 
+  fetchAllVehicle() {
+    const queryParams = {
+      orgId: 1
+    };
+
+    this.vehicleService.getAllVehicle(queryParams).subscribe(
+      (response) => {
+        this.data = response;
+        console.log('Vehicle:', this.data);
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+      }
+    );
+    this.clientService.getCachedData().subscribe((cached) => {
+      this.cachedData = cached;
+      console.log('Cached vehicle Data:', this.cachedData);
+      
+    });
+  }
 
   clearCache() {
-    this.dbService.clearData().then(() => {
-      this.cachedData = [];
-      console.log('Cache Cleared');
-    });
+    // this.dbService.clearData().then(() => {
+    //   this.cachedData = [];
+    //   console.log('Cache Cleared');
+    // });
   }
 }
