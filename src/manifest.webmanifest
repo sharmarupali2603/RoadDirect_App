@@ -1,7 +1,7 @@
 {
-  "name": "MyProject",
-  "short_name": "MyProject",
-  "theme_color": "#1976d2",
+  "name": "Road Direct PWA",
+  "short_name": "Road Direct",
+  "theme_color": "#7CC142",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",
