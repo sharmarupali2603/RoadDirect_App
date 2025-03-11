@@ -1,6 +1,6 @@
 {
     "/api": {
-      "target": "https://fabricate.mockaroo.com/api/v1/databases/eboard/api/",
+      "target": "https://pwa.roaddrectdaniel/",
       "secure": true,
       "changeOrigin": true,
       "logLevel": "debug"
