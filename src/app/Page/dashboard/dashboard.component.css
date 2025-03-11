@@ -439,7 +439,7 @@ select {
 
 .week-container div {
   text-align: center;
-  padding: 10px;
+  /* padding: 10px; */
   border-radius: 10px;
   cursor: pointer;
 }
