@@ -8,19 +8,17 @@ import { DatabaseService } from '../Database/database.service';
   providedIn: 'root',
 })
 export class ClientService {
-  // private mainUrl = 'https://pwa.roaddrectdaniel/api/ClientManagement/';
+  //private mainUrl = 'https://pwa.roaddrectdaniel/api/ClientManagement/';
   private mainUrl = 'https://pwa-alpha-aws.roaddirect.co.nz/api/ClientManagement/';
-  private token = '76fda9e0-486a-4efc-b4ee-3ea32d774c8c'; // Replace with your actual token
 
   // Function to get headers with Bearer token
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
-      //Authorization: `Bearer ${this.token}`,
       'Content-Type': 'application/json',
     });
   }
 
-  constructor(private http: HttpClient,  private db: DatabaseService) {}
+  constructor(private http: HttpClient, private db: DatabaseService) { }
 
   getAllClients(paramsObj: any): Observable<any> {
     let params = new HttpParams();

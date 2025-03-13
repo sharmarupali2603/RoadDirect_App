@@ -1,7 +1,7 @@
 {
   "name": "Road Direct PWA",
   "short_name": "Road Direct",
-  "theme_color": "#7CC142",
+  "theme_color": "#76c1b7",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",

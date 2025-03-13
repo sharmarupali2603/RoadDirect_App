@@ -8,7 +8,6 @@
       "resources": {
         "files": [
           "/favicon.ico",
-          "/index.html",
           "/manifest.webmanifest",
           "/*.css",
           "/*.js"
@@ -27,11 +26,11 @@
       }
     }
   ],
-"dataGroups": [
+  "dataGroups": [
     {
       "name": "api-cache",
       "urls": [
-        "https://pwa.roaddrectdaniel/**"
+        "/api"
       ],
       "cacheConfig": {
         "strategy": "performance",
