@@ -1,62 +1,106 @@
+/* // Header Bar Styling */
 .header-bar {
-    background: #a7dfc3;
-    color: #000;
-    font-weight: bold;
-  }
-  /* // Header Bar Styling */
-.header-bar {
-    background: #a7dfc3;
-    color: #000;
-    font-weight: bold;
-  }
+  background: #a7dfc3;
+  color: #000;
+  font-weight: bold;
+}
+.job-card{
+  border: 1px solid #c6c2c2;
+  border-radius: 2%;
+
+}
+
+/* // Color circles in header */
+.circle {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+.blue { background: blue; }
+.yellow { background: yellow; }
+.green { background: green; }
+
+/* // Search Icon */
+.search-icon {
+  font-size: 1.2rem;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+/* // Card Custom Styling */
+.card-header {
+  font-weight: bold;
+  padding-left: 0%;
+  /* padding-bottom: 2%; */
+  margin-bottom: 2%;
   
-  /* // Color circles in header */
-  .circle {
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    margin-right: 5px;
+  background-color: #d5d5d5 !important;
+}
+
+/* // FontAwesome Icon Styling */
+.fas {
+  margin-right: 5px;
+}
+
+/* // Badges and Spacing */
+.badge {
+  font-size: 14px;
+  padding: 5px 10px;
+  color:black
+}
+/* // Borders and Styling */
+.border {
+  background: #f8f9fa; 
+  border: 1px solid #000;
+  border-radius: 5px;
+}
+.row-margin{
+  margin:10px;
+  padding: 10px;
+}
+.card-body{
+  padding:0
+}
+button{
+  font-size: 50%;
+}
+.border-bottom{
+  padding-bottom:2%;
+  border-bottom:  1px solid #09abfc !important;
+}
+@media (max-width: 576px) { /* Styles for small devices (phones) */
+  .header-bar{
+    margin-top: 5%;
+    margin-bottom: 5%;
   }
-  .blue { background: blue; }
-  .yellow { background: yellow; }
-  .green { background: green; }
-  
-  /* // Search Icon */
-  .search-icon {
-    font-size: 1.2rem;
-    margin-left: 10px;
-    cursor: pointer;
+  p{
+    font-size: .75em
   }
-  
-  /* // Card Custom Styling */
-  .card-header {
-    font-weight: bold;
-  }
-  
-  /* // FontAwesome Icon Styling */
-  .fas {
-    margin-right: 5px;
-  }
-  
-  /* // Badges and Spacing */
-  .badge {
-    font-size: 14px;
-    padding: 5px 10px;
-    color:black
-  }
-  /* // Borders and Styling */
-  .border {
-    background: #f8f9fa; 
-    border: 1px solid #000;
-    border-radius: 5px;
+  button{
+    font-size: .75em
   }
   .row-margin{
-    margin:10px;
-    padding: 10px;
+    font-size: .75em
   }
-  @media (min-width: 576px) { /* Styles for small devices (phones) */ }
+  .gap{
+    gap:5%
+  }
+  .job-card{
+    border: 1px solid #c6c2c2;
+    border-radius: 2%;
+    margin: 0%;
+    padding-left: 1%;
+    padding-right: 1%;
+  }
   
-  @media (min-width: 768px) { /* Styles for medium devices (tablets) */ }
-  
-  @media (min-width: 992px) { /* Styles for large devices (desktops) */ }
+  }
+@media (min-width: 768px) { /* Styles for medium devices (tablets) */
+  .gap{
+    gap:20%
+  }
+}
+
+@media (min-width: 992px) { /* Styles for large devices (desktops) */ }
+

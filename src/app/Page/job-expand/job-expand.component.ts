@@ -31,5 +31,7 @@ export class JobExpandComponent implements OnInit {
     console.log("Enter in expand job page");
     
   }
-  collapseJobs(){}
+  collapseJobs(){
+     this.route.navigate(['/dashboard']);
+  }
 }
