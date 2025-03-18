@@ -104,7 +104,7 @@
     font-size: 24px;
     font-weight: bold;
     color: white;
-    gap: 15px; /* Space between arrows and text */
+    /* gap: 15px; Space between arrows and text */
   }
   .calendar-container {
     /* display: flex; */
@@ -121,13 +121,13 @@
     /* padding: 15px; */
     border-radius: 30px;
     border: 2px solid #e48745;
-    width: 100%;
+    /* width: 100%; */
   }
   
   .calendar-header button {
     background: transparent;
     border: none;
-    padding: 5px 10px;
+    padding: 0px 0px;
     font-weight: bold;
     border-radius: 5px;
     cursor: pointer;
@@ -138,10 +138,10 @@
     grid-template-columns: repeat(7, 1fr);
     background-color: #78c2ad;
     color: white;
-    padding: 10px;
+    /* padding: 10px; */
     font-weight: bold;
     /* border-radius: 5px; */
-    width: 100%;
+    /* width: 100%; */
   }
   
   .calendar-grid {
@@ -150,7 +150,7 @@
     /* gap: 10px; */
     /* padding: 15px; */
     /* background-color: #f8f9fa; */
-    width: 100%;
+    /* width: 100%; */
     /* border-radius: 10px; */
   }
   
@@ -186,10 +186,10 @@
   }
   
   .day-box {
-    padding: 10px;
+    /* padding: 10px; */
     /* border: 1px solid #ddd; */
     border-radius: 5px;
-    width: 100px;
+    /* width: 100px; */
   }
   .today {
     background-color: #ea781d; /* Green */
@@ -202,10 +202,10 @@
     display: flex;
     justify-content: space-between; /* Ensures even spacing */
     align-items: center; /* Aligns items vertically */
-    gap: 20px; /* Adds spacing between elements */
-    width: 100%;
-    max-width: 800px; /* Adjust as needed */
-    margin: 20px auto; /* Centers the row */
+    gap: 20px;
+    /* width: 100%; */
+    /* max-width: 800px; Adjust as needed */
+    /* margin: 20px auto; Centers the row */
   }
   
   .search-box, .filter-box {
@@ -215,10 +215,7 @@
     display: flex;
     justify-content: space-between; /* Ensures even spacing */
     align-items: center; /* Aligns items vertically */
-    gap: 20px; /* Adds spacing between elements */
-    width: 100%;
-    max-width: 800px; /* Adjust as needed */
-    margin: 20px auto; /* Centers the row */
+
   }
   
   .search-box, .filter-box {
@@ -231,7 +228,7 @@
   input, select {
     border: 2px solid #e48745;
     border-radius: 10px;
-    padding: 8px 12px;
+    /* padding: 8px 12px; */
     font-size: 16px;
     /* width: 180px; */
   }
@@ -255,15 +252,15 @@
 .search-filter-container {
   display: flex;
   justify-content: center;
-  gap: 30px;
-  margin-top: 15px;
+  /* gap: 30px;
+  margin-top: 15px; */
 }
 /* Search Input Icon */
 input {
   /* background-image: url('🔍'); Replace with actual icon */
-  background-position: left 10px center;
+  /* background-position: left 10px center; */
   background-repeat: no-repeat;
-  padding-left: 35px;
+  /* padding-left: 35px; */
 }
 
 /* Dropdown Icon */
@@ -280,7 +277,7 @@ select {
   /* display: flex; */
   justify-content: center;
   align-items: center;
-  padding: 15px;
+  /* padding: 15px; */
   border-radius: 25px;
   background: linear-gradient(to right, #78c2ad, #ea8d4e); /* Green to Orange Gradient */
   width: 100%;

@@ -10,7 +10,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 15px;
+    /* padding: 10px 15px; */
     height: 60px;
     /* position: fixed ; */
     top: 0;
@@ -53,7 +53,7 @@
     align-items: center; /* Ensures vertical alignment */
     justify-content: center; /* Centers content */
     background: rgba(255, 255, 255, 0.15); /* Transparent box */
-    padding: 5px 15px;
+    /* padding: 5px 15px; */
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.5);
     font-weight: bold;
