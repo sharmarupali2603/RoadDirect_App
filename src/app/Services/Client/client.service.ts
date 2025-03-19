@@ -8,9 +8,6 @@ import { DatabaseService } from '../Database/database.service';
   providedIn: 'root',
 })
 export class ClientService {
-  //private mainUrl = 'https://pwa.roaddrectdaniel/api/ClientManagement/';
-  private mainUrl = 'https://pwa-alpha-aws.roaddirect.co.nz/api/ClientManagement/';
-
   // Function to get headers with Bearer token
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
@@ -30,7 +27,7 @@ export class ClientService {
       }
     }
 
-    return this.http.get(this.mainUrl + 'getAllClients', {
+    return this.http.get('api/ClientManagement/GetAllClients', {
       headers: this.getHeaders(),
       params,
     }).pipe(
