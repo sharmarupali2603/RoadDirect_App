@@ -13,8 +13,8 @@
   </div>
 
   <!-- Job Card -->
-   <div class="job-card">
-  <!-- <div *ngFor="let jobs of jobDetails" class="card shadow-sm mt-3"> -->
+  <div class="job-card">
+    <!-- <div *ngFor="let jobs of jobDetails" class="card shadow-sm mt-3"> -->
     <div class="card-header d-flex justify-content-between bg-light">
       <p><i class="fas fa-building"></i>🏢 Unison Contracting Services Limited</p>
       <button class="btn btn-primary btn-sm" (click)="collapseJobs()">
@@ -24,32 +24,36 @@
     <div class="d-flex gap">
       <button class="btn btn-primary">
         <i class="bi bi-tools"></i>
-         Create OSR
+        Create OSR
       </button>
-      
+
       <button class="btn btn-primary">
-        <i class="bi bi-chat-dots"></i> 
+        <i class="bi bi-chat-dots"></i>
         Job Status
       </button>
-      
+
       <button class="btn btn-primary">
-        <i class="bi bi-telephone"></i> 
+        <i class="bi bi-telephone"></i>
         Call Client
       </button>
     </div>
 
     <div class="d-flex justify-content-between">
-      
-    <div class="card-body">
-  
-      <p><i class="fas fa-map-marker-alt"></i>{{jobs.JobDetails[0].Location}}</p>
-      <p><i class="fas fa-clock"></i> {{jobs.JobDetails[0].Dates[0].Duration.DurationType}}. Be at Depot by: <strong>{{jobs.JobDetails[0].Dates[0].StartTime.StartTime1 | date:'hh:mm'}}</strong>, Siteup by: <strong>{{jobs.JobDetails[0].Dates[0].StartTime.StartTime2 | date:'hh:mm'}}</strong></p>
-      <p><i class="fas fa-truck"></i>{{jobs.JobDetails[0].Dates[0].AllocTrucks._allocTrucks}}</p>
-      <!-- Staff Details -->
-        <span class="fw-bold text-dark">(c) <span class="text-primary">{{jobs.JobDetails[0].Dates[0].AllocStaff._allocatedStaff}}</span></span>
-      <p class="mt-2"><i class="fas fa-traffic-light"></i>Static Data......</p>
-      <p><i class="fas fa-flag"></i> Static Data......</p>
-</div>
+
+      <div class="card-body">
+
+        <p><i class="fas fa-map-marker-alt"></i>{{jobs.jobDetails[0].location}}</p>
+        <p><i class="fas fa-clock"></i> {{jobs.jobDetails[0].dates[0].duration?.durationType}}. Be at Depot by:
+          <strong>{{jobs.jobDetails[0].dates[0].startTime?.startTime1 | date:'hh:mm'}}</strong>, Siteup by:
+          <strong>{{jobs.jobDetails[0].dates[0].startTime?.startTime2 | date:'hh:mm'}}</strong>
+        </p>
+        <p><i class="fas fa-truck"></i>{{jobs.jobDetails[0].dates[0].allocTrucks?._allocTrucks}}</p>
+        <!-- Staff Details -->
+        <span class="fw-bold text-dark">(c) <span
+            class="text-primary">{{jobs.jobDetails[0].dates[0].allocStaff?._allocatedStaff}}</span></span>
+        <p class="mt-2"><i class="fas fa-traffic-light"></i>Static Data......</p>
+        <p><i class="fas fa-flag"></i> Static Data......</p>
+      </div>
       <!-- Extra Info Section -->
       <div class=" text-center ">
         <p class="row-margin row border py-2 fw-bold">Extra Info</p>
@@ -62,24 +66,24 @@
       <button class="btn btn-outline-primary">
         📂 Documents
       </button>
-      
+
       <button class="btn btn-outline-primary">
         📷 Photos
       </button>
-      
+
       <button class="btn btn-outline-primary">
         📍 Location
       </button>
     </div>
 
     <div>
-       <p class="border-bottom" ><strong>🛠 Type of Work:</strong> {{ typeOfWork }}</p>
-  
+      <p class="border-bottom"><strong>🛠 Type of Work:</strong> {{ typeOfWork }}</p>
+
       <span *ngFor="let task of tasks" class="border-bottom">
         <p>🔹 {{ task.title }}</p>
-        <p class="border-bottom" >{{ task.description }}</p>
+        <p class="border-bottom">{{ task.description }}</p>
       </span>
-  
+
 
       <div class="mt-3">
         <button class="btn btn-primary w-100">📌 Record Task</button>
@@ -87,10 +91,10 @@
         <button class="btn btn-warning w-100 mt-2">🔧 Edit Equipment</button>
       </div>
     </div>
-  
-  <!-- Notes Section -->
-  <div class="mt-3">
-    <input type="text" class="form-control" placeholder="All Staff Notes">
+
+    <!-- Notes Section -->
+    <div class="mt-3">
+      <input type="text" class="form-control" placeholder="All Staff Notes">
+    </div>
   </div>
-</div>
 </div>
