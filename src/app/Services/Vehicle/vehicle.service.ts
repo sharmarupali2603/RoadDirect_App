@@ -12,7 +12,6 @@ export class VehicleService {
   // Function to get headers with Bearer token
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
-      //Authorization: `Bearer ${this.token}`,
       'Content-Type': 'application/json',
     });
   }

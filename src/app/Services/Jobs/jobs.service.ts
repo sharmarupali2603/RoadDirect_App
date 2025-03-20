@@ -12,7 +12,6 @@ export class JobsService {
   // Function to get headers with Bearer token
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
-      //Authorization: `Bearer ${this.token}`,
       'Content-Type': 'application/json',
     });
   }
@@ -20,7 +19,6 @@ export class JobsService {
   // GET request
   getCurrentUser(): Observable<any> {
     return this.http.get('api/UserManagement/GetCurrentUser', {
-      //return this.http.get(this.mainUrl + 'GetCurrentUser', {
       headers: this.getHeaders(),
     });
   }
@@ -28,7 +26,6 @@ export class JobsService {
   // POST request with Bearer token
   getJobsByDateRange(postData: any): Observable<any> {
     return this.http.post('api/Job/GetJobsByDateRange', postData, {
-      //return this.http.post(this.mainUrl + 'GetJobsByDateRange', postData, {
       headers: this.getHeaders(),
     }).pipe(
       tap((response) => {
