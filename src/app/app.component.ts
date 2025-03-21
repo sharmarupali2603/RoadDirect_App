@@ -4,7 +4,8 @@ import { ClientService } from './Services/Client/client.service';
 import { SwUpdate } from '@angular/service-worker';
 import { DatabaseService, clientItem } from './Services/Database/database.service';
 import { VehicleService } from './Services/Vehicle/vehicle.service';
-
+import { UserService } from './Services/Users/user.service';
+// import { Storage } from '@ionic/storage';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -17,14 +18,19 @@ export class AppComponent implements OnInit{
   isOnline = navigator.onLine;
   apiData: any[] = [];
   cachedData: clientItem[] = [];
+  clients: any;
+  vehicles: any;
+  users: any;
   constructor(public jobsService: JobsService,
               public clientService: ClientService,
               private swUpdate: SwUpdate,
               private dbService: DatabaseService,
-              private vehicleService: VehicleService) { 
+              private vehicleService: VehicleService,
+              public userService:UserService
+            ) { 
     this.fetchCurrentUser();
-    this.fetchAllClient();
-    this.fetchAllVehicle();
+    // this.fetchAllClient();
+    // this.fetchAllVehicle();
   }
   
   ngOnInit() {
@@ -45,6 +51,7 @@ export class AppComponent implements OnInit{
     this.jobsService.getCurrentUser().subscribe(
       (data) => {
         this.User = data;
+        localStorage.setItem ('User', JSON.stringify(this.User));
         console.log('User:', this.User);
       },
       (error) => {
@@ -53,15 +60,23 @@ export class AppComponent implements OnInit{
     );
   }
 
-  fetchAllClient() {
-    const queryParams = {
-      orgId: 1
-    };
 
-    this.clientService.getAllClients(queryParams).subscribe(
+
+  clearCache() {
+    // this.dbService.clearData().then(() => {
+    //   this.cachedData = [];
+    //   console.log('Cache Cleared');
+    // });
+  }
+
+
+  
+  fetchAllClient() {
+    this.clientService.getAllClients().subscribe(
       (response) => {
-        this.data = response;
-        console.log('Client:', this.data);
+        this.clients = response;
+        localStorage.setItem('ClientList', JSON.stringify(this.clients));
+        // console.log('Client:', this.clients);
       },
       (error) => {
         console.error('Error fetching data:', error);
@@ -70,19 +85,15 @@ export class AppComponent implements OnInit{
     this.clientService.getCachedData().subscribe((cached) => {
       this.cachedData = cached;
       console.log('Cached Data:', this.cachedData);
-      
     });
   }
 
   fetchAllVehicle() {
-    const queryParams = {
-      orgId: 1
-    };
-
-    this.vehicleService.getAllVehicle(queryParams).subscribe(
+    this.vehicleService.getAllVehicle().subscribe(
       (response) => {
-        this.data = response;
-        console.log('Vehicle:', this.data);
+        this.vehicles = response;
+        localStorage.setItem('VehicleList', JSON.stringify(this.vehicles));
+        console.log('Vehicle:', this.vehicles);
       },
       (error) => {
         console.error('Error fetching data:', error);
@@ -91,14 +102,19 @@ export class AppComponent implements OnInit{
     this.clientService.getCachedData().subscribe((cached) => {
       this.cachedData = cached;
       console.log('Cached vehicle Data:', this.cachedData);
-      
     });
   }
 
-  clearCache() {
-    // this.dbService.clearData().then(() => {
-    //   this.cachedData = [];
-    //   console.log('Cache Cleared');
-    // });
+  fetchAllUser() {
+    this.userService.getAllUsers().subscribe(
+      (response) => {
+        this.users = response;
+        localStorage.setItem('UserList', JSON.stringify(this.users));
+        console.log('users:', this.users);
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+      }
+    )
   }
 }

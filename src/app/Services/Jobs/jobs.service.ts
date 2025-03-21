@@ -43,8 +43,30 @@ export class JobsService {
         );
   }
   
+   // GET request
+   getMyTasks(): Observable<any> {
+    return this.http.get(this.mainUrl + 'GetMyTasks', {
+      headers: this.getHeaders(),
+    });
+  }
+
   getCachedData() {
     return from(this.db.getAllJobData());
   }
 
+  // POST request with Bearer token
+  getetNotesByDateRange(postData: any): Observable<any> {
+    return this.http.post(this.mainUrl + 'GetNotesByDateRange', postData, {
+      headers: this.getHeaders(),
+    }).pipe(
+          tap((response) => {
+            // Store API response in IndexedDB
+            from(this.db.saveJobData(response)).subscribe();
+          }),
+          catchError(() => {
+            // If offline, return cached data
+            return from(this.db.getAllJobData()).pipe(map((items) => items.map((item) => item.data)));
+          })
+        );
+  }
 }

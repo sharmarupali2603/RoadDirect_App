@@ -25,6 +25,7 @@ import { JobCardComponent } from './Components/job-card/job-card.component';
 import { JobExpandComponent } from './Page/job-expand/job-expand.component';
 import { TasksComponent } from './Page/tasks/tasks.component';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import { Storage } from '@ionic/storage';
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,6 +57,7 @@ import { TasksComponent } from './Page/tasks/tasks.component';
     HttpClientModule,
     BrowserAnimationsModule, 
     BsDatepickerModule.forRoot(),
+    
   ],
   providers: [],
   bootstrap: [AppComponent],

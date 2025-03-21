@@ -22,29 +22,10 @@ export class ClientService {
 
   constructor(private http: HttpClient,  private db: DatabaseService) {}
 
-  getAllClients(paramsObj: any): Observable<any> {
-    let params = new HttpParams();
-
-    // Append query parameters dynamically
-    for (let key in paramsObj) {
-      if (paramsObj[key] !== null && paramsObj[key] !== undefined) {
-        params = params.set(key, paramsObj[key]);
-      }
-    }
-
-    return this.http.get(this.mainUrl + 'getAllClients', {
+  getAllClients(): Observable<any> {
+    return this.http.get(this.mainUrl + 'GetAllClients', {
       headers: this.getHeaders(),
-      params,
-    }).pipe(
-      tap((response) => {
-        // Store API response in IndexedDB
-        // from(this.db.saveData(response)).subscribe();
-      }),
-      catchError(() => {
-        // If offline, return cached data
-        return from(this.db.getAllClientData()).pipe(map((items) => items.map((item) => item.data)));
-      })
-    );
+    });
   }
 
   getCachedData() {
