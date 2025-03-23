@@ -1,8 +1,11 @@
 <div class="container-fluid">
   <!-- Header Section -->
-  <div class="d-flex justify-content-between align-items-center rounded header-bar">
+  <div
+    class="d-flex justify-content-between align-items-center rounded header-bar"
+  >
     <p class="mb-0">
-      <i class="fas fa-calendar-alt"></i> 📅 Monday 21 February 2025
+      <i class="fas fa-calendar-alt"></i> 📅
+      {{ jobs.dateEntered | date : "fullDate" }}
     </p>
     <div>
       <span class="circle blue"></span>
@@ -16,7 +19,9 @@
   <div class="job-card">
     <!-- <div *ngFor="let jobs of jobDetails" class="card shadow-sm mt-3"> -->
     <div class="card-header d-flex justify-content-between bg-light">
-      <p><i class="fas fa-building"></i>🏢 Unison Contracting Services Limited</p>
+      <p>
+        <i class="fas fa-building"></i>🏢{{ getClientNamebyID(jobs.clientId) }}
+      </p>
       <button class="btn btn-primary btn-sm" (click)="collapseJobs()">
         <i class="fas fa-chevron-down"></i> Collapse Job
       </button>
@@ -39,23 +44,60 @@
     </div>
 
     <div class="d-flex justify-content-between">
-
       <div class="card-body">
-
-        <p><i class="fas fa-map-marker-alt"></i>{{jobs.jobDetails[0].location}}</p>
-        <p><i class="fas fa-clock"></i> {{jobs.jobDetails[0].dates[0].duration?.durationType}}. Be at Depot by:
-          <strong>{{jobs.jobDetails[0].dates[0].startTime?.startTime1 | date:'hh:mm'}}</strong>, Siteup by:
-          <strong>{{jobs.jobDetails[0].dates[0].startTime?.startTime2 | date:'hh:mm'}}</strong>
+        <p>
+          <i class="fas fa-map-marker-alt"></i>{{ jobs.jobDetails[0].location }}
         </p>
-        <p><i class="fas fa-truck"></i>{{jobs.jobDetails[0].dates[0].allocTrucks?._allocTrucks}}</p>
+        <p>
+          <i class="fas fa-clock"></i>
+          {{ jobs.jobDetails[0].dates[0].duration.durationType }}. Be at Depot
+          by:
+          <strong>{{
+            jobs.jobDetails[0].dates[0].startTime.startTime1 | date : "hh:mm"
+          }}</strong
+          >, Siteup by:
+          <strong>{{
+            jobs.jobDetails[0].dates[0].startTime.StartTime2 | date : "hh:mm"
+          }}</strong>
+        </p>
+        <p>
+          <i class="fas fa-truck-pickup"></i>{{
+            getVehicleNameById(
+              jobs.jobDetails[0].dates[0].allocTrucks._allocTrucks
+            )
+          }}
+        </p>
         <!-- Staff Details -->
-        <span class="fw-bold text-dark">(c) <span
-            class="text-primary">{{jobs.jobDetails[0].dates[0].allocStaff?._allocatedStaff}}</span></span>
-        <p class="mt-2"><i class="fas fa-traffic-light"></i>Static Data......</p>
-        <p><i class="fas fa-flag"></i> Static Data......</p>
+        <p class="fw-bold text-dark">
+          (c)
+          <span class="text-primary">{{
+            getStaffNameById(
+              jobs.jobDetails[0].dates[0].allocStaff._allocatedStaff
+            )
+          }}</span>
+        </p>
+        <!-- <p class="mt-2"><i class="fas fa-traffic-light"></i>Static Data......</p>
+      <p><i class="fas fa-flag"></i> Static Data......</p> -->
+        <!-- <p class="fas fa-traffic-light"></p>
+        <pre>{{
+          getClosureOptions(jobs.jobDetails[0].dates[0].closures[0]._closures)
+        }}</pre> -->
+
+        <span
+        *ngFor="let task of jobs.jobDetails[0].dates[0].closures">
+        <span *ngIf="task.closureType == 1">
+          <p>{{ getClosureOptions(task._closures) }}
+          </p>
+        </span>
+        <span *ngIf="task.closureType != 1">
+          <p>{{ getClosureOptions(task._closures) }}
+          </p>
+        </span>
+      </span>
+
       </div>
       <!-- Extra Info Section -->
-      <div class=" text-center ">
+      <div class="text-center">
         <p class="row-margin row border py-2 fw-bold">Extra Info</p>
         <p class="row-margin row border py-2">NP ✔</p>
         <p class="row-margin row border py-2">(S) A</p>
@@ -63,27 +105,35 @@
       </div>
     </div>
     <div class="d-flex gap border-bottom">
-      <button class="btn btn-outline-primary">
-        📂 Documents
-      </button>
+      <button class="btn btn-outline-primary">📂 Documents</button>
 
-      <button class="btn btn-outline-primary">
-        📷 Photos
-      </button>
+      <button class="btn btn-outline-primary">📷 Photos</button>
 
-      <button class="btn btn-outline-primary">
-        📍 Location
-      </button>
+      <button class="btn btn-outline-primary">📍 Location</button>
     </div>
 
     <div>
-      <p class="border-bottom"><strong>🛠 Type of Work:</strong> {{ typeOfWork }}</p>
+      <p class="border-bottom">
+        <strong>🛠 Type of Work:</strong> {{ getTypeOfWork(jobs.jobDetails[0]._descActivity) }}
+      </p>
 
-      <span *ngFor="let task of tasks" class="border-bottom">
-        <p>🔹 {{ task.title }}</p>
-        <p class="border-bottom">{{ task.description }}</p>
+      <span
+        *ngFor="let task of jobs.jobDetails[0].dates[0].closures"
+        class="border-bottom"
+      >
+        <span *ngIf="task.closureType == 1">
+          <p>
+            <strong>🔹TTM Road Set-Up-</strong
+            >{{ getClosure(task._closures) }}
+          </p>
+        </span>
+        <span *ngIf="task.closureType != 1">
+          <p>
+            <strong>TTM FootPath Set-Up -</strong
+            >{{ getClosure(task._closures) }}
+          </p>
+        </span>
       </span>
-
 
       <div class="mt-3">
         <button class="btn btn-primary w-100">📌 Record Task</button>
@@ -94,7 +144,7 @@
 
     <!-- Notes Section -->
     <div class="mt-3">
-      <input type="text" class="form-control" placeholder="All Staff Notes">
+      <input type="text" class="form-control" placeholder="All Staff Notes" />
     </div>
   </div>
 </div>
