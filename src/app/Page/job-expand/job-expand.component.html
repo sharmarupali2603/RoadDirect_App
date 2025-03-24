@@ -1,8 +1,6 @@
 <div class="container-fluid">
   <!-- Header Section -->
-  <div
-    class="d-flex justify-content-between align-items-center rounded header-bar"
-  >
+  <div class="d-flex justify-content-between align-items-center rounded header-bar">
     <p class="mb-0">
       <i class="fas fa-calendar-alt"></i> 📅
       {{ jobs.dateEntered | date : "fullDate" }}
@@ -50,21 +48,20 @@
         </p>
         <p>
           <i class="fas fa-clock"></i>
-          {{ jobs.jobDetails[0].dates[0].duration.durationType }}. Be at Depot
+          {{ jobs.jobDetails[0].dates[0].duration?.durationType }}. Be at Depot
           by:
           <strong>{{
-            jobs.jobDetails[0].dates[0].startTime.startTime1 | date : "hh:mm"
-          }}</strong
-          >, Siteup by:
+            jobs.jobDetails[0].dates[0].startTime?.startTime1 | date : "hh:mm"
+            }}</strong>, Siteup by:
           <strong>{{
-            jobs.jobDetails[0].dates[0].startTime.StartTime2 | date : "hh:mm"
-          }}</strong>
+            jobs.jobDetails[0].dates[0].startTime?.startTime2 | date : "hh:mm"
+            }}</strong>
         </p>
         <p>
           <i class="fas fa-truck-pickup"></i>{{
-            getVehicleNameById(
-              jobs.jobDetails[0].dates[0].allocTrucks._allocTrucks
-            )
+          getVehicleNameById(
+          jobs.jobDetails[0].dates[0].allocTrucks?._allocTrucks
+          )
           }}
         </p>
         <!-- Staff Details -->
@@ -72,9 +69,9 @@
           (c)
           <span class="text-primary">{{
             getStaffNameById(
-              jobs.jobDetails[0].dates[0].allocStaff._allocatedStaff
+            jobs.jobDetails[0].dates[0].allocStaff?._allocatedStaff
             )
-          }}</span>
+            }}</span>
         </p>
         <!-- <p class="mt-2"><i class="fas fa-traffic-light"></i>Static Data......</p>
       <p><i class="fas fa-flag"></i> Static Data......</p> -->
@@ -83,17 +80,16 @@
           getClosureOptions(jobs.jobDetails[0].dates[0].closures[0]._closures)
         }}</pre> -->
 
-        <span
-        *ngFor="let task of jobs.jobDetails[0].dates[0].closures">
-        <span *ngIf="task.closureType == 1">
-          <p>{{ getClosureOptions(task._closures) }}
-          </p>
+        <span *ngFor="let task of jobs.jobDetails[0].dates[0].closures">
+          <span *ngIf="task.closureType == 1">
+            <p>{{ getClosureOptions(task._closures) }}
+            </p>
+          </span>
+          <span *ngIf="task.closureType != 1">
+            <p>{{ getClosureOptions(task._closures) }}
+            </p>
+          </span>
         </span>
-        <span *ngIf="task.closureType != 1">
-          <p>{{ getClosureOptions(task._closures) }}
-          </p>
-        </span>
-      </span>
 
       </div>
       <!-- Extra Info Section -->
@@ -117,20 +113,15 @@
         <strong>🛠 Type of Work:</strong> {{ getTypeOfWork(jobs.jobDetails[0]._descActivity) }}
       </p>
 
-      <span
-        *ngFor="let task of jobs.jobDetails[0].dates[0].closures"
-        class="border-bottom"
-      >
+      <span *ngFor="let task of jobs.jobDetails[0].dates[0].closures" class="border-bottom">
         <span *ngIf="task.closureType == 1">
           <p>
-            <strong>🔹TTM Road Set-Up-</strong
-            >{{ getClosure(task._closures) }}
+            <strong>🔹TTM Road Set-Up-</strong>{{ getClosure(task._closures) }}
           </p>
         </span>
         <span *ngIf="task.closureType != 1">
           <p>
-            <strong>TTM FootPath Set-Up -</strong
-            >{{ getClosure(task._closures) }}
+            <strong>TTM FootPath Set-Up -</strong>{{ getClosure(task._closures) }}
           </p>
         </span>
       </span>

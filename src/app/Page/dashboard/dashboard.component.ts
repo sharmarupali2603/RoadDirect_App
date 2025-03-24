@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { CalendarEvent } from 'angular-calendar';
-import { format, startOfWeek, addDays, isToday } from 'date-fns';
-import { JobsService } from '../../Services/Jobs/jobs.service';
-import { SwUpdate } from '@angular/service-worker';
-import { DatabaseService } from '../../Services/Database/database.service';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { SwUpdate } from '@angular/service-worker';
+import { isToday } from 'date-fns';
 import { ClientService } from 'src/app/Services/Client/client.service';
-import { VehicleService } from 'src/app/Services/Vehicle/vehicle.service';
 import { UserService } from 'src/app/Services/Users/user.service';
+import { VehicleService } from 'src/app/Services/Vehicle/vehicle.service';
+import { DatabaseService } from '../../Services/Database/database.service';
+import { JobsService } from '../../Services/Jobs/jobs.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +16,7 @@ import { UserService } from 'src/app/Services/Users/user.service';
 export class DashboardComponent {
   currentDate: Date = new Date();
   weekDates: any[] = [];
-lastDate: any;
+  lastDate: any;
   cachedjobData: any[] = [];
   currentMonth: string = '';
   currentYear: number = 0;
@@ -27,9 +26,9 @@ lastDate: any;
   isOnline = navigator.onLine;
   openCalendar1: boolean = false;
   userList: any[] = [];
-  searchText: string = ''; 
+  searchText: string = '';
   // jobDetails: any[] = [];
-  noteDetails:any[]=[];
+  noteDetails: any[] = [];
   // cachedjobData: any[] = [];
   clientList: any[] = [];
   clientListCached: any[] = [];
@@ -45,50 +44,50 @@ lastDate: any;
     public router: Router,
     public clientService: ClientService,
     public vehicleService: VehicleService,
-    public userService:UserService,
-    private jobService: JobsService, 
+    public userService: UserService,
+    private jobService: JobsService,
     private dbService: DatabaseService,
     private swUpdate: SwUpdate) {
     this.updateWeek();
     this.getJobsByDateRange();
-     // Detect online/offline status
-     window.addEventListener('online', () => this.isOnline = true);
-     window.addEventListener('offline', () => this.isOnline = false);
-     this.getJobsByDateRange();
-     this.getNotesByDateRange();
-     if (localStorage.getItem('ClientList')) {
-       const clientData = localStorage.getItem('ClientList');
-       this.clientList = clientData ? JSON.parse(clientData) : null;
-       console.log('Client List:', this.clientList);
-     }
-     if (localStorage.getItem('VehicleList')) {
-       const vehicleData = localStorage.getItem('VehicleList');
-       this.vehicleList = vehicleData ? JSON.parse(vehicleData) : null;
-     }
-     console.log('VehicleList:', this.vehicleList);
-     if (localStorage.getItem('UserList')) {
-       const userData = localStorage.getItem('UserList');
-       this.userList = userData ? JSON.parse(userData) : null;
-     }
-     console.log('userList:', this.userList);
-   // Check for updates
-     if (this.swUpdate.isEnabled) {
-       this.swUpdate.available.subscribe(() => {
-         if (confirm("New update available. Load new version?")) {
-           window.location.reload();
-         }
-       });
-     }
- 
+    // Detect online/offline status
+    window.addEventListener('online', () => this.isOnline = true);
+    window.addEventListener('offline', () => this.isOnline = false);
+    this.getJobsByDateRange();
+    this.getNotesByDateRange();
+    if (localStorage.getItem('ClientList')) {
+      const clientData = localStorage.getItem('ClientList');
+      this.clientList = clientData ? JSON.parse(clientData) : null;
+      console.log('Client List:', this.clientList);
+    }
+    if (localStorage.getItem('VehicleList')) {
+      const vehicleData = localStorage.getItem('VehicleList');
+      this.vehicleList = vehicleData ? JSON.parse(vehicleData) : null;
+    }
+    console.log('VehicleList:', this.vehicleList);
+    if (localStorage.getItem('UserList')) {
+      const userData = localStorage.getItem('UserList');
+      this.userList = userData ? JSON.parse(userData) : null;
+    }
+    console.log('userList:', this.userList);
+    // Check for updates
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.available.subscribe(() => {
+        if (confirm("New update available. Load new version?")) {
+          window.location.reload();
+        }
+      });
+    }
+
   }
 
   getJobsByDateRange() {
-    let currentDate= this.currentDate.toISOString();
-    let lastDate=this.lastDate;
+    let currentDate = this.currentDate.toISOString();
+    let lastDate = this.lastDate;
     const dateRange = {
       "StartDate": currentDate,
-     "EndDate": lastDate
-     };
+      "EndDate": lastDate
+    };
     // const dateRange = {
     //  "StartDate": "2025-02-20T11:00:00.000Z",
     // "EndDate": "2025-03-18T11:00:00.000Z"
@@ -102,12 +101,12 @@ lastDate: any;
     this.jobService.getCachedData().subscribe((cached) => {
       this.cachedjobData = cached;
       console.log('Cached Job Data:', this.cachedjobData);
-       
+
     });
   }
   filteredData() {
-    return this.jobDetails.filter(item =>
-      item.jobDetails[0].location.toLowerCase().includes(this.searchText.toLowerCase()) ||
+    return this.jobDetails.filter((item) =>
+      item.jobDetails[0]?.location.toLowerCase().includes(this.searchText.toLowerCase()) ||
       item.principalId.toLowerCase().includes(this.searchText.toLowerCase())
     );
   }
@@ -137,16 +136,16 @@ lastDate: any;
         // selected: this.isSameDate(newDate, this.currentDate)
       });
     }
-console.log('weekDates', this.weekDates);
-this.lastDate=this.weekDates[4].lastDate.toISOString();
-// this.lastDate.toISOString(); // Returns ISO format
+    console.log('weekDates', this.weekDates);
+    this.lastDate = this.weekDates[4].lastDate.toISOString();
+    // this.lastDate.toISOString(); // Returns ISO format
 
-console.log("Dates",this.currentDate, this.lastDate);
+    console.log("Dates", this.currentDate, this.lastDate);
     this.currentMonth = this.currentDate.toLocaleString('en-US', {
       month: 'long',
     });
     this.currentYear = this.currentDate.getFullYear();
-    this.getJobsByDateRange(); 
+    this.getJobsByDateRange();
   }
 
   getMonday(d: Date): Date {
@@ -238,15 +237,15 @@ console.log("Dates",this.currentDate, this.lastDate);
     // If vehicleId is neither a string, object, nor array, return it as a string
     return String(staffId);
   }
- 
-  
-  getClosureOptions(rowData1:any) {
-    if( rowData1 != null || rowData1 != undefined){
-    const fixedData = rowData1.replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
-    const parsedData = JSON.parse(fixedData);
 
-    // console.log(parsedData[0].option);
-    return parsedData[0].option;
+
+  getClosureOptions(rowData1: any) {
+    if (rowData1 != null || rowData1 != undefined) {
+      const fixedData = rowData1.replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
+      const parsedData = JSON.parse(fixedData);
+
+      // console.log(parsedData[0].option);
+      return parsedData[0].option;
     }
   }
   getVehicleNamebyID(vehicleId: any[]) {
@@ -260,15 +259,15 @@ console.log("Dates",this.currentDate, this.lastDate);
   getUserNamebyID(userId: any[]) {
     const result = userId.map((item, index) => {
       const user = this.userList.find((c) => c.Id === item); // Find vehicle by ID
-      return user ?  `${user.firstName} ${user.lastName}` : String(item); // Return ShortName if found, otherwise return the vehicleId as a string
+      return user ? `${user.firstName} ${user.lastName}` : String(item); // Return ShortName if found, otherwise return the vehicleId as a string
     });
     return result;
   }
   getClientNamebyID(clientId: any) {
     debugger;
     // const result = clientId.map((item, index) => {
-      const client = this.clientList.find((c) => c.ClientId === clientId); // Find vehicle by ID
-      return client ?   client.ClientName : String(clientId); // Return ShortName if found, otherwise return the vehicleId as a string
+    const client = this.clientList.find((c) => c.ClientId === clientId); // Find vehicle by ID
+    return client ? client.ClientName : String(clientId); // Return ShortName if found, otherwise return the vehicleId as a string
     // });
     // return result;
   }
