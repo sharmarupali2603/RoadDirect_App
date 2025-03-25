@@ -1,0 +1,27 @@
+.task-section {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.myTask {
+  background-color: #61af8f;
+}
+
+.unAssigned {
+  background-color: #61c279;
+}
+
+.section-header {
+  font-weight: bold;
+}
+
+.card {
+  margin-top: 5px;
+  border-left: 5px solid #007bff;
+}
+
+.btn {
+  width: 100%;
+  text-align: center;
+}
