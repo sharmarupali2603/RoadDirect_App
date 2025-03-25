@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { ClientService } from 'src/app/Services/Client/client.service';
 import { JobsService } from 'src/app/Services/Jobs/jobs.service';
 import { UserService } from 'src/app/Services/Users/user.service';
@@ -11,7 +11,7 @@ import { VehicleService } from 'src/app/Services/Vehicle/vehicle.service';
 })
 export class JobCardComponent {
   jobDetails: any[] = [];
-  noteDetails:any[]=[];
+  noteDetails: any[] = [];
   cachedjobData: any[] = [];
   clientList: any[] = [];
   clientListCached: any[] = [];
@@ -28,7 +28,7 @@ export class JobCardComponent {
     public router: Router,
     public clientService: ClientService,
     public vehicleService: VehicleService,
-    public userService:UserService
+    public userService: UserService
   ) {
     this.getJobsByDateRange();
     this.getNotesByDateRange();
@@ -122,15 +122,15 @@ export class JobCardComponent {
     // If vehicleId is neither a string, object, nor array, return it as a string
     return String(staffId);
   }
- 
-  
-  getClosureOptions(rowData1:any) {
-    if( rowData1 != null || rowData1 != undefined){
-    const fixedData = rowData1.replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
-    const parsedData = JSON.parse(fixedData);
 
-    // console.log(parsedData[0].option);
-    return parsedData[0].option;
+
+  getClosureOptions(rowData1: any) {
+    if (rowData1 != null || rowData1 != undefined) {
+      const fixedData = rowData1.replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
+      const parsedData = JSON.parse(fixedData);
+
+      // console.log(parsedData[0].option);
+      return parsedData[0].option;
     }
   }
   getVehicleNamebyID(vehicleId: any[]) {
@@ -144,15 +144,15 @@ export class JobCardComponent {
   getUserNamebyID(userId: any[]) {
     const result = userId.map((item, index) => {
       const user = this.userList.find((c) => c.Id === item); // Find vehicle by ID
-      return user ?  `${user.firstName} ${user.lastName}` : String(item); // Return ShortName if found, otherwise return the vehicleId as a string
+      return user ? `${user.firstName} ${user.lastName}` : String(item); // Return ShortName if found, otherwise return the vehicleId as a string
     });
     return result;
   }
   getClientNamebyID(clientId: any) {
     debugger;
     // const result = clientId.map((item, index) => {
-      const client = this.clientList.find((c) => c.ClientId === clientId); // Find vehicle by ID
-      return client ?   client.ClientName : String(clientId); // Return ShortName if found, otherwise return the vehicleId as a string
+    const client = this.clientList.find((c) => c.ClientId === clientId); // Find vehicle by ID
+    return client ? client.ClientName : String(clientId); // Return ShortName if found, otherwise return the vehicleId as a string
     // });
     // return result;
   }
@@ -173,10 +173,10 @@ export class JobCardComponent {
   }
   // getOrgId(jobs: any) {
   //   debugger;
-  //   let orgID = jobs.OrgId;
+  //   let orgID = jobs.orgId;
   //   this.fetchAllClient();
   //   this.fetchAllVehicle();
-  //   let vehicleID = jobs.JobDetails[0].Dates[0].AllocTrucks._allocTrucks;
+  //   let vehicleID = jobs.jobDetails[0].dates[0].allocTrucks.allocTrucks;
   //   console.log('VehicleID:', vehicleID);
 
   //   this.getVehicleNameById(vehicleID);

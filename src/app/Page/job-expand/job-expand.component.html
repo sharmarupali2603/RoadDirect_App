@@ -60,7 +60,7 @@
         <p>
           <i class="fas fa-truck-pickup"></i>{{
           getVehicleNameById(
-          jobs.jobDetails[0].dates[0].allocTrucks?._allocTrucks
+          jobs.jobDetails[0].dates[0].allocTrucks?.allocTrucks
           )
           }}
         </p>
@@ -69,7 +69,7 @@
           (c)
           <span class="text-primary">{{
             getStaffNameById(
-            jobs.jobDetails[0].dates[0].allocStaff?._allocatedStaff
+            jobs.jobDetails[0].dates[0].allocStaff?.allocatedStaff
             )
             }}</span>
         </p>
@@ -77,16 +77,16 @@
       <p><i class="fas fa-flag"></i> Static Data......</p> -->
         <!-- <p class="fas fa-traffic-light"></p>
         <pre>{{
-          getClosureOptions(jobs.jobDetails[0].dates[0].closures[0]._closures)
+          getClosureOptions(jobs.jobDetails[0].dates[0].closures[0].closures)
         }}</pre> -->
 
         <span *ngFor="let task of jobs.jobDetails[0].dates[0].closures">
           <span *ngIf="task.closureType == 1">
-            <p>{{ getClosureOptions(task._closures) }}
+            <p>{{ getClosureOptions(task.closures) }}
             </p>
           </span>
           <span *ngIf="task.closureType != 1">
-            <p>{{ getClosureOptions(task._closures) }}
+            <p>{{ getClosureOptions(task.closures) }}
             </p>
           </span>
         </span>
@@ -110,18 +110,18 @@
 
     <div>
       <p class="border-bottom">
-        <strong>🛠 Type of Work:</strong> {{ getTypeOfWork(jobs.jobDetails[0]._descActivity) }}
+        <strong>🛠 Type of Work:</strong> {{ getTypeOfWork(jobs.jobDetails[0].descActivity) }}
       </p>
 
       <span *ngFor="let task of jobs.jobDetails[0].dates[0].closures" class="border-bottom">
         <span *ngIf="task.closureType == 1">
           <p>
-            <strong>🔹TTM Road Set-Up-</strong>{{ getClosure(task._closures) }}
+            <strong>🔹TTM Road Set-Up-</strong>{{ getClosure(task.closures) }}
           </p>
         </span>
         <span *ngIf="task.closureType != 1">
           <p>
-            <strong>TTM FootPath Set-Up -</strong>{{ getClosure(task._closures) }}
+            <strong>TTM FootPath Set-Up -</strong>{{ getClosure(task.closures) }}
           </p>
         </span>
       </span>

@@ -27,23 +27,24 @@
           <p><i class="fas fa-map-marker-alt"></i>{{jobs.jobDetails[0].location}}</p>
           <p><i class="fas fa-clock"></i> {{jobs.jobDetails[0].dates[0].duration?.durationType}}. Be at Depot by:
             <strong>{{jobs.jobDetails[0].dates[0].startTime?.startTime1 | date:'hh:mm'}}</strong>, Siteup by:
-            <strong>{{jobs.jobDetails[0].dates[0].startTime?.startTime2 | date:'hh:mm'}}</strong></p>
-          <p><i class="fas fa-truck"></i>{{getVehicleNameById(jobs.jobDetails[0].dates[0].allocTrucks?._allocTrucks)}}
+            <strong>{{jobs.jobDetails[0].dates[0].startTime?.startTime2 | date:'hh:mm'}}</strong>
+          </p>
+          <p><i class="fas fa-truck"></i>{{getVehicleNameById(jobs.jobDetails[0].dates[0].allocTrucks?.allocTrucks)}}
           </p>
           <!-- Staff Details -->
           <p class="fw-bold text-dark">(c) <span
-              class="text-primary">{{getStaffNameById(jobs.jobDetails[0].dates[0].allocStaff?._allocatedStaff)}}</span>
+              class="text-primary">{{getStaffNameById(jobs.jobDetails[0].dates[0].allocStaff?.allocatedStaff)}}</span>
           </p>
           <!-- <p class="mt-2" > -->
-          <!-- <p class="fas fa-traffic-light"><pre>{{ getClosureOptions(jobs.jobDetails[0].dates[0].closures[0]._closures)}}</pre> -->
+          <!-- <p class="fas fa-traffic-light"><pre>{{ getClosureOptions(jobs.jobDetails[0].dates[0].closures[0].closures)}}</pre> -->
 
           <span *ngFor="let task of jobs.jobDetails[0].dates[0].closures">
             <span *ngIf="task.closureType == 1">
-              <p>{{ getClosureOptions(task._closures) }}
+              <p>{{ getClosureOptions(task.closures) }}
               </p>
             </span>
             <span *ngIf="task.closureType != 1">
-              <p>{{ getClosureOptions(task._closures) }}
+              <p>{{ getClosureOptions(task.closures) }}
               </p>
             </span>
           </span>

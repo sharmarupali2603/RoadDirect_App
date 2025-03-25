@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-job-expand',
@@ -102,27 +102,27 @@ export class JobExpandComponent implements OnInit {
   }
 
   getClosureOptions(rowData1: any) {
-    if( rowData1 != null || rowData1 != undefined){
-    const fixedData = rowData1.replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
-    const parsedData = JSON.parse(fixedData);
+    if (rowData1 != null || rowData1 != undefined) {
+      const fixedData = rowData1.replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
+      const parsedData = JSON.parse(fixedData);
 
-    // console.log(parsedData[0].option);
-    return parsedData[0].option;
+      // console.log(parsedData[0].option);
+      return parsedData[0].option;
     }
   }
 
   getTypeOfWork(rowData1: any) {
     debugger;
-    if( rowData1 != null || rowData1 != undefined){
-    if (typeof rowData1 === 'string') {
-      // let result = rowData1.slice(1, -1).split(','); // Remove the brackets and split by commas
-      const fixedData = rowData1.replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
-      const parsedData = JSON.parse(fixedData);
-      return parsedData;
+    if (rowData1 != null || rowData1 != undefined) {
+      if (typeof rowData1 === 'string') {
+        // let result = rowData1.slice(1, -1).split(','); // Remove the brackets and split by commas
+        const fixedData = rowData1.replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
+        const parsedData = JSON.parse(fixedData);
+        return parsedData;
+      }
+      return rowData1;
     }
-    return rowData1;
   }
-}
 
   getVehicleNamebyID(vehicleId: any[]) {
     const result = vehicleId.map((item, index) => {
@@ -151,17 +151,17 @@ export class JobExpandComponent implements OnInit {
     this.route.navigate(['/dashboard']);
   }
 
-  getClosure(rawData1:any){
-    if( rawData1 != null || rawData1 != undefined){
+  getClosure(rawData1: any) {
+    if (rawData1 != null || rawData1 != undefined) {
 
-    const rawData =
-      '[{option: "H", fullName: "Hire (Client picking up hire gear, get ready for pick up)"}]';
-    const fixedData = rawData1.replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
-    const parsedData = JSON.parse(fixedData);
+      const rawData =
+        '[{option: "H", fullName: "Hire (Client picking up hire gear, get ready for pick up)"}]';
+      const fixedData = rawData1.replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
+      const parsedData = JSON.parse(fixedData);
 
-    // console.log(parsedData[0].fullName);
-    return parsedData[0].fullName;
+      // console.log(parsedData[0].fullName);
+      return parsedData[0].fullName;
+    }
   }
-}
 
 }
