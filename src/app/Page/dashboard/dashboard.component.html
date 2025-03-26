@@ -28,19 +28,23 @@
         <div class="day-date">{{ day.dayNumber }}</div>
       </div>
       <button (click)="nextWeek()">❯</button>
-
     </div>
-
-
   </div>
   <!-- Search & Filter -->
   <div class="search-filter-container">
     <div class="search-box">
       <!-- <label class="fw-bold">Search for jobs...</label> -->
       <label><strong>Search for <span>jobs...</span></strong></label>
+        ><strong>Search for <span>jobs...</span></strong></label
+      >
 
-      <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search" />
-      <br>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="searchText"
+       placeholder="Search"
+      />
+     <br>
       <select class="form-control">
         <option>Search by Jobs</option>
         <option *ngFor="let user of jobs">{{ user }}</option>
@@ -50,26 +54,35 @@
       <!-- <label class="fw-bold">Filter by user...</label> -->
       <label><strong>Filter by <span>user...</span></strong></label>
 
-      <select class="form-control">
+      <select [(ngModel)]="searchText1" class="form-control">
         <option>All Users</option>
-        <option *ngFor="let user of userList">{{ user.firstName }}{{ user.lastName }}</option>
+        <option *ngFor="let user of userList">
+          {{ user.firstName }}{{ user.lastName }}
+        </option>
       </select>
       <br>
-      <input type="text" class="form-control" placeholder="Show Only My Jobs" />
-
+      <!-- <input type="text" class="form-control" placeholder="Show Only My Jobs" /> -->
+      <label>
+        <input type="checkbox" [(ngModel)]="showOnlyUserTasks" (change)="applyFilter()" />
+        Only my
+      </label>
     </div>
   </div>
 
 </div>
 <!-- <app-job-card></app-job-card> -->
 <!-- Job Details Section -->
-<div class="container-fluid p-2">
+<div *ngFor="let day of weekDates" class="container-fluid p-2">
   <!-- Header Section -->
-  <div *ngFor="let jobs of filteredData()">
-    <div class="d-flex justify-content-between align-items-center rounded header-bar">
-      <p class="mb-0">
-        <i class="fas fa-calendar-alt"></i> 📅 {{jobs.dateEntered | date:'fullDate' }}
+  <div
+  class="d-flex justify-content-between align-items-center rounded header-bar"
+>
+  <!-- <p class="mb-0">
+  <i class="fas fa-calendar-alt"></i> 📅 {{jobs.jobDetails[0].dates[0].jobDetailsDate | date:'fullDate' }}
+</p> --><p class="mb-0">
+      <i class="fas fa-calendar-alt"></i> 📅 {{day.dates | date:'fullDate' }}
       </p>
+ 
       <div>
         <span class="circle blue"></span>
         <span class="circle yellow"></span>
@@ -77,40 +90,86 @@
         <i class="fas fa-search search-icon"></i>
       </div>
     </div>
-
+   
+  <div *ngFor="let jobs of filteredData(''); let i=index">
+    <span>
+      {{sendData(jobs,day)}}
+    </span>
+    <div *ngFor="let notes of noteDetails;" class="d-flex justify-content-start flex-wrap">
+      <!-- <span *ngIf="notes.Date == jobs.startDate"> -->
+        {{sendNoteData(day, notes)}}
+        <span *ngIf="matchednote"  class="d-flex justify-content-start flex-wrap">
+      <p class="me-2 manager" >
+        <i class="fas fa-phone text-primary"></i> <strong>Manager #1:</strong> {{getNameByID(notes.PrimaryDutyManager)}}
+      </p>
+      <p class="me-2 manager">
+        <i class="fas fa-phone text-primary"></i> <strong>Manager #1:</strong> {{getNameByID(notes.SecondaryDutyManager)}}
+      </p>
+      <p class="me-2 manager">
+        <i class="fas fa-phone text-primary"></i> <strong>Call-Out Staff:</strong> {{getNameByID(notes.CallOutDutyStaff)}}
+      </p>
+    </span>
+      <!-- </span> -->
+    </div>
     <!-- Job Card -->
-    <div class="card shadow-sm mt-3">
-      <div class="card-header d-flex justify-content-between bg-light">
-        <p><i class="fas fa-building"></i>🏢 {{getClientNamebyID(jobs.clientId)}}</p>
+    <div  *ngIf="matchedDate" class="card shadow-sm mt-3">
+      <div class="card-hea h-25 d-flex justify-content-between bg-light">
+        <p class="padding-p">
+          <i class="fas fa-building"></i>🏢
+          {{ getClientNamebyID(jobs.clientId) }}
+        </p>
         <!-- <span  *ngIf="jobs.OrgId">{{getOrgId(jobs)}}</span> -->
-        <button class="btn btn-primary btn-sm" (click)="expandJobs(jobs)">
+        <button class="expand-btn btn btn-primary btn-sm" (click)="expandJobs(jobs)">
           <i class="fas fa-chevron-down"></i> Expand Job
         </button>
       </div>
       <div class="d-flex justify-content-between">
         <div class="card-body">
-          <p><i class="fas fa-map-marker-alt"></i>{{jobs.jobDetails[0].location}}</p>
-          <p><i class="fas fa-clock"></i> {{jobs.jobDetails[0].dates[0].duration?.durationType}}. Be at Depot by:
-            <strong>{{jobs.jobDetails[0].dates[0].startTime?.startTime1 | date:'hh:mm'}}</strong>, Siteup by:
-            <strong>{{jobs.jobDetails[0].dates[0].startTime?.startTime2 | date:'hh:mm'}}</strong>
+          <p>
+            <i class="fas fa-map-marker-alt"></i
+            >{{ jobs.jobDetails[0].location }}
           </p>
-          <p><i class="fas fa-truck"></i>{{getVehicleNameById(jobs.jobDetails[0].dates[0].allocTrucks?.allocTrucks)}}
+          <p>
+            <i class="fas fa-clock"></i>
+            {{ jobs.jobDetails[0].dates[0].duration.durationType }}. {{labelStartTime1}}: 
+            <strong>{{
+              jobs.jobDetails[0].dates[0].startTime.startTime1 | date : "hh:mm"
+            }}</strong
+            >, {{labelStartTime2}}
+            <strong>{{
+              jobs.jobDetails[0].dates[0].startTime.startTime2 | date : "hh:mm"
+            }}</strong>
+          </p>
+          <p>
+            <i class="fas fa-truck"></i
+            >{{
+              getVehicleNameById(
+                jobs.jobDetails[0].dates[0].allocTrucks._allocTrucks
+              )
+            }}
           </p>
           <!-- Staff Details -->
-          <p class="fw-bold text-dark">(c) <span
-              class="text-primary">{{getStaffNameById(jobs.jobDetails[0].dates[0].allocStaff?.allocatedStaff)}}</span>
+          <p class="fw-bold text-dark">
+            
+            <span class="text-primary">{{
+              getTaskStatus(
+                jobs,jobs.jobDetails[0].dates[0].allocStaff._allocatedStaff
+              )
+            }}{{
+              getStaffNameById(
+                jobs.jobDetails[0].dates[0].allocStaff._allocatedStaff
+              )
+            }}</span>
           </p>
           <!-- <p class="mt-2" > -->
-          <!-- <p class="fas fa-traffic-light"><pre>{{ getClosureOptions(jobs.jobDetails[0].dates[0].closures[0].closures)}}</pre> -->
+          <!-- <p class="fas fa-traffic-light"><pre>{{ getClosureOptions(jobs.jobDetails[0].dates[0].closures[0]._closures)}}</pre> -->
 
           <span *ngFor="let task of jobs.jobDetails[0].dates[0].closures">
             <span *ngIf="task.closureType == 1">
-              <p>{{ getClosureOptions(task.closures) }}
-              </p>
+              <p>{{ getClosureOptions(task._closures) }}</p>
             </span>
             <span *ngIf="task.closureType != 1">
-              <p>{{ getClosureOptions(task.closures) }}
-              </p>
+              <p>{{ getClosureOptions(task._closures) }}</p>
             </span>
           </span>
 
@@ -121,17 +180,41 @@
         </div>
         <!-- Extra Info Section -->
         <div class=" text-center ">
-          <div class="row-margin row border py-2 fw-bold">Extra Info</div>
-          <div class="row-margin row border py-2">NP ✔</div>
-          <div class="row-margin row border py-2">(S) A</div>
-          <div class="row-margin row border py-2">Job# 20410</div>
+          <div
+            class="row-margin row-extra border py-2 fw-bold" data-bs-toggle="modal" data-bs-target="#noteModal"
+            *ngIf="jobs.jobDetails[0].dates[0].jobDailyNote.note"
+          >
+            Extra Info
+        </div>
+          <div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="noteModalLabel">Note</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+                <div class="modal-body">
+                  {{ jobs.jobDetails[0].dates[0].jobDailyNote.note}}
+    </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+  </div>
+              </div>
+            </div>
+          </div>
+          <div class="row-margin row-extra  border py-2">NP 
+            <div class="NP-green" *ngIf="jobs.jobDetails[0].dates[0].removeParks._removeParksTypes != null">Y</div>
+            <!-- <span style="color:red" *ngIf="jobs.jobDetails[0].dates[0].removeParks._removeParksTypes == ">Y</span> -->
+            <div style="color:red" *ngIf="jobs.jobDetails[0].dates[0].removeParks._removeParksTypes == null">NA</div>
+            ✔</div>
+          <div class="row-margin row-extra  border py-2">(S) A</div>
+          <div class="row-margin row-extra  border py-2">
+            Job# {{ jobs.jobDetails[0].jobId }}
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <!-- Notes Section -->
-  <div class="mt-3">
-    <input type="text" class="form-control" placeholder="All Staff Notes">
+   
   </div>
 </div>
 

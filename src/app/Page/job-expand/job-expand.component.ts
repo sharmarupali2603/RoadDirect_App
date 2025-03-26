@@ -102,12 +102,22 @@ export class JobExpandComponent implements OnInit {
   }
 
   getClosureOptions(rowData1: any) {
+    debugger;
     if (rowData1 != null || rowData1 != undefined) {
       const fixedData = rowData1.replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
       const parsedData = JSON.parse(fixedData);
-
-      // console.log(parsedData[0].option);
-      return parsedData[0].option;
+      for (let i = 0; i < parsedData.length; i++) {
+        if (parsedData[i] === 'object') {
+          if (parsedData[0].option) {
+            // console.log(parsedData[0].option);
+            return parsedData[0].option;
+          } else {
+            return parsedData;
+          }
+        } else {
+          return parsedData;
+        }
+      }
     }
   }
 
@@ -153,7 +163,6 @@ export class JobExpandComponent implements OnInit {
 
   getClosure(rawData1: any) {
     if (rawData1 != null || rawData1 != undefined) {
-
       const rawData =
         '[{option: "H", fullName: "Hire (Client picking up hire gear, get ready for pick up)"}]';
       const fixedData = rawData1.replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
@@ -163,5 +172,4 @@ export class JobExpandComponent implements OnInit {
       return parsedData[0].fullName;
     }
   }
-
 }

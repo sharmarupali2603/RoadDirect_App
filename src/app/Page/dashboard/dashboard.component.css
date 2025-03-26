@@ -467,10 +467,10 @@ flex:0.4
 .Location{
 justify-content: flex-end !important;  
 }
-.card-header {
+/* .card-header {
   background-color: #f8f9fa;
   font-weight: bold;
-}
+} */
 
 .bi {
   font-size: 1.2rem;
@@ -506,9 +506,9 @@ justify-content: flex-end !important;
 }
 
  /* Card Custom Styling */
-.card-header {
+/* .card-header {
   font-weight: bold;
-}
+} */
 
 /* FontAwesome Icon Styling */
 .fas {
@@ -553,10 +553,12 @@ justify-content: flex-end !important;
 }
 
 /* // Card Custom Styling */
-.card-header {
+.card-hea {
   font-weight: bold;
-  padding-left: 0%;
-  margin: 0;
+  padding-top: 1.5%;
+  padding-right: 2%;
+  padding-bottom: 0%;
+  margin-bottom: 0%;
   background-color: #d5d5d5 !important;
 }
 
@@ -582,20 +584,51 @@ justify-content: flex-end !important;
   padding: 10px;
 }
 .card-body{
-  padding:0
+  padding:2%;
 }
 button{
   font-size: 50%;
+}
+.NP-green{
+  background: black;
+  color: white;
+  border-radius: 100%;
+  /* border: 1px solid #e48745; */
+  padding-right: calc(var(--bs-gutter-x)* 0.1) !important;
+  padding-left: calc(var(--bs-gutter-x)* 0.1) !important;
 }
 @media (max-width: 576px) { /* Styles for small devices (phones) */
 p{
   font-size: .75em
 }
 button{
-  font-size: .75em
+  font-size: .75em;
+ 
 }
 .row-margin{
   font-size: .75em
+}
+.manager{
+  font-size: 0.6em;
+}
+.NP-green{
+  background: black;
+  color: white;
+  border-radius: 100%;
+  /* border: 1px solid #e48745; */
+  padding-right: calc(var(--bs-gutter-x)* 0.1) !important;
+  padding-left: calc(var(--bs-gutter-x)* 0.1) !important;
+}
+.row-extra{
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+}
+.padding-p{
+ padding-top:1%
+}
+.expand-btn{
+  height:30%
 }
 }
 

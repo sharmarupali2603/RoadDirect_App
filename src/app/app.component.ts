@@ -6,6 +6,7 @@ import { DatabaseService, clientItem } from './Services/Database/database.servic
 import { VehicleService } from './Services/Vehicle/vehicle.service';
 import { UserService } from './Services/Users/user.service';
 // import { Storage } from '@ionic/storage';
+// import { Storage } from '@ionic/storage';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,6 +16,7 @@ export class AppComponent implements OnInit{
   title = 'MyProject';
   User: any;
   data: any;
+  tasks:any;
   isOnline = navigator.onLine;
   apiData: any[] = [];
   cachedData: clientItem[] = [];
@@ -29,8 +31,10 @@ export class AppComponent implements OnInit{
               public userService:UserService
             ) { 
     this.fetchCurrentUser();
-    // this.fetchAllClient();
-    // this.fetchAllVehicle();
+    this.fetchAllClient();
+    this.fetchAllVehicle();
+    this.fetchAllTask();
+    this.fetchAllUser();
   }
   
   ngOnInit() {
@@ -52,6 +56,7 @@ export class AppComponent implements OnInit{
       (data) => {
         this.User = data;
         localStorage.setItem ('User', JSON.stringify(this.User));
+        localStorage.setItem ('User', JSON.stringify(this.User));
         console.log('User:', this.User);
       },
       (error) => {
@@ -59,6 +64,9 @@ export class AppComponent implements OnInit{
       }
     );
   }
+
+
+  
 
 
 
@@ -76,7 +84,7 @@ export class AppComponent implements OnInit{
       (response) => {
         this.clients = response;
         localStorage.setItem('ClientList', JSON.stringify(this.clients));
-        // console.log('Client:', this.clients);
+       
       },
       (error) => {
         console.error('Error fetching data:', error);
@@ -94,6 +102,7 @@ export class AppComponent implements OnInit{
         this.vehicles = response;
         localStorage.setItem('VehicleList', JSON.stringify(this.vehicles));
         console.log('Vehicle:', this.vehicles);
+        
       },
       (error) => {
         console.error('Error fetching data:', error);
@@ -111,6 +120,19 @@ export class AppComponent implements OnInit{
         this.users = response;
         localStorage.setItem('UserList', JSON.stringify(this.users));
         console.log('users:', this.users);
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+      }
+    )
+  }
+
+  fetchAllTask() {
+    this.jobsService.getMyTasks().subscribe(
+      (response) => {
+        this.tasks = response;
+        localStorage.setItem('TaskList', JSON.stringify(this.tasks));
+        console.log('tasks:', this.tasks);
       },
       (error) => {
         console.error('Error fetching data:', error);

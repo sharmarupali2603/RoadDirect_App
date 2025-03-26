@@ -4,10 +4,9 @@ import { SwUpdate } from '@angular/service-worker';
 import { isToday } from 'date-fns';
 import { ClientService } from 'src/app/Services/Client/client.service';
 import { UserService } from 'src/app/Services/Users/user.service';
-import { VehicleService } from 'src/app/Services/Vehicle/vehicle.service';
+import * as moment from 'moment';
 import { DatabaseService } from '../../Services/Database/database.service';
 import { JobsService } from '../../Services/Jobs/jobs.service';
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -27,19 +26,29 @@ export class DashboardComponent {
   openCalendar1: boolean = false;
   userList: any[] = [];
   searchText: string = '';
+  searchText1:string='';
   // jobDetails: any[] = [];
   noteDetails: any[] = [];
+  eventDetails:any[]=[];
   // cachedjobData: any[] = [];
   clientList: any[] = [];
   clientListCached: any[] = [];
   vehicleList: any[] = [];
-  // userList: any[] = [];
+  taskList: any[] = [];
   OrgID: any;
   clients: any;
   cachedData: any[] = [];
   vehicles: any;
   // users: any;
-
+  matchedDate: boolean = false;
+  matchednote: boolean = false;
+  showOnlyUserTasks: boolean = false;
+  User: any;
+  FirstName: any;
+  LastName: any;
+  defaultSetting:any;
+  labelStartTime1:any;
+  labelStartTime2:any;
   constructor(
     public router: Router,
     public clientService: ClientService,
@@ -47,13 +56,14 @@ export class DashboardComponent {
     public userService: UserService,
     private jobService: JobsService,
     private dbService: DatabaseService,
-    private swUpdate: SwUpdate) {
+    private swUpdate: SwUpdate
+  ) {
     this.updateWeek();
-    this.getJobsByDateRange();
+    this.getDefaultSettings();
+    this.getEventsByDateRange();
     // Detect online/offline status
-    window.addEventListener('online', () => this.isOnline = true);
-    window.addEventListener('offline', () => this.isOnline = false);
-    this.getJobsByDateRange();
+    window.addEventListener('online', () => (this.isOnline = true));
+    window.addEventListener('offline', () => (this.isOnline = false));
     this.getNotesByDateRange();
     if (localStorage.getItem('ClientList')) {
       const clientData = localStorage.getItem('ClientList');
@@ -70,30 +80,39 @@ export class DashboardComponent {
       this.userList = userData ? JSON.parse(userData) : null;
     }
     console.log('userList:', this.userList);
+    if (localStorage.getItem('TaskList')) {
+      const taskData = localStorage.getItem('TaskList');
+      this.taskList = taskData ? JSON.parse(taskData) : null;
+    }
+    console.log('taskList:', this.taskList);
     // Check for updates
     if (this.swUpdate.isEnabled) {
       this.swUpdate.available.subscribe(() => {
-        if (confirm("New update available. Load new version?")) {
+        if (confirm('New update available. Load new version?')) {
           window.location.reload();
         }
       });
     }
-
+    if (localStorage.getItem('User')) {
+      const userData = localStorage.getItem('User');
+      this.User = userData ? JSON.parse(userData) : null;
+      console.log('User:', this.User);
+      this.FirstName = this.User.id;
+      this.LastName = this.User.lastName;
+      console.log('FirstName:', this.FirstName);
+      console.log('LastName:', this.LastName);
+    }
   }
 
   getJobsByDateRange() {
     let currentDate = this.currentDate.toISOString();
     let lastDate = this.lastDate;
     const dateRange = {
-      "StartDate": currentDate,
-      "EndDate": lastDate
+      StartDate: currentDate,
+      EndDate: lastDate,
     };
-    // const dateRange = {
-    //  "StartDate": "2025-02-20T11:00:00.000Z",
-    // "EndDate": "2025-03-18T11:00:00.000Z"
-    // };
     this.jobService.getJobsByDateRange(dateRange).subscribe((data) => {
-      this.jobDetails.unshift(data);
+      this.jobDetails = data;
       console.log('Jobs Details', data);
       this.jobDetails = data;
     });
@@ -104,13 +123,59 @@ export class DashboardComponent {
 
     });
   }
-  filteredData() {
-    return this.jobDetails.filter((item) =>
-      item.jobDetails[0]?.location.toLowerCase().includes(this.searchText.toLowerCase()) ||
-      item.principalId.toLowerCase().includes(this.searchText.toLowerCase())
-    );
+  filteredData(Event: any) {
+    // this.applyFilter();
+    // console.log(Event,")))))))))))))))");
+
+    if (Event) {
+      console.log('Apply filter11111111111111111');
+      return this.jobDetails.filter((item) =>
+        item.jobDetails[0].dates[0].allocStaff._allocatedStaff
+          .toLowerCase()
+          .includes(this.FirstName.toLowerCase())
+      );
+    } else {
+      // console.log("Apply filter2222222222222222222222ssss")
+      //  return this.jobDetails = this.jobDetails;
+      return this.jobDetails.filter(
+        (item) =>
+          item.jobDetails[0].location
+            .toLowerCase()
+            .includes(this.searchText.toLowerCase()) ||
+          item.principalId.toLowerCase().includes(this.searchText.toLowerCase())
+      );
+    }
   }
 
+  getDefaultSettings(){
+    this.jobService.getDefaultSettings().subscribe(
+      (response) => {
+        this.defaultSetting = response;
+        this.labelStartTime1=this.defaultSetting[0].labelStartTime1;
+        this.labelStartTime2=this.defaultSetting[0].labelStartTime2;
+        // localStorage.setItem('TaskList', JSON.stringify(this.tasks));
+        console.log('defaultSetting:', this.defaultSetting);
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+      }
+    )
+  }
+  applyFilter() {
+    debugger;
+    // console.log('Apply filter');
+    if (this.showOnlyUserTasks) {
+      // console.log('Apply filter11111111111111111');
+      this.jobDetails = this.jobDetails.filter(
+        (task) =>
+          task.jobDetails[0].dates[0].allocStaff._allocatedStaff ===
+          this.FirstName
+      );
+    } else {
+      // console.log('Apply filter2222222222222222222222ssss');
+      this.jobDetails = this.jobDetails;
+    }
+  }
   clearCache() {
     this.dbService.clearclientData().then(() => {
       this.cachedjobData = [];
@@ -119,7 +184,7 @@ export class DashboardComponent {
   }
 
   updateWeek() {
-    let startOfWeek = (this.currentDate);
+    let startOfWeek = this.currentDate;
     this.weekDates = [];
 
     for (let i = 0; i < 5; i++) {
@@ -129,6 +194,7 @@ export class DashboardComponent {
 
       newDate.setDate(startOfWeek.getDate() + i);
       this.weekDates.push({
+        dates: newDate.toLocaleDateString('en-US', {}),
         dayName: newDate.toLocaleDateString('en-US', { weekday: 'short' }),
         dayNumber: newDate.getDate(),
         selected: isToday(newDate),
@@ -140,7 +206,7 @@ export class DashboardComponent {
     this.lastDate = this.weekDates[4].lastDate.toISOString();
     // this.lastDate.toISOString(); // Returns ISO format
 
-    console.log("Dates", this.currentDate, this.lastDate);
+    console.log('Dates', this.currentDate, this.lastDate);
     this.currentMonth = this.currentDate.toLocaleString('en-US', {
       month: 'long',
     });
@@ -182,9 +248,11 @@ export class DashboardComponent {
   }
 
   getNotesByDateRange() {
+    let currentDate = this.currentDate.toISOString();
+    let lastDate = this.lastDate;
     const dateRange = {
-      StartDate: '2025-02-20T11:00:00.000Z',
-      EndDate: '2025-03-18T11:00:00.000Z',
+      StartDate: currentDate,
+      EndDate: lastDate,
     };
     this.jobService.getetNotesByDateRange(dateRange).subscribe((data) => {
       this.noteDetails.unshift(data);
@@ -192,7 +260,19 @@ export class DashboardComponent {
       this.noteDetails = data;
     });
   }
-
+  getEventsByDateRange(){
+    let currentDate = this.currentDate.toISOString();
+    let lastDate = this.lastDate;
+    const dateRange = {
+      StartDate: currentDate,
+      EndDate: lastDate,
+    };
+    this.jobService.getEventsByDateRange(dateRange).subscribe((data) => {
+      this.eventDetails.unshift(data);
+      console.log('Event Details', data);
+      this.eventDetails = data;
+    });
+  }
   getVehicleNameById(vehicleId: any) {
     // If vehicleId is a string, return it directly
     if (typeof vehicleId === 'string') {
@@ -243,9 +323,29 @@ export class DashboardComponent {
     if (rowData1 != null || rowData1 != undefined) {
       const fixedData = rowData1.replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
       const parsedData = JSON.parse(fixedData);
+      for (let i = 0; i <= parsedData.length; i++) {
+        if (parsedData[i]) {
+          // let hghb = parsedData[i];
+          //  console.log("uihhuhduhsui");
+
+          //  const fixedData1 = parsedData[i].replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
+          //  const parsedData1 = JSON.parse(parsedData[i]);
+          if (parsedData[i].option) {
+            //  console.log("uihhuhduhsui>:>>>>>>>>>>>>>>>");
 
       // console.log(parsedData[0].option);
-      return parsedData[0].option;
+            return parsedData[i].option;
+          } else {
+            // console.log("object else?????????????????????");
+
+            return parsedData;
+          }
+        } else {
+          // console.log("outer else{{{{{{{{{{{{");
+
+          return parsedData;
+        }
+      }
     }
   }
   getVehicleNamebyID(vehicleId: any[]) {
@@ -264,7 +364,7 @@ export class DashboardComponent {
     return result;
   }
   getClientNamebyID(clientId: any) {
-    debugger;
+    // debugger;
     // const result = clientId.map((item, index) => {
     const client = this.clientList.find((c) => c.ClientId === clientId); // Find vehicle by ID
     return client ? client.ClientName : String(clientId); // Return ShortName if found, otherwise return the vehicleId as a string
@@ -280,11 +380,81 @@ export class DashboardComponent {
 
   getElements(allocTrucks: any[]) {
     // return allocTrucks.map(item => String(item)).join(', ');
-    debugger;
+    // debugger;
     const nameOnly = allocTrucks.find((item) => typeof item === 'string');
     console.log(nameOnly);
 
     return nameOnly;
   }
+  getNameByID(userId: any[]) {
+    debugger;
+    const user = this.userList.find((c) => c.Id === userId); // Find vehicle by ID
+    return user ? `${user.firstName} ${user.lastName}` : String(userId); // Return ShortName if found, otherwise return the vehicleId as a string
 
+    // const queryParams = {
+    //   userId: id
+    // };
+
+    // this.userService.getUserByID(queryParams).subscribe(
+    //   (response) => {
+    //     const data = response;
+    //     console.log('User:::::::::::::::::', data.firstName + ' ' + data.lastName);
+    //     return data.firstName + ' ' + data.lastName;
+    //     // console.log('User:', data);
+    //   },
+    //   (error) => {
+    //     console.error('Error fetching data:', error);
+    //   }
+    // );
+  }
+
+  sendData(jobs: any, day: any) {
+    const dateOnly = moment(
+      jobs.jobDetails[0].dates[0].jobDetailsDate,
+      'YYYY-MM-DD HH:mm:ss'
+    ).format('M/D/YYYY');
+    const dateOnly1 = day.dates;
+    if (dateOnly == dateOnly1) {
+      this.matchedDate = true;
+    } else {
+      this.matchedDate = false;
+    }
+    // return dateOnly1;
+  }
+
+  sendNoteData(day: any, notes: any) {
+    // debugger;
+    const dateOnly = moment(notes.Date, 'YYYY-MM-DD HH:mm:ss').format(
+      'M/D/YYYY'
+    );
+    const dateOnly1 = day.dates;
+    if (dateOnly == dateOnly1) {
+      // console.log("matched")
+      this.matchednote = true;
+    } else {
+      this.matchednote = false;
+    }
+  }
+
+  getTaskStatus(jobs: any,userId:any[]) {
+    debugger;
+    const task = this.taskList.find((c) => c.jobId === jobs.id); // Find vehicle by ID
+    const taskStatus = task ? task.status : String(jobs.id); 
+    if (taskStatus == '2') {
+      return '(L)';
+    }
+    if (taskStatus == '5') {
+      return '(B)';
+    }
+    if (taskStatus == '6') {
+      return '(C)';
+    }else{
+      return jobs.id
+    }
+
+    // if(status==''){
+    //   return '(L)';
+    // }
+    // return task ? `${task.status}` : String(jobs.id); // Return ShortName if found, otherwise return the vehicleId as a string
+  }
 }

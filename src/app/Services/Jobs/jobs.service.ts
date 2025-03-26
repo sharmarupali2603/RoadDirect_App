@@ -45,6 +45,12 @@ export class JobsService {
     });
   }
 
+  getDefaultSettings(): Observable<any> {
+    return this.http.get(this.mainUrl + 'GetDefaultSettings', {
+      headers: this.getHeaders(),
+    });
+  }
+
   getCachedData() {
     return from(this.db.getAllJobData());
   }
@@ -63,4 +69,19 @@ export class JobsService {
       })
     );
   }
+
+  getEventsByDateRange(postData: any): Observable<any> {
+    return this.http.post(this.mainUrl + 'GetEventsByDateRange', postData, {
+      headers: this.getHeaders(),
+    }).pipe(
+          tap((response) => {
+            // Store API response in IndexedDB
+            from(this.db.saveJobData(response)).subscribe();
+          }),
+          catchError(() => {
+            // If offline, return cached data
+            return from(this.db.getAllJobData()).pipe(map((items) => items.map((item) => item.data)));
+          })
+        );
+      }
 }
