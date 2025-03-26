@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit,Input, Output, EventEmitter} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -53,123 +53,10 @@ export class JobExpandComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('Enter in expand job page');
+    console.log("Enter in expand job page");
+    
   }
-
-  getVehicleNameById(vehicleId: any) {
-    // If vehicleId is a string, return it directly
-    if (typeof vehicleId === 'string') {
-      let result = vehicleId.slice(1, -1).split(','); // Remove the brackets and split by commas
-      let cleanedResult = result.map((item) => item.replace(/['"\s]/g, ''));
-      return this.getVehicleNamebyID(cleanedResult);
-    }
-    // If vehicleId is an object (not an array), extract the 'name' property
-    if (
-      vehicleId &&
-      typeof vehicleId === 'object' &&
-      !Array.isArray(vehicleId)
-    ) {
-      return vehicleId.name || String(vehicleId);
-    }
-
-    // If vehicleId is an array, extract 'name' from each object and join them with commas
-    if (Array.isArray(vehicleId)) {
-      const names = vehicleId.map((item) => item.name).join(', ');
-      return names || String(vehicleId);
-    }
-    // If vehicleId is neither a string, object, nor array, return it as a string
-    return String(vehicleId);
-  }
-  getStaffNameById(staffId: any) {
-    // If vehicleId is a string, return it directly
-    if (typeof staffId === 'string') {
-      let result = staffId.slice(1, -1).split(','); // Remove the brackets and split by commas
-      let cleanedResult = result.map((item) => item.replace(/['"\s]/g, ''));
-      return this.getUserNamebyID(cleanedResult);
-    }
-    // If vehicleId is an object (not an array), extract the 'name' property
-    if (staffId && typeof staffId === 'object' && !Array.isArray(staffId)) {
-      return staffId.name || String(staffId);
-    }
-
-    // If vehicleId is an array, extract 'name' from each object and join them with commas
-    if (Array.isArray(staffId)) {
-      const names = staffId.map((item) => item.name).join(', ');
-      return names || String(staffId);
-    }
-    // If vehicleId is neither a string, object, nor array, return it as a string
-    return String(staffId);
-  }
-
-  getClosureOptions(rowData1: any) {
-    debugger;
-    if (rowData1 != null || rowData1 != undefined) {
-      const fixedData = rowData1.replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
-      const parsedData = JSON.parse(fixedData);
-      for (let i = 0; i < parsedData.length; i++) {
-        if (parsedData[i] === 'object') {
-          if (parsedData[0].option) {
-            // console.log(parsedData[0].option);
-            return parsedData[0].option;
-          } else {
-            return parsedData;
-          }
-        } else {
-          return parsedData;
-        }
-      }
-    }
-  }
-
-  getTypeOfWork(rowData1: any) {
-    debugger;
-    if (rowData1 != null || rowData1 != undefined) {
-      if (typeof rowData1 === 'string') {
-        // let result = rowData1.slice(1, -1).split(','); // Remove the brackets and split by commas
-        const fixedData = rowData1.replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
-        const parsedData = JSON.parse(fixedData);
-        return parsedData;
-      }
-      return rowData1;
-    }
-  }
-
-  getVehicleNamebyID(vehicleId: any[]) {
-    const result = vehicleId.map((item, index) => {
-      const vehicle = this.vehicleList.find((c) => c.Id === item); // Find vehicle by ID
-      return vehicle ? vehicle.ShortName : String(item); // Return ShortName if found, otherwise return the vehicleId as a string
-    });
-    return result;
-  }
-
-  getUserNamebyID(userId: any[]) {
-    const result = userId.map((item, index) => {
-      const user = this.userList.find((c) => c.Id === item); // Find vehicle by ID
-      return user ? `${user.firstName} ${user.lastName}` : String(item); // Return ShortName if found, otherwise return the vehicleId as a string
-    });
-    return result;
-  }
-  getClientNamebyID(clientId: any) {
-    debugger;
-    // const result = clientId.map((item, index) => {
-    const client = this.clientList.find((c) => c.ClientId === clientId); // Find vehicle by ID
-    return client ? client.ClientName : String(clientId); // Return ShortName if found, otherwise return the vehicleId as a string
-    // });
-    // return result;
-  }
-  collapseJobs() {
-    this.route.navigate(['/dashboard']);
-  }
-
-  getClosure(rawData1: any) {
-    if (rawData1 != null || rawData1 != undefined) {
-      const rawData =
-        '[{option: "H", fullName: "Hire (Client picking up hire gear, get ready for pick up)"}]';
-      const fixedData = rawData1.replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
-      const parsedData = JSON.parse(fixedData);
-
-      // console.log(parsedData[0].fullName);
-      return parsedData[0].fullName;
-    }
+  collapseJobs(){
+     this.route.navigate(['/dashboard']);
   }
 }
