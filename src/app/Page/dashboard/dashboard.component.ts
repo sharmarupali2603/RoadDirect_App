@@ -28,6 +28,7 @@ export class DashboardComponent {
   openCalendar1: boolean = false;
   userList: any[] = [];
   searchText: string = '';
+  searchText1:string = '';
   // jobDetails: any[] = [];
   noteDetails: any[] = [];
   // cachedjobData: any[] = [];
@@ -136,7 +137,7 @@ export class DashboardComponent {
           item.jobDetails[0].location
             .toLowerCase()
             .includes(this.searchText.toLowerCase()) ||
-          item.principalId.toLowerCase().includes(this.searchText.toLowerCase())
+          item.principalId.toLowerCase().includes(this.searchText.toLowerCase()) ||  this.getStaffNameById(item.jobDetails[0].dates[0].allocTrucks._allocatedStaff).toLowerCase().includes(this.searchText.toLowerCase(),this.searchText1.toLowerCase())
       );
     }
   }
@@ -227,9 +228,11 @@ export class DashboardComponent {
   }
 
   getNotesByDateRange() {
+    let currentDate = this.currentDate.toISOString();
+    let lastDate = this.lastDate;
     const dateRange = {
-      StartDate: '2025-02-20T11:00:00.000Z',
-      EndDate: '2025-03-18T11:00:00.000Z',
+      StartDate: currentDate,
+      EndDate: lastDate,
     };
     this.jobService.getetNotesByDateRange(dateRange).subscribe((data) => {
       this.noteDetails.unshift(data);

@@ -50,6 +50,12 @@ export class JobsService {
     });
   }
 
+  getDefaultSettings(): Observable<any> {
+    return this.http.get(this.mainUrl + 'GetDefaultSettings', {
+      headers: this.getHeaders(),
+    });
+  }
+
   getCachedData() {
     return from(this.db.getAllJobData());
   }

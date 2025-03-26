@@ -49,7 +49,7 @@
         [(ngModel)]="searchText"
         placeholder="Search"
       />
-      <br />
+     <br>
       <select class="form-control">
         <option>Search by Jobs</option>
         <option *ngFor="let user of jobs">{{ user }}</option>
@@ -61,13 +61,13 @@
         ><strong>Filter by <span>user...</span></strong></label
       >
 
-      <select class="form-control">
+      <select [(ngModel)]="searchText1" class="form-control">
         <option>All Users</option>
         <option *ngFor="let user of userList">
           {{ user.firstName }}{{ user.lastName }}
         </option>
       </select>
-      <br />
+      <br>
       <!-- <input type="text" class="form-control" placeholder="Show Only My Jobs" /> -->
       <label>
         <input type="checkbox" [(ngModel)]="showOnlyUserTasks" (change)="applyFilter()" />
@@ -116,13 +116,13 @@
     </div>
     <!-- Job Card -->
     <div  *ngIf="matchedDate" class="card shadow-sm mt-3">
-      <div class="card-header d-flex justify-content-between bg-light">
-        <p>
+      <div class="card-hea h-25 d-flex justify-content-between bg-light">
+        <p class="padding-p">
           <i class="fas fa-building"></i>🏢
           {{ getClientNamebyID(jobs.clientId) }}
         </p>
         <!-- <span  *ngIf="jobs.OrgId">{{getOrgId(jobs)}}</span> -->
-        <button class="btn btn-primary btn-sm" (click)="expandJobs(jobs)">
+        <button class="expand-btn btn btn-primary btn-sm" (click)="expandJobs(jobs)">
           <i class="fas fa-chevron-down"></i> Expand Job
         </button>
       </div>
@@ -184,7 +184,7 @@
         <!-- Extra Info Section -->
         <div class="text-center">
           <div
-            class="row-margin row border py-2 fw-bold" data-bs-toggle="modal" data-bs-target="#noteModal"
+            class="row-margin row-extra border py-2 fw-bold" data-bs-toggle="modal" data-bs-target="#noteModal"
             *ngIf="jobs.jobDetails[0].dates[0].jobDailyNote.note"
           >
             Extra Info
@@ -205,13 +205,13 @@
               </div>
             </div>
           </div>
-          <div class="row-margin row border py-2">NP 
+          <div class="row-margin row-extra  border py-2">NP 
             <div class="NP-green" *ngIf="jobs.jobDetails[0].dates[0].removeParks._removeParksTypes != null">Y</div>
             <!-- <span style="color:red" *ngIf="jobs.jobDetails[0].dates[0].removeParks._removeParksTypes == ">Y</span> -->
             <div style="color:red" *ngIf="jobs.jobDetails[0].dates[0].removeParks._removeParksTypes == null">NA</div>
             ✔</div>
-          <div class="row-margin row border py-2">(S) A</div>
-          <div class="row-margin row border py-2">
+          <div class="row-margin row-extra  border py-2">(S) A</div>
+          <div class="row-margin row-extra  border py-2">
             Job# {{ jobs.jobDetails[0].jobId }}
           </div>
         </div>
