@@ -80,24 +80,27 @@
 <!-- Job Details Section -->
 <div *ngFor="let day of weekDates" class="container-fluid p-2">
   <!-- Header Section -->
+  <div
+  class="d-flex justify-content-between align-items-center rounded header-bar"
+>
+  <!-- <p class="mb-0">
+  <i class="fas fa-calendar-alt"></i> 📅 {{jobs.jobDetails[0].dates[0].jobDetailsDate | date:'fullDate' }}
+</p> --><p class="mb-0">
+      <i class="fas fa-calendar-alt"></i> 📅 {{day.dates | date:'fullDate' }}
+    </p>
+ 
+  <div>
+    <span class="circle blue"></span>
+    <span class="circle yellow"></span>
+    <span class="circle green"></span>
+    <i class="fas fa-search search-icon"></i>
+  </div>
+</div>
+   
   <div *ngFor="let jobs of filteredData(''); let i=index">
-    <div
-      class="d-flex justify-content-between align-items-center rounded header-bar"
-    >
-      <!-- <p class="mb-0">
-      <i class="fas fa-calendar-alt"></i> 📅 {{jobs.jobDetails[0].dates[0].jobDetailsDate | date:'fullDate' }}
-    </p> -->
-      <p class="mb-0">
-        <i class="fas fa-calendar-alt"></i> 📅
-        {{sendData(jobs,day) | date:'fullDate'}}
-      </p>
-      <div>
-        <span class="circle blue"></span>
-        <span class="circle yellow"></span>
-        <span class="circle green"></span>
-        <i class="fas fa-search search-icon"></i>
-      </div>
-    </div>
+    <span>
+      {{sendData(jobs,day)}}
+    </span>
     <div *ngFor="let notes of noteDetails;" class="d-flex justify-content-start flex-wrap">
       <!-- <span *ngIf="notes.Date == jobs.startDate"> -->
         {{sendNoteData(day, notes)}}
@@ -134,12 +137,11 @@
           </p>
           <p>
             <i class="fas fa-clock"></i>
-            {{ jobs.jobDetails[0].dates[0].duration.durationType }}. Be at Depot
-            by:
+            {{ jobs.jobDetails[0].dates[0].duration.durationType }}. {{labelStartTime1}}: 
             <strong>{{
               jobs.jobDetails[0].dates[0].startTime.startTime1 | date : "hh:mm"
             }}</strong
-            >, Siteup by:
+            >, {{labelStartTime2}}
             <strong>{{
               jobs.jobDetails[0].dates[0].startTime.startTime2 | date : "hh:mm"
             }}</strong>

@@ -31,6 +31,7 @@ export class DashboardComponent {
   searchText1:string='';
   // jobDetails: any[] = [];
   noteDetails: any[] = [];
+  eventDetails:any[]=[];
   // cachedjobData: any[] = [];
   clientList: any[] = [];
   clientListCached: any[] = [];
@@ -47,6 +48,9 @@ export class DashboardComponent {
   User: any;
   FirstName: any;
   LastName: any;
+  defaultSetting:any;
+  labelStartTime1:any;
+  labelStartTime2:any;
   constructor(
     public router: Router,
     public clientService: ClientService,
@@ -57,6 +61,8 @@ export class DashboardComponent {
     private swUpdate: SwUpdate
   ) {
     this.updateWeek();
+    this.getDefaultSettings();
+    this.getEventsByDateRange();
     // Detect online/offline status
     window.addEventListener('online', () => (this.isOnline = true));
     window.addEventListener('offline', () => (this.isOnline = false));
@@ -140,6 +146,21 @@ export class DashboardComponent {
           item.principalId.toLowerCase().includes(this.searchText.toLowerCase())
       );
     }
+  }
+
+  getDefaultSettings(){
+    this.jobService.getDefaultSettings().subscribe(
+      (response) => {
+        this.defaultSetting = response;
+        this.labelStartTime1=this.defaultSetting[0].labelStartTime1;
+        this.labelStartTime2=this.defaultSetting[0].labelStartTime2;
+        // localStorage.setItem('TaskList', JSON.stringify(this.tasks));
+        console.log('defaultSetting:', this.defaultSetting);
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+      }
+    )
   }
   applyFilter() {
     debugger;
@@ -228,9 +249,11 @@ export class DashboardComponent {
   }
 
   getNotesByDateRange() {
+    let currentDate = this.currentDate.toISOString();
+    let lastDate = this.lastDate;
     const dateRange = {
-      StartDate: '2025-02-20T11:00:00.000Z',
-      EndDate: '2025-03-18T11:00:00.000Z',
+      StartDate: currentDate,
+      EndDate: lastDate,
     };
     this.jobService.getetNotesByDateRange(dateRange).subscribe((data) => {
       this.noteDetails.unshift(data);
@@ -238,7 +261,19 @@ export class DashboardComponent {
       this.noteDetails = data;
     });
   }
-
+  getEventsByDateRange(){
+    let currentDate = this.currentDate.toISOString();
+    let lastDate = this.lastDate;
+    const dateRange = {
+      StartDate: currentDate,
+      EndDate: lastDate,
+    };
+    this.jobService.getEventsByDateRange(dateRange).subscribe((data) => {
+      this.eventDetails.unshift(data);
+      console.log('Event Details', data);
+      this.eventDetails = data;
+    });
+  }
   getVehicleNameById(vehicleId: any) {
     // If vehicleId is a string, return it directly
     if (typeof vehicleId === 'string') {
@@ -384,7 +419,7 @@ export class DashboardComponent {
     } else {
       this.matchedDate = false;
     }
-    return dateOnly1;
+    // return dateOnly1;
   }
 
   sendNoteData(day: any, notes: any) {
