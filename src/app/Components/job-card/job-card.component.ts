@@ -149,37 +149,18 @@ export class JobCardComponent {
     return result;
   }
   getClientNamebyID(clientId: any) {
-    debugger;
-    // const result = clientId.map((item, index) => {
     const client = this.clientList.find((c) => c.ClientId === clientId); // Find vehicle by ID
     return client ? client.ClientName : String(clientId); // Return ShortName if found, otherwise return the vehicleId as a string
-    // });
-    // return result;
   }
   expandJobs(jobs: string) {
-    console.log('Navigate to Job Expand Page');
-    console.log('Job Details..........', jobs);
-
     this.router.navigate(['/job-expand'], { state: { data: jobs } });
   }
 
   getElements(allocTrucks: any[]) {
-    // return allocTrucks.map(item => String(item)).join(', ');
-    debugger;
     const nameOnly = allocTrucks.find((item) => typeof item === 'string');
     console.log(nameOnly);
 
     return nameOnly;
   }
-  // getOrgId(jobs: any) {
-  //   debugger;
-  //   let orgID = jobs.orgId;
-  //   this.fetchAllClient();
-  //   this.fetchAllVehicle();
-  //   let vehicleID = jobs.jobDetails[0].dates[0].allocTrucks.allocTrucks;
-  //   console.log('VehicleID:', vehicleID);
-
-  //   this.getVehicleNameById(vehicleID);
-  // }
 
 }

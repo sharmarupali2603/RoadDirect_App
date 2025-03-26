@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 import { isToday } from 'date-fns';
+import * as moment from 'moment';
 import { ClientService } from 'src/app/Services/Client/client.service';
 import { UserService } from 'src/app/Services/Users/user.service';
-import * as moment from 'moment';
+import { VehicleService } from 'src/app/Services/Vehicle/vehicle.service';
 import { DatabaseService } from '../../Services/Database/database.service';
 import { JobsService } from '../../Services/Jobs/jobs.service';
 @Component({
@@ -26,10 +27,10 @@ export class DashboardComponent {
   openCalendar1: boolean = false;
   userList: any[] = [];
   searchText: string = '';
-  searchText1:string='';
+  searchText1: string = '';
   // jobDetails: any[] = [];
   noteDetails: any[] = [];
-  eventDetails:any[]=[];
+  eventDetails: any[] = [];
   // cachedjobData: any[] = [];
   clientList: any[] = [];
   clientListCached: any[] = [];
@@ -46,9 +47,9 @@ export class DashboardComponent {
   User: any;
   FirstName: any;
   LastName: any;
-  defaultSetting:any;
-  labelStartTime1:any;
-  labelStartTime2:any;
+  defaultSetting: any;
+  labelStartTime1: any;
+  labelStartTime2: any;
   constructor(
     public router: Router,
     public clientService: ClientService,
@@ -124,19 +125,13 @@ export class DashboardComponent {
     });
   }
   filteredData(Event: any) {
-    // this.applyFilter();
-    // console.log(Event,")))))))))))))))");
-
     if (Event) {
-      console.log('Apply filter11111111111111111');
       return this.jobDetails.filter((item) =>
-        item.jobDetails[0].dates[0].allocStaff._allocatedStaff
+        item.jobDetails[0].dates[0].allocStaff.allocatedStaff
           .toLowerCase()
           .includes(this.FirstName.toLowerCase())
       );
     } else {
-      // console.log("Apply filter2222222222222222222222ssss")
-      //  return this.jobDetails = this.jobDetails;
       return this.jobDetails.filter(
         (item) =>
           item.jobDetails[0].location
@@ -147,14 +142,12 @@ export class DashboardComponent {
     }
   }
 
-  getDefaultSettings(){
+  getDefaultSettings() {
     this.jobService.getDefaultSettings().subscribe(
       (response) => {
         this.defaultSetting = response;
-        this.labelStartTime1=this.defaultSetting[0].labelStartTime1;
-        this.labelStartTime2=this.defaultSetting[0].labelStartTime2;
-        // localStorage.setItem('TaskList', JSON.stringify(this.tasks));
-        console.log('defaultSetting:', this.defaultSetting);
+        this.labelStartTime1 = this.defaultSetting.labelStartTime1;
+        this.labelStartTime2 = this.defaultSetting.labelStartTime2;
       },
       (error) => {
         console.error('Error fetching data:', error);
@@ -162,17 +155,13 @@ export class DashboardComponent {
     )
   }
   applyFilter() {
-    debugger;
-    // console.log('Apply filter');
     if (this.showOnlyUserTasks) {
-      // console.log('Apply filter11111111111111111');
       this.jobDetails = this.jobDetails.filter(
         (task) =>
-          task.jobDetails[0].dates[0].allocStaff._allocatedStaff ===
+          task.jobDetails[0].dates[0].allocStaff.allocatedStaff ===
           this.FirstName
       );
     } else {
-      // console.log('Apply filter2222222222222222222222ssss');
       this.jobDetails = this.jobDetails;
     }
   }
@@ -189,8 +178,6 @@ export class DashboardComponent {
 
     for (let i = 0; i < 5; i++) {
       let newDate = new Date(startOfWeek);
-      // console.log('startDate::::::', new Date(startOfWeek));
-      // console.log('lastDate::::::', newDate.setDate(startOfWeek.getDate() + i));
 
       newDate.setDate(startOfWeek.getDate() + i);
       this.weekDates.push({
@@ -199,12 +186,9 @@ export class DashboardComponent {
         dayNumber: newDate.getDate(),
         selected: isToday(newDate),
         lastDate: newDate,
-        // selected: this.isSameDate(newDate, this.currentDate)
       });
     }
-    console.log('weekDates', this.weekDates);
     this.lastDate = this.weekDates[4].lastDate.toISOString();
-    // this.lastDate.toISOString(); // Returns ISO format
 
     console.log('Dates', this.currentDate, this.lastDate);
     this.currentMonth = this.currentDate.toLocaleString('en-US', {
@@ -260,7 +244,7 @@ export class DashboardComponent {
       this.noteDetails = data;
     });
   }
-  getEventsByDateRange(){
+  getEventsByDateRange() {
     let currentDate = this.currentDate.toISOString();
     let lastDate = this.lastDate;
     const dateRange = {
@@ -325,24 +309,12 @@ export class DashboardComponent {
       const parsedData = JSON.parse(fixedData);
       for (let i = 0; i <= parsedData.length; i++) {
         if (parsedData[i]) {
-          // let hghb = parsedData[i];
-          //  console.log("uihhuhduhsui");
-
-          //  const fixedData1 = parsedData[i].replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
-          //  const parsedData1 = JSON.parse(parsedData[i]);
           if (parsedData[i].option) {
-            //  console.log("uihhuhduhsui>:>>>>>>>>>>>>>>>");
-
-      // console.log(parsedData[0].option);
             return parsedData[i].option;
           } else {
-            // console.log("object else?????????????????????");
-
             return parsedData;
           }
         } else {
-          // console.log("outer else{{{{{{{{{{{{");
-
           return parsedData;
         }
       }
@@ -364,48 +336,22 @@ export class DashboardComponent {
     return result;
   }
   getClientNamebyID(clientId: any) {
-    // debugger;
-    // const result = clientId.map((item, index) => {
     const client = this.clientList.find((c) => c.ClientId === clientId); // Find vehicle by ID
     return client ? client.ClientName : String(clientId); // Return ShortName if found, otherwise return the vehicleId as a string
-    // });
-    // return result;
   }
   expandJobs(jobs: string) {
-    console.log('Navigate to Job Expand Page');
-    console.log('Job Details..........', jobs);
-
     this.router.navigate(['/job-expand'], { state: { data: jobs } });
   }
 
   getElements(allocTrucks: any[]) {
-    // return allocTrucks.map(item => String(item)).join(', ');
-    // debugger;
     const nameOnly = allocTrucks.find((item) => typeof item === 'string');
     console.log(nameOnly);
 
     return nameOnly;
   }
   getNameByID(userId: any[]) {
-    debugger;
     const user = this.userList.find((c) => c.Id === userId); // Find vehicle by ID
     return user ? `${user.firstName} ${user.lastName}` : String(userId); // Return ShortName if found, otherwise return the vehicleId as a string
-
-    // const queryParams = {
-    //   userId: id
-    // };
-
-    // this.userService.getUserByID(queryParams).subscribe(
-    //   (response) => {
-    //     const data = response;
-    //     console.log('User:::::::::::::::::', data.firstName + ' ' + data.lastName);
-    //     return data.firstName + ' ' + data.lastName;
-    //     // console.log('User:', data);
-    //   },
-    //   (error) => {
-    //     console.error('Error fetching data:', error);
-    //   }
-    // );
   }
 
   sendData(jobs: any, day: any) {
@@ -423,7 +369,6 @@ export class DashboardComponent {
   }
 
   sendNoteData(day: any, notes: any) {
-    // debugger;
     const dateOnly = moment(notes.Date, 'YYYY-MM-DD HH:mm:ss').format(
       'M/D/YYYY'
     );
@@ -436,10 +381,9 @@ export class DashboardComponent {
     }
   }
 
-  getTaskStatus(jobs: any,userId:any[]) {
-    debugger;
+  getTaskStatus(jobs: any, userId: any[]) {
     const task = this.taskList.find((c) => c.jobId === jobs.id); // Find vehicle by ID
-    const taskStatus = task ? task.status : String(jobs.id); 
+    const taskStatus = task ? task.status : String(jobs.id);
     if (taskStatus == '2') {
       return '(L)';
     }
@@ -448,13 +392,8 @@ export class DashboardComponent {
     }
     if (taskStatus == '6') {
       return '(C)';
-    }else{
+    } else {
       return jobs.id
     }
-
-    // if(status==''){
-    //   return '(L)';
-    // }
-    // return task ? `${task.status}` : String(jobs.id); // Return ShortName if found, otherwise return the vehicleId as a string
   }
 }

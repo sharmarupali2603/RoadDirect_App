@@ -102,7 +102,6 @@ export class JobExpandComponent implements OnInit {
   }
 
   getClosureOptions(rowData1: any) {
-    debugger;
     if (rowData1 != null || rowData1 != undefined) {
       const fixedData = rowData1.replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
       const parsedData = JSON.parse(fixedData);
@@ -150,12 +149,8 @@ export class JobExpandComponent implements OnInit {
     return result;
   }
   getClientNamebyID(clientId: any) {
-    debugger;
-    // const result = clientId.map((item, index) => {
     const client = this.clientList.find((c) => c.ClientId === clientId); // Find vehicle by ID
     return client ? client.ClientName : String(clientId); // Return ShortName if found, otherwise return the vehicleId as a string
-    // });
-    // return result;
   }
   collapseJobs() {
     this.route.navigate(['/dashboard']);

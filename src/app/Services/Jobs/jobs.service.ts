@@ -46,7 +46,7 @@ export class JobsService {
   }
 
   getDefaultSettings(): Observable<any> {
-    return this.http.get(this.mainUrl + 'GetDefaultSettings', {
+    return this.http.get('api/UserManagement/GetDefaultSettings', {
       headers: this.getHeaders(),
     });
   }
@@ -71,17 +71,17 @@ export class JobsService {
   }
 
   getEventsByDateRange(postData: any): Observable<any> {
-    return this.http.post(this.mainUrl + 'GetEventsByDateRange', postData, {
+    return this.http.get('api/Support/GetEvents', {
       headers: this.getHeaders(),
     }).pipe(
-          tap((response) => {
-            // Store API response in IndexedDB
-            from(this.db.saveJobData(response)).subscribe();
-          }),
-          catchError(() => {
-            // If offline, return cached data
-            return from(this.db.getAllJobData()).pipe(map((items) => items.map((item) => item.data)));
-          })
-        );
-      }
+      tap((response) => {
+        // Store API response in IndexedDB
+        from(this.db.saveJobData(response)).subscribe();
+      }),
+      catchError(() => {
+        // If offline, return cached data
+        return from(this.db.getAllJobData()).pipe(map((items) => items.map((item) => item.data)));
+      })
+    );
+  }
 }
