@@ -6,7 +6,6 @@ import { DatabaseService, clientItem } from './Services/Database/database.servic
 import { VehicleService } from './Services/Vehicle/vehicle.service';
 import { UserService } from './Services/Users/user.service';
 // import { Storage } from '@ionic/storage';
-import { UserService } from './Services/Users/user.service';
 // import { Storage } from '@ionic/storage';
 @Component({
   selector: 'app-root',
@@ -24,16 +23,10 @@ export class AppComponent implements OnInit{
   clients: any;
   vehicles: any;
   users: any;
-  clients: any;
-  vehicles: any;
-  users: any;
   constructor(public jobsService: JobsService,
               public clientService: ClientService,
               private swUpdate: SwUpdate,
               private dbService: DatabaseService,
-              private vehicleService: VehicleService,
-              public userService:UserService
-            ) { 
               private vehicleService: VehicleService,
               public userService:UserService
             ) { 
@@ -73,15 +66,6 @@ export class AppComponent implements OnInit{
   }
 
 
-
-  clearCache() {
-    // this.dbService.clearData().then(() => {
-    //   this.cachedData = [];
-    //   console.log('Cache Cleared');
-    // });
-  }
-
-
   
 
 
@@ -97,14 +81,10 @@ export class AppComponent implements OnInit{
   
   fetchAllClient() {
     this.clientService.getAllClients().subscribe(
-    this.clientService.getAllClients().subscribe(
       (response) => {
         this.clients = response;
         localStorage.setItem('ClientList', JSON.stringify(this.clients));
-        // console.log('Client:', this.clients);
-        this.clients = response;
-        localStorage.setItem('ClientList', JSON.stringify(this.clients));
-        // console.log('Client:', this.clients);
+       
       },
       (error) => {
         console.error('Error fetching data:', error);
@@ -118,14 +98,11 @@ export class AppComponent implements OnInit{
 
   fetchAllVehicle() {
     this.vehicleService.getAllVehicle().subscribe(
-    this.vehicleService.getAllVehicle().subscribe(
       (response) => {
         this.vehicles = response;
         localStorage.setItem('VehicleList', JSON.stringify(this.vehicles));
         console.log('Vehicle:', this.vehicles);
-        this.vehicles = response;
-        localStorage.setItem('VehicleList', JSON.stringify(this.vehicles));
-        console.log('Vehicle:', this.vehicles);
+        
       },
       (error) => {
         console.error('Error fetching data:', error);
