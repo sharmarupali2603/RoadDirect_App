@@ -127,7 +127,7 @@ export class DashboardComponent {
   filteredData(Event: any) {
     if (Event) {
       return this.jobDetails.filter((item) =>
-        item.jobDetails[0].dates[0].allocStaff.allocatedStaff
+        item.jobDetails[0].dates[0].allocStaff?.allocatedStaff
           .toLowerCase()
           .includes(this.FirstName.toLowerCase())
       );
@@ -158,7 +158,7 @@ export class DashboardComponent {
     if (this.showOnlyUserTasks) {
       this.jobDetails = this.jobDetails.filter(
         (task) =>
-          task.jobDetails[0].dates[0].allocStaff.allocatedStaff ===
+          task.jobDetails[0].dates[0].allocStaff?.allocatedStaff ===
           this.FirstName
       );
     } else {
@@ -305,17 +305,15 @@ export class DashboardComponent {
 
   getClosureOptions(rowData1: any) {
     if (rowData1 != null || rowData1 != undefined) {
-      const fixedData = rowData1.replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
-      const parsedData = JSON.parse(fixedData);
-      for (let i = 0; i <= parsedData.length; i++) {
-        if (parsedData[i]) {
-          if (parsedData[i].option) {
-            return parsedData[i].option;
+      for (let i = 0; i <= rowData1.length; i++) {
+        if (rowData1[i]) {
+          if (rowData1[i].option) {
+            return rowData1[i].option;
           } else {
-            return parsedData;
+            return rowData1;
           }
         } else {
-          return parsedData;
+          return rowData1;
         }
       }
     }

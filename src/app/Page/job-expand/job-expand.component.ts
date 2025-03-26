@@ -103,18 +103,16 @@ export class JobExpandComponent implements OnInit {
 
   getClosureOptions(rowData1: any) {
     if (rowData1 != null || rowData1 != undefined) {
-      const fixedData = rowData1.replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
-      const parsedData = JSON.parse(fixedData);
-      for (let i = 0; i < parsedData.length; i++) {
-        if (parsedData[i] === 'object') {
-          if (parsedData[0].option) {
+      for (let i = 0; i < rowData1.length; i++) {
+        if (rowData1[i] === 'object') {
+          if (rowData1[0].option) {
             // console.log(parsedData[0].option);
-            return parsedData[0].option;
+            return rowData1[0].option;
           } else {
-            return parsedData;
+            return rowData1;
           }
         } else {
-          return parsedData;
+          return rowData1;
         }
       }
     }

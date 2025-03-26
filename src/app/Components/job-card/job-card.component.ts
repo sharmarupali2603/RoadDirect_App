@@ -124,14 +124,11 @@ export class JobCardComponent {
   }
 
 
-  getClosureOptions(rowData1: any) {
-    if (rowData1 != null || rowData1 != undefined) {
-      const fixedData = rowData1.replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
-      const parsedData = JSON.parse(fixedData);
-
-      // console.log(parsedData[0].option);
-      return parsedData[0].option;
+  getClosureOptions(rowData1: any[]) {
+    if ((rowData1 != null || rowData1 != undefined) && rowData1.length > 0) {
+      return rowData1.map((c) => (c.option || c)).join(', ');
     }
+    return '';
   }
   getVehicleNamebyID(vehicleId: any[]) {
     const result = vehicleId.map((item, index) => {

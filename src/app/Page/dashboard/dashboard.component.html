@@ -123,18 +123,18 @@
           </p>
           <p>
             <i class="fas fa-clock"></i>
-            {{ jobs.jobDetails[0].dates[0].duration.durationType }}. {{labelStartTime1}}:
+            {{ jobs.jobDetails[0].dates[0].duration?.durationType }}. {{labelStartTime1}}:
             <strong>{{
-              jobs.jobDetails[0].dates[0].startTime.startTime1 | date : "hh:mm"
+              jobs.jobDetails[0].dates[0].startTime?.startTime1 | date : "hh:mm"
               }}</strong>, {{labelStartTime2}}
             <strong>{{
-              jobs.jobDetails[0].dates[0].startTime.startTime2 | date : "hh:mm"
+              jobs.jobDetails[0].dates[0].startTime?.startTime2 | date : "hh:mm"
               }}</strong>
           </p>
           <p>
             <i class="fas fa-truck"></i>{{
             getVehicleNameById(
-            jobs.jobDetails[0].dates[0].allocTrucks.allocTrucks
+            jobs.jobDetails[0].dates[0].allocTrucks?.allocTrucks
             )
             }}
           </p>
@@ -143,11 +143,11 @@
 
             <span class="text-primary">{{
               getTaskStatus(
-              jobs,jobs.jobDetails[0].dates[0].allocStaff.allocatedStaff
+              jobs,jobs.jobDetails[0].dates[0].allocStaff?.allocatedStaff
               )
               }}{{
               getStaffNameById(
-              jobs.jobDetails[0].dates[0].allocStaff.allocatedStaff
+              jobs.jobDetails[0].dates[0].allocStaff?.allocatedStaff
               )
               }}</span>
           </p>
@@ -171,7 +171,7 @@
         <!-- Extra Info Section -->
         <div class=" text-center ">
           <div class="row-margin row-extra border py-2 fw-bold" data-bs-toggle="modal" data-bs-target="#noteModal"
-            *ngIf="jobs.jobDetails[0].dates[0].jobDailyNote.note">
+            *ngIf="jobs.jobDetails[0].dates[0].jobDailyNote?.note">
             Extra Info
           </div>
           <div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
@@ -182,7 +182,7 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  {{ jobs.jobDetails[0].dates[0].jobDailyNote.note}}
+                  {{ jobs.jobDetails[0].dates[0].jobDailyNote?.note}}
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -191,9 +191,8 @@
             </div>
           </div>
           <div class="row-margin row-extra  border py-2">NP
-            <div class="NP-green" *ngIf="jobs.jobDetails[0].dates[0].removeParks.removeParksTypes != null">Y</div>
-            <!-- <span style="color:red" *ngIf="jobs.jobDetails[0].dates[0].removeParks._removeParksTypes == ">Y</span> -->
-            <div style="color:red" *ngIf="jobs.jobDetails[0].dates[0].removeParks.removeParksTypes == null">NA</div>
+            <div class="NP-green" *ngIf="jobs.jobDetails[0].dates[0].removeParks?.removeParksTypes != null">Y</div>
+            <div style="color:red" *ngIf="jobs.jobDetails[0].dates[0].removeParks?.removeParksTypes == null">NA</div>
             ✔
           </div>
           <div class="row-margin row-extra  border py-2">(S) A</div>
