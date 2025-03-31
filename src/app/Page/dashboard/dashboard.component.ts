@@ -9,12 +9,14 @@ import { ClientService } from 'src/app/Services/Client/client.service';
 import { VehicleService } from 'src/app/Services/Vehicle/vehicle.service';
 import { UserService } from 'src/app/Services/Users/user.service';
 import * as moment from 'moment';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
+  moment = moment; // Make moment available to template
   currentDate: Date = new Date();
   weekDates: any[] = [];
   lastDate: any;
@@ -28,10 +30,11 @@ export class DashboardComponent {
   openCalendar1: boolean = false;
   userList: any[] = [];
   searchText: string = '';
-  searchText1:string='';
+  searchText1: string = '';
+  searchText2: string = '';
   // jobDetails: any[] = [];
   noteDetails: any[] = [];
-  eventDetails:any[]=[];
+  eventDetails: any[] = [];
   // cachedjobData: any[] = [];
   clientList: any[] = [];
   clientListCached: any[] = [];
@@ -44,13 +47,23 @@ export class DashboardComponent {
   // users: any;
   matchedDate: boolean = false;
   matchednote: boolean = false;
+  matchedEvent: boolean = false;
   showOnlyUserTasks: boolean = false;
   User: any;
   FirstName: any;
   LastName: any;
-  defaultSetting:any;
-  labelStartTime1:any;
-  labelStartTime2:any;
+  defaultSetting: any;
+  jobType: any[] = [];
+  labelStartTime1: any;
+  labelStartTime2: any;
+  selectedUser: string = '';
+  selectedJobType: string = '';
+  searchMyJob: boolean = false;
+  primaryManager: any;
+  secondaryManager: any;
+  callOutOFficer: any;
+  // jobTypes: string[] = ['Repair', 'Maintenance', 'Inspection', 'Emergency'];
+
   constructor(
     public router: Router,
     public clientService: ClientService,
@@ -62,11 +75,12 @@ export class DashboardComponent {
   ) {
     this.updateWeek();
     this.getDefaultSettings();
-    this.getEventsByDateRange();
+    // this.getEventsByDateRange();
+    this.getFormFields();
     // Detect online/offline status
     window.addEventListener('online', () => (this.isOnline = true));
     window.addEventListener('offline', () => (this.isOnline = false));
-    this.getNotesByDateRange();
+    // this.getNotesByDateRange();
     if (localStorage.getItem('ClientList')) {
       const clientData = localStorage.getItem('ClientList');
       this.clientList = clientData ? JSON.parse(clientData) : null;
@@ -105,6 +119,9 @@ export class DashboardComponent {
       console.log('LastName:', this.LastName);
     }
   }
+  ngOnInit(): void {
+    // throw new Error('Method not implemented.');
+  }
 
   getJobsByDateRange() {
     let currentDate = this.currentDate.toISOString();
@@ -124,46 +141,36 @@ export class DashboardComponent {
       console.log('Cached Job Data:', this.cachedjobData);
     });
   }
-  filteredData(Event: any) {
-    // this.applyFilter();
-    // console.log(Event,")))))))))))))))");
 
-    if (Event) {
-      console.log('Apply filter11111111111111111');
-      return this.jobDetails.filter((item) =>
-        item.jobDetails[0].dates[0].allocStaff._allocatedStaff
-          .toLowerCase()
-          .includes(this.FirstName.toLowerCase())
-      );
-    } else {
-      // console.log("Apply filter2222222222222222222222ssss")
-      //  return this.jobDetails = this.jobDetails;
-      return this.jobDetails.filter(
-        (item) =>
-          item.jobDetails[0].location
-            .toLowerCase()
-            .includes(this.searchText.toLowerCase()) ||
-          item.principalId.toLowerCase().includes(this.searchText.toLowerCase())
-      );
-    }
-  }
-
-  getDefaultSettings(){
+  getDefaultSettings() {
     this.jobService.getDefaultSettings().subscribe(
       (response) => {
         this.defaultSetting = response;
-        this.labelStartTime1=this.defaultSetting[0].labelStartTime1;
-        this.labelStartTime2=this.defaultSetting[0].labelStartTime2;
-        // localStorage.setItem('TaskList', JSON.stringify(this.tasks));
         console.log('defaultSetting:', this.defaultSetting);
+        this.labelStartTime1 = this.defaultSetting.labelStartTime1;
+        this.labelStartTime2 = this.defaultSetting.labelStartTime2;
+        // localStorage.setItem('TaskList', JSON.stringify(this.tasks));
       },
       (error) => {
         console.error('Error fetching data:', error);
       }
-    )
+    );
+  }
+
+  getFormFields() {
+    this.jobService.getFormFields().subscribe(
+      (response) => {
+        this.jobType = response[0].items;
+        // localStorage.setItem('TaskList', JSON.stringify(this.tasks));
+        console.log('jobType:', this.jobType);
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+      }
+    );
   }
   applyFilter() {
-    debugger;
+    // debugger;
     // console.log('Apply filter');
     if (this.showOnlyUserTasks) {
       // console.log('Apply filter11111111111111111');
@@ -190,9 +197,6 @@ export class DashboardComponent {
 
     for (let i = 0; i < 5; i++) {
       let newDate = new Date(startOfWeek);
-      // console.log('startDate::::::', new Date(startOfWeek));
-      // console.log('lastDate::::::', newDate.setDate(startOfWeek.getDate() + i));
-
       newDate.setDate(startOfWeek.getDate() + i);
       this.weekDates.push({
         dates: newDate.toLocaleDateString('en-US', {}),
@@ -213,6 +217,8 @@ export class DashboardComponent {
     });
     this.currentYear = this.currentDate.getFullYear();
     this.getJobsByDateRange();
+    this.getNotesByDateRange();
+    this.getEventsByDateRange();
   }
 
   getMonday(d: Date): Date {
@@ -261,7 +267,7 @@ export class DashboardComponent {
       this.noteDetails = data;
     });
   }
-  getEventsByDateRange(){
+  getEventsByDateRange() {
     let currentDate = this.currentDate.toISOString();
     let lastDate = this.lastDate;
     const dateRange = {
@@ -274,100 +280,80 @@ export class DashboardComponent {
       this.eventDetails = data;
     });
   }
-  getVehicleNameById(vehicleId: any) {
-    // If vehicleId is a string, return it directly
-    if (typeof vehicleId === 'string') {
-      let result = vehicleId.slice(1, -1).split(','); // Remove the brackets and split by commas
-      let cleanedResult = result.map((item) => item.replace(/['"\s]/g, ''));
-      return this.getVehicleNamebyID(cleanedResult);
+  getVehicleNameById(vehicleId: any[]) {
+    // debugger;
+    // return this.getVehicleNamebyID(vehicleId);
+    var arr = [];
+    if (vehicleId != null && vehicleId != undefined) {
+      for (let i = 0; i < vehicleId.length; i++) {
+        // if (typeof staffId[i] === 'object') {
+        let m = vehicleId[i];
+        if (m) {
+          let response = this.getVehicleNamebyID(m.toString());
+          arr.push(response);
+        } else {
+          arr.push(m);
+        }
+        // }
+      }
     }
-    // If vehicleId is an object (not an array), extract the 'name' property
-    if (
-      vehicleId &&
-      typeof vehicleId === 'object' &&
-      !Array.isArray(vehicleId)
-    ) {
-      return vehicleId.name || String(vehicleId);
-    }
-
-    // If vehicleId is an array, extract 'name' from each object and join them with commas
-    if (Array.isArray(vehicleId)) {
-      const names = vehicleId.map((item) => item.name).join(', ');
-      return names || String(vehicleId);
-    }
-    // If vehicleId is neither a string, object, nor array, return it as a string
-    return String(vehicleId);
+    return arr;
   }
-  getStaffNameById(staffId: any) {
-    // If vehicleId is a string, return it directly
-    if (typeof staffId === 'string') {
-      let result = staffId.slice(1, -1).split(','); // Remove the brackets and split by commas
-      let cleanedResult = result.map((item) => item.replace(/['"\s]/g, ''));
-      return this.getUserNamebyID(cleanedResult);
+  getStaffNameById(staffId: any[]): any[] {
+    var arr = [];
+    if (staffId != null && staffId != undefined) {
+      for (let i = 0; i < staffId.length; i++) {
+        // if (typeof staffId[i] === 'object') {
+        let m = staffId[i];
+        if (m) {
+          let response = this.getUserNamebyID(m);
+          arr.push(response);
+        } else {
+          arr.push(m);
+        }
+        // }
+      }
     }
-    // If vehicleId is an object (not an array), extract the 'name' property
-    if (staffId && typeof staffId === 'object' && !Array.isArray(staffId)) {
-      return staffId.name || String(staffId);
-    }
-
-    // If vehicleId is an array, extract 'name' from each object and join them with commas
-    if (Array.isArray(staffId)) {
-      const names = staffId.map((item) => item.name).join(', ');
-      return names || String(staffId);
-    }
-    // If vehicleId is neither a string, object, nor array, return it as a string
-    return String(staffId);
+    return arr;
   }
 
-  getClosureOptions(rowData1: any) {
-    if (rowData1 != null || rowData1 != undefined) {
-      const fixedData = rowData1.replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
-      const parsedData = JSON.parse(fixedData);
-      for (let i = 0; i <= parsedData.length; i++) {
-        if (parsedData[i]) {
-          // let hghb = parsedData[i];
-          //  console.log("uihhuhduhsui");
-
-          //  const fixedData1 = parsedData[i].replace(/(\w+):/g, '"$1":'); // Fix keys without quotes
-          //  const parsedData1 = JSON.parse(parsedData[i]);
-          if (parsedData[i].option) {
-            //  console.log("uihhuhduhsui>:>>>>>>>>>>>>>>>");
-
-            // console.log(parsedData[0].option);
-            return parsedData[i].option;
-          } else {
-            // console.log("object else?????????????????????");
-
-            return parsedData;
+  getClosureOptions(rowData1: any[]): any[] {
+    var arr = [];
+    if (rowData1 != null && rowData1 != undefined) {
+      for (let i = 0; i < rowData1.length; i++) {
+        if (typeof rowData1[i] === 'object') {
+          let m = rowData1[i];
+          if (m && m.option) {
+            arr.push(m.option);
           }
         } else {
-          // console.log("outer else{{{{{{{{{{{{");
-
-          return parsedData;
+          arr.push(rowData1[i]);
         }
       }
     }
+    return arr; // Ensure a value is always returned
   }
-  getVehicleNamebyID(vehicleId: any[]) {
-    const result = vehicleId.map((item, index) => {
-      const vehicle = this.vehicleList.find((c) => c.Id === item); // Find vehicle by ID
-      return vehicle ? vehicle.ShortName : String(item); // Return ShortName if found, otherwise return the vehicleId as a string
-    });
-    return result;
+  getVehicleNamebyID(vehicleId: any) {
+    if (vehicleId) {
+      // const result = vehicleId.map((item, index) => {
+      const vehicle = this.vehicleList.find((c) => c.id === vehicleId); // Find vehicle by ID
+      return vehicle ? vehicle.shortName : String(vehicleId); // Return ShortName if found, otherwise return the vehicleId as a string
+      // });
+      // return result;
+    }
+    return []; // Return an empty array if vehicleId is null or undefined
   }
 
-  getUserNamebyID(userId: any[]) {
-    const result = userId.map((item, index) => {
-      const user = this.userList.find((c) => c.Id === item); // Find vehicle by ID
-      return user ? `${user.firstName} ${user.lastName}` : String(item); // Return ShortName if found, otherwise return the vehicleId as a string
-    });
-    return result;
+  getUserNamebyID(userId: any) {
+    // const result = userId.map((item, index) => {
+    const user = this.userList.find((c) => c.id === userId); // Find vehicle by ID
+    return user ? `${user.firstName} ${user.lastName}` : String(userId); // Return ShortName if found, otherwise return the vehicleId as a string
   }
   getClientNamebyID(clientId: any) {
     // debugger;
     // const result = clientId.map((item, index) => {
-    const client = this.clientList.find((c) => c.ClientId === clientId); // Find vehicle by ID
-    return client ? client.ClientName : String(clientId); // Return ShortName if found, otherwise return the vehicleId as a string
+    const client = this.clientList.find((c) => c.clientId === clientId); // Find vehicle by ID
+    return client ? client.clientName : String(clientId); // Return ShortName if found, otherwise return the vehicleId as a string
     // });
     // return result;
   }
@@ -388,18 +374,24 @@ export class DashboardComponent {
   }
   getNameByID(userId: any[]) {
     debugger;
-    const user = this.userList.find((c) => c.Id === userId); // Find vehicle by ID
+    const user = this.userList.find((c) => c.id === userId); // Find vehicle by ID
     return user ? `${user.firstName} ${user.lastName}` : String(userId); // Return ShortName if found, otherwise return the vehicleId as a string
 
     // const queryParams = {
-    //   userId: id
+    //   userId: userId
     // };
 
     // this.userService.getUserByID(queryParams).subscribe(
     //   (response) => {
+    //     debugger;
     //     const data = response;
-    //     console.log('User:::::::::::::::::', data.firstName + ' ' + data.lastName);
-    //     return data.firstName + ' ' + data.lastName;
+    //     // console.log('User:::::::::::::::::', data.firstName + ' ' + data.lastName);
+    //     if(data.firstName){
+    //       return data.firstName;
+    //     }else{
+    //       return userId;
+    //     }
+
     //     // console.log('User:', data);
     //   },
     //   (error) => {
@@ -421,25 +413,37 @@ export class DashboardComponent {
     }
     // return dateOnly1;
   }
+  sendEventData(day: any, event: any[]) {
+    // debugger;
+    const dateOnly1 = day.dates;
+    for (let i = 0; i < event.length; i++) {
+      let dateOnly = moment(event, 'YYYY-MM-DD HH:mm:ss').format('M/D/YYYY');
+      if (dateOnly == dateOnly1) {
+        this.matchedEvent = true;
+      } else {
+        this.matchedEvent = false;
+      }
+    }
+  }
 
   sendNoteData(day: any, notes: any) {
     // debugger;
-    const dateOnly = moment(notes.Date, 'YYYY-MM-DD HH:mm:ss').format(
-      'M/D/YYYY'
-    );
+    const dateOnly = moment(notes.date, 'YYYY-MM-DD').format('M/D/YYYY');
     const dateOnly1 = day.dates;
     if (dateOnly == dateOnly1) {
-      // console.log("matched")
       this.matchednote = true;
+      this.primaryManager = this.getNameByID(notes.primaryDutyManager);
+      this.secondaryManager = this.getNameByID(notes.secondaryDutyManager);
+      this.callOutOFficer = this.getNameByID(notes.callOutDutyStaff);
     } else {
       this.matchednote = false;
     }
   }
 
-  getTaskStatus(jobs: any,userId:any[]) {
-    debugger;
+  getTaskStatus(jobs: any, _userId: any[]) {
+    // debugger;
     const task = this.taskList.find((c) => c.jobId === jobs.id); // Find vehicle by ID
-    const taskStatus = task ? task.status : String(jobs.id); 
+    const taskStatus = task ? task.status : String(jobs.id);
     if (taskStatus == '2') {
       return '(L)';
     }
@@ -448,13 +452,52 @@ export class DashboardComponent {
     }
     if (taskStatus == '6') {
       return '(C)';
-    }else{
-      return jobs.id
+    } else {
+      return '';
     }
+  }
+  filteredData() {
+    // First filter the jobs based on existing criteria
+    const filteredJobs = this.jobDetails.filter((job) => {
+      const searchMatch =
+        !this.searchText ||
+        job.jobDetails[0].location
+          ?.toLowerCase()
+          .includes(this.searchText.toLowerCase());
 
-    // if(status==''){
-    //   return '(L)';
-    // }
-    // return task ? `${task.status}` : String(jobs.id); // Return ShortName if found, otherwise return the vehicleId as a string
+      const userMatch =
+        !this.selectedUser ||
+        (job.jobDetails[0]?.dates?.[0]?.allocStaff?.allocatedStaff?.some(
+          (staff: string) =>
+            staff.toString().toLowerCase() === this.selectedUser.toLowerCase()
+        ) ??
+          false);
+
+      const jobTypeMatch =
+        !this.selectedJobType ||
+        (job.jobDetails[0]?.roadCategory &&
+          String(job.jobDetails[0].roadCategory).toLowerCase() ===
+            this.selectedJobType.toLowerCase());
+
+      const myJob =
+        !this.searchMyJob ||
+        (job.jobDetails[0]?.dates?.[0]?.allocStaff?.allocatedStaff?.some(
+          (staff: string) => staff.toString() === this.FirstName
+        ) ??
+          false);
+
+      return searchMatch && userMatch && jobTypeMatch && myJob;
+    });
+
+    // Sort the filtered jobs by date
+    return filteredJobs.sort((a, b) => {
+      const dateA = new Date(a.jobDetails[0]?.dates?.[0]?.date || 0);
+      const dateB = new Date(b.jobDetails[0]?.dates?.[0]?.date || 0);
+      return dateA.getTime() - dateB.getTime();
+    });
+  }
+
+  toggleMyJobs() {
+    this.searchMyJob = this.showOnlyUserTasks ? this.FirstName : false;
   }
 }

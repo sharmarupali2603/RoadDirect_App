@@ -1,14 +1,5 @@
 <div class="container">
   <div class="calendar-header">
-    <!-- Month Navigation -->
-    <!-- <div class="month-header">
-      <h4>
-        <button (click)="prevWeek()">❮</button>
-        <span class="month-title">{{ currentMonth }} {{ currentYear }}</span>
-        <button (click)="nextWeek()">❯</button>
-      </h4>
-    </div> -->
-
     <div class="week-container calendar-grid">
       <!-- <input type="text" class="form-control" bsDatepicker placeholder="Select a date"> -->
       <!-- <button (click)="openCalendar()" class="d-flex align-items-center text-primary border-0 bg-transparent">
@@ -35,10 +26,9 @@
       <button (click)="nextWeek()">❯</button>
     </div>
   </div>
-  <!-- Search & Filter -->
+
   <div class="search-filter-container">
     <div class="search-box">
-      <!-- <label class="fw-bold">Search for jobs...</label> -->
       <label
         ><strong>Search for <span>jobs...</span></strong></label
       >
@@ -47,85 +37,107 @@
         type="text"
         class="form-control"
         [(ngModel)]="searchText"
-       placeholder="Search"
+        placeholder="Search jobs..."
       />
-     <br>
-      <select class="form-control">
-        <option>Search by Jobs</option>
-        <option *ngFor="let user of jobs">{{ user }}</option>
+
+      <br />
+
+      <select class="form-select" [(ngModel)]="selectedJobType">
+        <option value="">All Types</option>
+        <option *ngFor="let type of jobType" [value]="type.fullName">
+          {{ type.label }}
+        </option>
       </select>
     </div>
     <div class="filter-box">
-      <!-- <label class="fw-bold">Filter by user...</label> -->
       <label
         ><strong>Filter by <span>user...</span></strong></label
       >
 
-      <select [(ngModel)]="searchText1" class="form-control">
-        <option>All Users</option>
-        <option *ngFor="let user of userList">
-          {{ user.firstName }}{{ user.lastName }}
+      <select class="form-select" [(ngModel)]="selectedUser">
+        <option value="">All Users</option>
+        <option *ngFor="let user of userList" [value]="user.id">
+          {{ user.firstName }} {{ user.lastName }}
         </option>
       </select>
-      <br>
-      <!-- <input type="text" class="form-control" placeholder="Show Only My Jobs" /> -->
-      <label>
-        <input type="checkbox" [(ngModel)]="showOnlyUserTasks" (change)="applyFilter()" />
-        Only my
-      </label>
+      <br />
+      <div class="form-check">
+        <input
+          type="checkbox"
+          class="form-check-input"
+          id="showMyJobs"
+          [(ngModel)]="showOnlyUserTasks"
+          (change)="toggleMyJobs()"
+        />
+        <label class="form-check-label" for="showMyJobs"> My Jobs Only </label>
+      </div>
     </div>
   </div>
 </div>
-<!-- <app-job-card></app-job-card> -->
+
 <!-- Job Details Section -->
 <div *ngFor="let day of weekDates" class="container-fluid p-2">
   <!-- Header Section -->
   <div
-  class="d-flex justify-content-between align-items-center rounded header-bar"
->
-  <!-- <p class="mb-0">
-  <i class="fas fa-calendar-alt"></i> 📅 {{jobs.jobDetails[0].dates[0].jobDetailsDate | date:'fullDate' }}
-</p> --><p class="mb-0">
-      <i class="fas fa-calendar-alt"></i> 📅 {{day.dates | date:'fullDate' }}
+    class="d-flex justify-content-between align-items-center rounded header-bar"
+  >
+    <p class="mb-0">
+      <i class="fas fa-calendar-alt"></i> {{ day.dates | date : "fullDate" }}
     </p>
- 
-  <div>
-    <span class="circle blue"></span>
-    <span class="circle yellow"></span>
-    <span class="circle green"></span>
-    <i class="fas fa-search search-icon"></i>
-  </div>
-</div>
-   
-  <div *ngFor="let jobs of filteredData(''); let i=index">
-    <span>
-      {{sendData(jobs,day)}}
-    </span>
-    <div *ngFor="let notes of noteDetails;" class="d-flex justify-content-start flex-wrap">
-      <!-- <span *ngIf="notes.Date == jobs.startDate"> -->
-        {{sendNoteData(day, notes)}}
-        <span *ngIf="matchednote"  class="d-flex justify-content-start flex-wrap">
-      <p class="me-2 manager" >
-        <i class="fas fa-phone text-primary"></i> <strong>Manager #1:</strong> {{getNameByID(notes.PrimaryDutyManager)}}
-      </p>
-      <p class="me-2 manager">
-        <i class="fas fa-phone text-primary"></i> <strong>Manager #1:</strong> {{getNameByID(notes.SecondaryDutyManager)}}
-      </p>
-      <p class="me-2 manager">
-        <i class="fas fa-phone text-primary"></i> <strong>Call-Out Staff:</strong> {{getNameByID(notes.CallOutDutyStaff)}}
-      </p>
-    </span>
-      <!-- </span> -->
+
+    <div>
+      <span *ngFor="let event of eventDetails">
+        <span *ngFor="let ev of event.eventDates">
+          {{ sendEventData(day, ev.eventDateDate) }}
+          <span
+            *ngIf="matchedEvent"
+            class="circle"
+            [ngStyle]="{ 'background-color': '#' + event.eventColour }"
+            [title]="ev.eventName"
+          >
+          </span>
+        </span>
+      </span>
     </div>
+  </div>
+
+  <div *ngFor="let jobs of filteredData(); let i = index">
+    <span>
+      {{ sendData(jobs, day) }}
+    </span>
+    <span *ngFor="let notes of noteDetails">
+      {{ sendNoteData(day, notes) }}
+      <ng-container *ngIf="matchednote">
+        <div class="d-flex justify-content-start flex-wrap">
+          <p class="me-2 manager">
+            <i class="fas fa-phone text-primary"></i>
+            <strong>Manager #1:</strong>
+            {{ getNameByID(notes.primaryDutyManager) }}
+          </p>
+          <p class="me-2 manager">
+            <i class="fas fa-phone text-primary"></i>
+            <strong>Manager #2:</strong>
+            {{ getNameByID(notes.secondaryDutyManager) }}
+          </p>
+          <p class="me-2 manager">
+            <i class="fas fa-phone text-primary"></i>
+            <strong>Call-Out Staff:</strong>
+            {{ getNameByID(notes.callOutDutyStaff) }}
+          </p>
+        </div>
+      </ng-container>
+    </span>
     <!-- Job Card -->
-    <div  *ngIf="matchedDate" class="card shadow-sm mt-3">
+    <div *ngIf="matchedDate" class="card shadow-sm mt-3">
       <div class="card-hea h-25 d-flex justify-content-between bg-light">
         <p class="padding-p">
-          <i class="fas fa-building"></i>🏢
+          <i class="fas fa-building"></i>
           {{ getClientNamebyID(jobs.clientId) }}
         </p>
-        <!-- <span  *ngIf="jobs.OrgId">{{getOrgId(jobs)}}</span> -->
-        <button class="expand-btn btn btn-primary btn-sm" (click)="expandJobs(jobs)">
+        <button
+          class="expand-btn btn btn-primary btn-sm"
+          (click)="expandJobs(jobs)"
+        >
           <i class="fas fa-chevron-down"></i> Expand Job
         </button>
       </div>
@@ -137,11 +149,12 @@
           </p>
           <p>
             <i class="fas fa-clock"></i>
-            {{ jobs.jobDetails[0].dates[0].duration.durationType }}. {{labelStartTime1}}: 
+            {{ jobs.jobDetails[0].dates[0].duration.durationType }}.
+            {{ labelStartTime1 }}:
             <strong>{{
               jobs.jobDetails[0].dates[0].startTime.startTime1 | date : "hh:mm"
             }}</strong
-            >, {{labelStartTime2}}
+            >, {{ labelStartTime2 }}
             <strong>{{
               jobs.jobDetails[0].dates[0].startTime.startTime2 | date : "hh:mm"
             }}</strong>
@@ -150,238 +163,122 @@
             <i class="fas fa-truck"></i
             >{{
               getVehicleNameById(
-                jobs.jobDetails[0].dates[0].allocTrucks._allocTrucks
+                jobs.jobDetails[0].dates[0].allocTrucks?.allocTrucks
               )
             }}
           </p>
           <!-- Staff Details -->
           <p class="fw-bold text-dark">
-            
-            <span class="text-primary">{{
-              getTaskStatus(
-                jobs,jobs.jobDetails[0].dates[0].allocStaff._allocatedStaff
-              )
-            }}{{
-              getStaffNameById(
-                jobs.jobDetails[0].dates[0].allocStaff._allocatedStaff
-              )
-            }}</span>
+            <i class="fas fa-users"></i>
+            <span class="text-primary"
+              >{{
+                getTaskStatus(
+                  jobs,
+                  jobs.jobDetails[0].dates[0].allocStaff?.allocatedStaff
+                )
+              }}{{
+                getStaffNameById(
+                  jobs.jobDetails[0].dates[0].allocStaff?.allocatedStaff
+                )
+              }}</span
+            >
           </p>
-          <!-- <p class="mt-2" > -->
-          <!-- <p class="fas fa-traffic-light"><pre>{{ getClosureOptions(jobs.jobDetails[0].dates[0].closures[0]._closures)}}</pre> -->
-
           <span *ngFor="let task of jobs.jobDetails[0].dates[0].closures">
             <span *ngIf="task.closureType == 1">
-              <p>{{ getClosureOptions(task._closures) }}</p>
+              <p>
+                <i class="fas fa-road"></i
+                >{{ getClosureOptions(task.closures) }}
+              </p>
             </span>
             <span *ngIf="task.closureType != 1">
-              <p>{{ getClosureOptions(task._closures) }}</p>
+              <p>
+                <i class="bi bi-person-walking"></i
+                >{{ getClosureOptions(task.closures) }}
+              </p>
             </span>
           </span>
-
-          <!-- </p> -->
-
-          <!-- <p><i class="fas fa-flag"></i> Static Data......</p> -->
         </div>
         <!-- Extra Info Section -->
-        <div class="text-center">
+        <div class="paddingright text-center">
           <div
-            class="row-margin row-extra border py-2 fw-bold" data-bs-toggle="modal" data-bs-target="#noteModal"
+            class="row-margin row-extra border py-2 fw-bold"
+            data-bs-toggle="modal"
+            data-bs-target="#noteModal"
             *ngIf="jobs.jobDetails[0].dates[0].jobDailyNote.note"
           >
             Extra Info
           </div>
-          <div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
+          <div
+            class="modal fade"
+            id="noteModal"
+            tabindex="-1"
+            aria-labelledby="noteModalLabel"
+            aria-hidden="true"
+          >
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="noteModalLabel">Note</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
                 </div>
                 <div class="modal-body">
-                  {{ jobs.jobDetails[0].dates[0].jobDailyNote.note}}
+                  {{ jobs.jobDetails[0].dates[0].jobDailyNote.note }}
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
                 </div>
               </div>
             </div>
           </div>
-          <div class="row-margin row-extra  border py-2">NP 
-            <div class="NP-green" *ngIf="jobs.jobDetails[0].dates[0].removeParks._removeParksTypes != null">Y</div>
-            <!-- <span style="color:red" *ngIf="jobs.jobDetails[0].dates[0].removeParks._removeParksTypes == ">Y</span> -->
-            <div style="color:red" *ngIf="jobs.jobDetails[0].dates[0].removeParks._removeParksTypes == null">NA</div>
-            ✔</div>
-          <div class="row-margin row-extra  border py-2">(S) A</div>
-          <div class="row-margin row-extra  border py-2">
-            Job# {{ jobs.jobDetails[0].jobId }}
+          <div class="row-margin row-extra border py-2">
+            NP
+            <div
+              class="NP-green"
+              *ngIf="
+                jobs.jobDetails[0].dates[0].removeParks?.removeParksTypes !=
+                null
+              "
+            >
+              Y
+            </div>
+            <div
+              style="color: red"
+              *ngIf="
+                jobs.jobDetails[0].dates[0].removeParks?.removeParksTypes ==
+                null
+              "
+            >
+              NA
+            </div>
+          </div>
+          <div class="row-margin row-extra border py-2">
+            <span
+              class="audit-check"
+              *ngIf="jobs.jobDetails[0].siteSafetyBriefings != []"
+            >
+              ✔
+            </span>
+            <span *ngIf="jobs.jobDetails[0].siteInspections != []">
+              ({{ jobs.jobDetails[0].siteInspections.length }})
+            </span>
+            <span *ngIf="jobs.jobDetails[0].siteAudits != []"> A </span>
+          </div>
+          <div class="row-margin row-extra border py-2">
+            Job {{ jobs.jobDetails[0].jobId }}
           </div>
         </div>
       </div>
     </div>
-   
   </div>
 </div>
-
-<!-- <div class="container-fluid p-2">
-  <div class="d-flex justify-content-between align-items-center p-3 rounded header-bar">
-    <h5 class="mb-0">
-      <i class="fas fa-calendar-alt"></i> Monday 21 February 2025
-    </h5>
-    <div>
-      <span class="circle blue"></span>
-      <span class="circle yellow"></span>
-      <span class="circle green"></span>
-      <i class="fas fa-search search-icon"></i>
-    </div>
-  </div>
-
-  <div class="card shadow-sm mt-3">
-    <div class="card-header d-flex justify-content-between bg-light">
-      <strong><i class="fas fa-building"></i> Unison Contracting Services Limited</strong>
-      <button class="btn btn-primary btn-sm">
-        <i class="fas fa-chevron-down"></i> Expand Job
-      </button>
-    </div>
-    <div class="card-body">
-      <p><i class="fas fa-map-marker-alt"></i> 148 King Edward Street, South Dunedin, Dunedin</p>
-      <p><i class="fas fa-clock"></i> All Day. Be at Depot by: <strong>6:00AM</strong>, Siteup by: <strong>7:00AM</strong></p>
-      <p><i class="fas fa-truck"></i> IN5, H4, IN2, GW3</p>
-
-      <div class="d-flex flex-wrap align-items-center">
-        <span class="fw-bold text-dark">(c) <span class="text-primary">Carl H</span></span>
-        <span class="ms-2">Lindsay P</span>
-        <span class="ms-2 text-warning">(c) Jim B</span>
-        <span class="ms-2 text-primary">(c) Wayne A</span>
-        <span class="ms-2">(L) Selma I</span>
-      </div>
-
-      <p class="mt-2"><i class="fas fa-traffic-light"></i> MTC (Stop / Go)</p>
-      <p><i class="fas fa-flag"></i> FC</p>
-
-      <div class="d-flex justify-content-between mt-3">
-        <button class="btn btn-info btn-sm">Extra Info</button>
-        <span class="badge bg-success">NP ✔</span>
-        <span class="badge bg-primary">(S) A</span>
-        <span class="badge bg-secondary">Job# 20410</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="mt-3">
-    <input type="text" class="form-control" placeholder="All Staff Notes">
-  </div>
-</div> -->
-
-<!-- <div class="container mt-3">
-  
-  <div class="d-flex justify-content-between align-items-center p-3 bg-success text-white rounded">
-    <h5><i class="bi bi-calendar-event"></i> Monday 21 February 2025</h5>
-    <div>
-      <span class="badge bg-primary">🔵</span>
-      <span class="badge bg-warning">🟡</span>
-      <span class="badge bg-success">🟢</span>
-      <i class="bi bi-search"></i>
-    </div>
-  </div>
-
-  
-  <div class="card shadow-sm mt-3">
-    <div class="card-header d-flex justify-content-between">
-      <strong>Unison Contracting Services Limited</strong>
-      <button class="btn btn-primary btn-sm">Expand Job</button>
-    </div>
-    <div class="card-body">
-      <p><i class="bi bi-geo-alt"></i> 148 King Edward Street, South Dunedin, Dunedin</p>
-      <p><i class="bi bi-clock"></i> All Day. Be at Depot by: <strong>6:00AM</strong>, Siteup by: <strong>7:00AM</strong></p>
-      <p><i class="bi bi-truck"></i> IN5, H4, IN2, GW3</p>
-
-      <div class="d-flex flex-wrap">
-        <strong class="me-2 text-primary">(c) Carl H</strong>
-        <span>Lindsay P</span>
-        <span class="text-warning">(c) Jim B</span>
-        <span class="text-primary">(c) Wayne A</span>
-        <span>(L) Selma I</span>
-      </div>
-
-      <p class="mt-2"><i class="bi bi-traffic-light"></i> MTC (Stop / Go)</p>
-      <p><i class="bi bi-flag"></i> FC</p>
-
-      <div class="d-flex justify-content-between mt-3">
-        <button class="btn btn-info btn-sm">Extra Info</button>
-        <span class="badge bg-success">NP ✔</span>
-        <span class="badge bg-primary">(S) A</span>
-        <span class="badge bg-secondary">Job# 20410</span>
-      </div>
-    </div>
-  </div>
-
-  
-  <div class="mt-3">
-    <input type="text" class="form-control" placeholder="All Staff Notes">
-  </div>
-</div> -->
-
-<!-- <div class="container">
-  <div class="header-container">
-    <div class="info-bar">
-      <div class="info-item">
-        <i>📞</i> Manager #1 <strong>Harrison Skeggs</strong>
-      </div>
-      <span>|</span>
-      <div class="info-item">
-        <i>📞</i> Manager #2 <strong>Mike Brown</strong>
-      </div>
-      <span>|</span>
-      <div class="info-item">
-        <i>📞</i> Call-Out Staff <strong>Alex France</strong>
-      </div>
-    </div>
-
-    <div *ngFor="let job of jobDetails" class="job-container">
-      <div class="job-header">
-      <div class="info-item clientID">
-
-        <i>🏢</i> Naylor Love <strong>Construction</strong> Limited
-      </div>
-      <div class="info-item Location">
-        📍 {{job.JobDetails[0].Location}}
-</div>
-</div>
-      <div class="job-details">
-        <div class="job-card card4">
-          ⏰ All Day <br />
-          {{job.JobDetails[0].WindowTimes}}
-        </div>
-        <div class="job-card card1">
-{{job.JobDetails[0].Location}}       </div>
-        <div class="job-card card3">🏢 FC, CLC, TP</div>
-        <div class="job-card card4">🚗 IN5, H4, IN2, GW3</div>
-        <div class="job-card card2">
-          👥 <strong>Carl</strong> H, Lindsay P, Jim B, Wayne A, Selma I, Luke M
-        </div>
-      </div>
-
-      <div class="job-footer">
-        <a href="#" class="job-button">🔗 Open Job</a>
-      </div>
-    </div>
-  </div>
-</div> -->
-
-<!-- Calendar Popup -->
-<!-- <div id="openCalendar1" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Select Date</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div> -->

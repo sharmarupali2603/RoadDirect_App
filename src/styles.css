@@ -48,3 +48,8 @@ footer nav {
   transform: scale(1.2); /* Slight zoom effect */
   transition: transform 0.3s ease-in-out;
 }
+bs-datepicker-container {
+  position: absolute !important;
+  z-index: 1050 !important;
+  width: auto !important;
+}

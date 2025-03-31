@@ -11,7 +11,7 @@ export class JobsService {
     'https://fabricate.mockaroo.com/api/v1/databases/eboard/api/';
   private token = '76fda9e0-486a-4efc-b4ee-3ea32d774c8c'; // Replace with your actual token
 
-  constructor(private http: HttpClient, private db:DatabaseService) {}
+  constructor(private http: HttpClient, private db: DatabaseService) {}
   // Function to get headers with Bearer token
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
@@ -29,22 +29,26 @@ export class JobsService {
 
   // POST request with Bearer token
   getJobsByDateRange(postData: any): Observable<any> {
-    return this.http.post(this.mainUrl + 'GetJobsByDateRange', postData, {
-      headers: this.getHeaders(),
-    }).pipe(
-          tap((response) => {
-            // Store API response in IndexedDB
-            from(this.db.saveJobData(response)).subscribe();
-          }),
-          catchError(() => {
-            // If offline, return cached data
-            return from(this.db.getAllJobData()).pipe(map((items) => items.map((item) => item.data)));
-          })
-        );
+    return this.http
+      .post(this.mainUrl + 'GetJobsByDateRange', postData, {
+        headers: this.getHeaders(),
+      })
+      .pipe(
+        tap((response) => {
+          // Store API response in IndexedDB
+          from(this.db.saveJobData(response)).subscribe();
+        }),
+        catchError(() => {
+          // If offline, return cached data
+          return from(this.db.getAllJobData()).pipe(
+            map((items) => items.map((item) => item.data))
+          );
+        })
+      );
   }
-  
-   // GET request
-   getMyTasks(): Observable<any> {
+
+  // GET request
+  getMyTasks(): Observable<any> {
     return this.http.get(this.mainUrl + 'GetMyTasks', {
       headers: this.getHeaders(),
     });
@@ -62,32 +66,46 @@ export class JobsService {
 
   // POST request with Bearer token
   getetNotesByDateRange(postData: any): Observable<any> {
-    return this.http.post(this.mainUrl + 'GetNotesByDateRange', postData, {
-      headers: this.getHeaders(),
-    }).pipe(
-          tap((response) => {
-            // Store API response in IndexedDB
-            from(this.db.saveJobData(response)).subscribe();
-          }),
-          catchError(() => {
-            // If offline, return cached data
-            return from(this.db.getAllJobData()).pipe(map((items) => items.map((item) => item.data)));
-          })
-        );
+    return this.http
+      .post(this.mainUrl + 'GetNotesByDateRange', postData, {
+        headers: this.getHeaders(),
+      })
+      .pipe(
+        tap((response) => {
+          // Store API response in IndexedDB
+          from(this.db.saveJobData(response)).subscribe();
+        }),
+        catchError(() => {
+          // If offline, return cached data
+          return from(this.db.getAllJobData()).pipe(
+            map((items) => items.map((item) => item.data))
+          );
+        })
+      );
   }
 
   getEventsByDateRange(postData: any): Observable<any> {
-    return this.http.post(this.mainUrl + 'GetEventsByDateRange', postData, {
+    return this.http
+      .post(this.mainUrl + 'GetEventsByDateRange', postData, {
+        headers: this.getHeaders(),
+      })
+      .pipe(
+        tap((response) => {
+          // Store API response in IndexedDB
+          from(this.db.saveJobData(response)).subscribe();
+        }),
+        catchError(() => {
+          // If offline, return cached data
+          return from(this.db.getAllJobData()).pipe(
+            map((items) => items.map((item) => item.data))
+          );
+        })
+      );
+  }
+
+  getFormFields(): Observable<any> {
+    return this.http.get(this.mainUrl + 'GetFormFields', {
       headers: this.getHeaders(),
-    }).pipe(
-          tap((response) => {
-            // Store API response in IndexedDB
-            from(this.db.saveJobData(response)).subscribe();
-          }),
-          catchError(() => {
-            // If offline, return cached data
-            return from(this.db.getAllJobData()).pipe(map((items) => items.map((item) => item.data)));
-          })
-        );
-      }
+    });
+  }
 }
