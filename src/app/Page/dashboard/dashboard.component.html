@@ -79,8 +79,7 @@
 <div *ngFor="let day of weekDates" class="container-fluid p-2">
   <!-- Header Section -->
   <div
-    class="d-flex justify-content-between align-items-center rounded header-bar"
-  >
+    class="d-flex justify-content-between align-items-center rounded header-bar">
     <p class="mb-0">
       <i class="fas fa-calendar-alt"></i> {{ day.dates | date : "fullDate" }}
     </p>
@@ -100,33 +99,33 @@
       </span>
     </div>
   </div>
-
+  <span *ngFor="let notes of noteDetails">
+    {{ sendNoteData(day, notes) }}
+    <ng-container *ngIf="matchednote">
+      <div class="d-flex justify-content-start flex-wrap">
+        <p class="me-2 manager">
+          <i class="fas fa-phone text-primary"></i>
+          <strong>Manager #1:</strong>
+          {{ getNameByID(notes.primaryDutyManager) }}
+        </p>
+        <p class="me-2 manager">
+          <i class="fas fa-phone text-primary"></i>
+          <strong>Manager #2:</strong>
+          {{ getNameByID(notes.secondaryDutyManager) }}
+        </p>
+        <p class="me-2 manager">
+          <i class="fas fa-phone text-primary"></i>
+          <strong>Call-Out Staff:</strong>
+          {{ getNameByID(notes.callOutDutyStaff) }}
+        </p>
+      </div>
+    </ng-container>
+  </span>
   <div *ngFor="let jobs of filteredData(); let i = index">
     <span>
       {{ sendData(jobs, day) }}
     </span>
-    <span *ngFor="let notes of noteDetails">
-      {{ sendNoteData(day, notes) }}
-      <ng-container *ngIf="matchednote">
-        <div class="d-flex justify-content-start flex-wrap">
-          <p class="me-2 manager">
-            <i class="fas fa-phone text-primary"></i>
-            <strong>Manager #1:</strong>
-            {{ getNameByID(notes.primaryDutyManager) }}
-          </p>
-          <p class="me-2 manager">
-            <i class="fas fa-phone text-primary"></i>
-            <strong>Manager #2:</strong>
-            {{ getNameByID(notes.secondaryDutyManager) }}
-          </p>
-          <p class="me-2 manager">
-            <i class="fas fa-phone text-primary"></i>
-            <strong>Call-Out Staff:</strong>
-            {{ getNameByID(notes.callOutDutyStaff) }}
-          </p>
-        </div>
-      </ng-container>
-    </span>
+    
     <!-- Job Card -->
     <div *ngIf="matchedDate" class="card shadow-sm mt-3">
       <div class="card-hea h-25 d-flex justify-content-between bg-light">
