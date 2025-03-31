@@ -133,7 +133,7 @@ export class JobExpandComponent implements OnInit {
 
   getVehicleNamebyID(vehicleId: any[]) {
     const result = vehicleId.map((item, index) => {
-      const vehicle = this.vehicleList.find((c) => c.Id === item); // Find vehicle by ID
+      const vehicle = this.vehicleList.find((c) => c.id === item); // Find vehicle by ID
       return vehicle ? vehicle.ShortName : String(item); // Return ShortName if found, otherwise return the vehicleId as a string
     });
     return result;
@@ -141,13 +141,13 @@ export class JobExpandComponent implements OnInit {
 
   getUserNamebyID(userId: any[]) {
     const result = userId.map((item, index) => {
-      const user = this.userList.find((c) => c.Id === item); // Find vehicle by ID
+      const user = this.userList.find((c) => c.id === item); // Find vehicle by ID
       return user ? `${user.firstName} ${user.lastName}` : String(item); // Return ShortName if found, otherwise return the vehicleId as a string
     });
     return result;
   }
   getClientNamebyID(clientId: any) {
-    const client = this.clientList.find((c) => c.ClientId === clientId); // Find vehicle by ID
+    const client = this.clientList.find((c) => c.clientId === clientId); // Find vehicle by ID
     return client ? client.ClientName : String(clientId); // Return ShortName if found, otherwise return the vehicleId as a string
   }
   collapseJobs() {
