@@ -84,4 +84,10 @@ export class JobsService {
       })
     );
   }
+
+  getFormFields(): Observable<any> {
+    return this.http.get('api/Support/GetFormFields', {
+      headers: this.getHeaders(),
+    });
+  }
 }
