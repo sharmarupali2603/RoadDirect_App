@@ -3,24 +3,31 @@
   <div class="d-flex justify-content-between align-items-center rounded header-bar">
     <p class="mb-0">
       <i class="fas fa-calendar-alt"></i> 
-      {{ jobs.dateEntered | date : "fullDate" }}
+      {{ jobs.jobDetails[0].dates[0].jobDetailsDate | date : "fullDate" }}
     </p>
     <div>
-      <span class="circle blue"></span>
-      <span class="circle yellow"></span>
-      <span class="circle green"></span>
-      <i class="fas fa-search search-icon"></i>
+      <span *ngFor="let event of eventDetails">
+        <span *ngFor="let ev of event.eventDates">
+          {{ sendEventData(jobs.jobDetails[0].dates[0].jobDetailsDate, ev.eventDateDate) }}
+          <span
+            *ngIf="matchedEvent"
+            class="circle"
+            [ngStyle]="{ 'background-color': '#' + event.eventColour }"
+            [title]="ev.eventName">
+          </span>
+        </span>
+      </span>
     </div>
   </div>
 
   <!-- Job Card -->
-  <div class="job-card">
+  <div class="card shadow-sm mt-3">
     <!-- <div *ngFor="let jobs of jobDetails" class="card shadow-sm mt-3"> -->
-    <div class="card-header d-flex justify-content-between bg-light">
-      <p>
+    <div class="card-hea h-25  d-flex justify-content-between bg-light">
+      <p  class="padding-p">
         <i class="fas fa-building"></i>{{ getClientNamebyID(jobs.clientId) }}
       </p>
-      <button class="btn btn-primary btn-sm" (click)="collapseJobs()">
+      <button  class="expand-btn btn btn-primary btn-sm" (click)="collapseJobs()">
         <i class="fas fa-chevron-up"></i> Collapse Job
       </button>
     </div>
@@ -48,28 +55,34 @@
         </p>
         <p>
           <i class="fas fa-clock"></i>
-          {{ jobs.jobDetails[0].dates[0].duration?.durationType }}. Be at Depot
-          by:
+          {{ jobs.jobDetails[0].dates[0].duration?.durationType }}.
+          {{ labelStartTime1 }}:
           <strong>{{
             jobs.jobDetails[0].dates[0].startTime?.startTime1 | date : "hh:mm"
-            }}</strong>, Siteup by:
+          }}</strong
+          >, {{ labelStartTime2 }}
           <strong>{{
             jobs.jobDetails[0].dates[0].startTime?.startTime2 | date : "hh:mm"
-            }}</strong>
+          }}</strong>
         </p>
         <p>
           <i class="fas fa-truck-pickup"></i>{{
           getVehicleNameById(
-          jobs.jobDetails[0].dates[0].allocTrucks?.allocTrucks
+              jobs.jobDetails[0].dates[0].allocTrucks?.allocTrucks
           )
           }}
         </p>
         <!-- Staff Details -->
         <p class="fw-bold text-dark">
-          (c)
+          <i class="fas fa-users"></i>
           <span class="text-primary">{{
+            getTaskStatus(
+              jobs,
+              jobs.jobDetails[0].dates[0].allocStaff?.allocatedStaff
+            )
+          }}{{
             getStaffNameById(
-            jobs.jobDetails[0].dates[0].allocStaff?.allocatedStaff
+              jobs.jobDetails[0].dates[0].allocStaff?.allocatedStaff
             )
             }}</span>
         </p>
@@ -82,22 +95,99 @@
 
         <span *ngFor="let task of jobs.jobDetails[0].dates[0].closures">
           <span *ngIf="task.closureType == 1">
-            <p>{{ getClosureOptions(task.closures) }}
+            <p>
+              <i class="fas fa-road"></i
+              >{{ getClosureOptions(task.closures) }}
             </p>
           </span>
           <span *ngIf="task.closureType != 1">
-            <p>{{ getClosureOptions(task.closures) }}
+            <p>
+              <i class="bi bi-person-walking"></i
+              >{{ getClosureOptions(task.closures) }}
             </p>
           </span>
         </span>
 
       </div>
       <!-- Extra Info Section -->
-      <div class="text-center">
-        <p class="row-margin row border py-2 fw-bold">Extra Info</p>
-        <p class="row-margin row border py-2">NP ✔</p>
-        <p class="row-margin row border py-2">(S) A</p>
-        <p class="row-margin row border py-2">Job# 20410</p>
+      <div class="paddingright text-center">
+        <div
+          class="row-margin row-extra border py-2 fw-bold"
+          data-bs-toggle="modal"
+          data-bs-target="#noteModal"
+          *ngIf="jobs.jobDetails[0].dates[0].jobDailyNote.note"
+        >
+          Extra Info
+        </div>
+        <div
+          class="modal fade"
+          id="noteModal"
+          tabindex="-1"
+          aria-labelledby="noteModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="noteModalLabel">Note</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                {{ jobs.jobDetails[0].dates[0].jobDailyNote.note }}
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row-margin row-extra border py-2">
+          NP
+          <div
+            class="NP-green"
+            *ngIf="
+              jobs.jobDetails[0].dates[0].removeParks?.removeParksTypes !=
+              null
+            "
+          >
+            Y
+          </div>
+          <div
+            style="color: red"
+            *ngIf="
+              jobs.jobDetails[0].dates[0].removeParks?.removeParksTypes ==
+              null
+            "
+          >
+            NA
+          </div>
+        </div>
+        <div class="row-margin row-extra border py-2">
+          <span
+            class="audit-check"
+            *ngIf="jobs.jobDetails[0].siteSafetyBriefings != []"
+          >
+            ✔
+          </span>
+          <span *ngIf="jobs.jobDetails[0].siteInspections != []">
+            ({{ jobs.jobDetails[0].siteInspections.length }})
+          </span>
+          <span *ngIf="jobs.jobDetails[0].siteAudits != []"> A </span>
+        </div>
+        <div class="row-margin row-extra border py-2">
+          Job {{ jobs.jobDetails[0].jobId }}
+        </div>
       </div>
     </div>
     <div class="d-flex gap border-bottom">
@@ -113,15 +203,20 @@
         <strong>🛠 Type of Work:</strong> {{ getTypeOfWork(jobs.jobDetails[0].descActivity) }}
       </p>
 
-      <span *ngFor="let task of jobs.jobDetails[0].dates[0].closures" class="border-bottom">
+      <span
+        *ngFor="let task of jobs.jobDetails[0].dates[0].closures"
+        class="border-bottom"
+      >
         <span *ngIf="task.closureType == 1">
           <p>
-            <strong>🔹TTM Road Set-Up-</strong>{{ getClosure(task.closures) }}
+            <strong>🔹TTM Road Set-Up-</strong
+            >{{ getClosure(task.closures) }}
           </p>
         </span>
         <span *ngIf="task.closureType != 1">
           <p>
-            <strong>TTM FootPath Set-Up -</strong>{{ getClosure(task.closures) }}
+            <strong>TTM FootPath Set-Up -</strong
+            >{{ getClosure(task.closures) }}
           </p>
         </span>
       </span>

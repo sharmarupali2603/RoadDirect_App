@@ -98,9 +98,7 @@
     </ng-container>
   </span>
   <div *ngFor="let jobs of filteredData(); let i = index">
-    <span>
-      {{ sendData(jobs, day) }}
-    </span>
+    {{ sendData(jobs, day) }}
 
     <!-- Job Card -->
     <div *ngIf="matchedDate" class="card shadow-sm mt-3">

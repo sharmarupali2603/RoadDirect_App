@@ -213,20 +213,20 @@ export class DashboardComponent implements OnInit {
     this.getEventsByDateRange();
   }
 
-  getMonday(d: Date): Date {
-    d = new Date(d);
-    let day = d.getDay(),
-      diff = d.getDate() - day + (day === 0 ? -6 : 1);
-    return new Date(d.setDate(diff));
-  }
+  // getMonday(d: Date): Date {
+  //   d = new Date(d);
+  //   let day = d.getDay(),
+  //     diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  //   return new Date(d.setDate(diff));
+  // }
 
   prevWeek() {
-    this.currentDate.setDate(this.currentDate.getDate() - 7);
+    this.currentDate.setDate(this.currentDate.getDate() - 5);
     this.updateWeek();
   }
 
   nextWeek() {
-    this.currentDate.setDate(this.currentDate.getDate() + 7);
+    this.currentDate.setDate(this.currentDate.getDate() + 5);
     this.updateWeek();
   }
 
@@ -346,7 +346,10 @@ export class DashboardComponent implements OnInit {
     return client ? client.clientName : String(clientId); // Return ShortName if found, otherwise return the vehicleId as a string
   }
   expandJobs(jobs: string) {
-    this.router.navigate(['/job-expand'], { state: { data: jobs } });
+    console.log('Navigate to Job Expand Page', this.currentDate, this.lastDate);
+    console.log('Job Details..........', jobs);
+
+    this.router.navigate(['/job-expand'], { state: { data: jobs, date: this.currentDate, lastdate: this.lastDate } });
   }
 
   getElements(allocTrucks: any[]) {
