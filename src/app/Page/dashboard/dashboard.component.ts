@@ -273,7 +273,6 @@ export class DashboardComponent implements OnInit {
     });
   }
   getVehicleNameById(vehicleId: any[]) {
-    // debugger;
     // return this.getVehicleNamebyID(vehicleId);
     var arr = [];
     if (vehicleId != null && vehicleId != undefined) {
@@ -377,7 +376,6 @@ export class DashboardComponent implements OnInit {
     // return dateOnly1;
   }
   sendEventData(day: any, event: any[]) {
-    // debugger;
     const dateOnly1 = day.dates;
     for (let i = 0; i < event.length; i++) {
       let dateOnly = moment(event, 'YYYY-MM-DD HH:mm:ss').format('M/D/YYYY');
