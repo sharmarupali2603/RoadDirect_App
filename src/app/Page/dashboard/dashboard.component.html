@@ -60,7 +60,6 @@
 <div *ngFor="let day of weekDates" class="container-fluid p-2">
   <!-- Header Section -->
   <div class="d-flex justify-content-between align-items-center rounded header-bar">
-    class="d-flex justify-content-between align-items-center rounded header-bar">
     <p class="mb-0">
       <i class="fas fa-calendar-alt"></i> {{ day.dates | date : "fullDate" }}
     </p>
@@ -102,7 +101,7 @@
     <span>
       {{ sendData(jobs, day) }}
     </span>
-    
+
     <!-- Job Card -->
     <div *ngIf="matchedDate" class="card shadow-sm mt-3">
       <div class="card-hea h-25 d-flex justify-content-between bg-light">
