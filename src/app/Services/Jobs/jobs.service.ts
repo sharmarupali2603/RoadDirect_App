@@ -1,12 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, from, map, Observable, tap } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { DatabaseService } from '../Database/database.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class JobsService {
+  private mainUrl = environment.apiBase;
 
   constructor(private http: HttpClient, private db: DatabaseService) { }
 
@@ -18,13 +20,13 @@ export class JobsService {
 
   // GET request
   getCurrentUser(): Observable<any> {
-    return this.http.get('api/UserManagement/GetCurrentUser', {
+    return this.http.get(this.mainUrl + 'UserManagement/GetCurrentUser', {
       headers: this.getHeaders(),
     });
   }
 
   getJobsByDateRange(postData: any): Observable<any> {
-    return this.http.post('api/Job/GetJobsByDateRange', postData, {
+    return this.http.post(this.mainUrl + 'Job/GetJobsByDateRange', postData, {
       headers: this.getHeaders(),
     }).pipe(
       tap((response) => {
@@ -40,13 +42,13 @@ export class JobsService {
 
   // GET request
   getMyTasks(): Observable<any> {
-    return this.http.get('api/Tracking/GetMyTasks', {
+    return this.http.get(this.mainUrl + 'Tracking/GetMyTasks', {
       headers: this.getHeaders(),
     });
   }
 
   getDefaultSettings(): Observable<any> {
-    return this.http.get('api/UserManagement/GetDefaultSettings', {
+    return this.http.get(this.mainUrl + 'UserManagement/GetDefaultSettings', {
       headers: this.getHeaders(),
     });
   }
@@ -56,7 +58,7 @@ export class JobsService {
   }
 
   getetNotesByDateRange(postData: any): Observable<any> {
-    return this.http.post('api/Support/GetNotesByDateRange', postData, {
+    return this.http.post(this.mainUrl + 'Support/GetNotesByDateRange', postData, {
       headers: this.getHeaders(),
     }).pipe(
       tap((response) => {
@@ -71,7 +73,7 @@ export class JobsService {
   }
 
   getEventsByDateRange(postData: any): Observable<any> {
-    return this.http.get('api/Support/GetEvents', {
+    return this.http.get(this.mainUrl + 'Support/GetEvents', {
       headers: this.getHeaders(),
     }).pipe(
       tap((response) => {
@@ -86,7 +88,7 @@ export class JobsService {
   }
 
   getFormFields(): Observable<any> {
-    return this.http.get('api/Support/GetFormFields', {
+    return this.http.get(this.mainUrl + 'Support/GetFormFields', {
       headers: this.getHeaders(),
     });
   }

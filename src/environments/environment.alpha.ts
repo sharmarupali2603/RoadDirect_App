@@ -1,6 +1,8 @@
 export const environment = {
   appVersion: require('../../package.json').version,
-  environment: 'αlpha',
+  environment: 'alpha',
   rollbarEnabled: false,
-  production: true
+  production: true,
+  ignoresSsl: false,
+  apiBase: 'https://pwa-alpha-aws.roaddirect.co.nz/api/'
 };
