@@ -1,3 +1,4 @@
+
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, from, map, Observable, tap } from 'rxjs';
@@ -20,37 +21,34 @@ export class JobsService {
 
   // GET request
   getCurrentUser(): Observable<any> {
-    return this.http.get(this.mainUrl + 'UserManagement/GetCurrentUser', {
-      headers: this.getHeaders(),
-    });
+    return this.http.get(this.mainUrl + 'UserManagement/GetCurrentUser');
   }
 
   getJobsByDateRange(postData: any): Observable<any> {
-    return this.http.post(this.mainUrl + 'Job/GetJobsByDateRange', postData, {
-      headers: this.getHeaders(),
-    }).pipe(
-      tap((response) => {
-        // Store API response in IndexedDB
-        from(this.db.saveJobData(response)).subscribe();
-      }),
-      catchError(() => {
-        // If offline, return cached data
-        return from(this.db.getAllJobData()).pipe(map((items) => items.map((item) => item.data)));
-      })
-    );
+    return this.http
+      .post(this.mainUrl + 'Job/GetJobsByDateRange', postData)
+      .pipe(
+        tap((response) => {
+          // Store API response in IndexedDB
+          from(this.db.saveJobData(response)).subscribe();
+        }),
+        catchError(() => {
+          // If offline, return cached data 
+          return '';
+          // return from(this.db.getAllJobData()).pipe(
+          //   map((items) => items.map((item) => item.data))
+          // );
+        })
+      );
   }
 
   // GET request
   getMyTasks(): Observable<any> {
-    return this.http.get(this.mainUrl + 'Tracking/GetMyTasks', {
-      headers: this.getHeaders(),
-    });
+    return this.http.get(this.mainUrl + 'Tracking/GetMyTasks');
   }
 
   getDefaultSettings(): Observable<any> {
-    return this.http.get(this.mainUrl + 'UserManagement/GetDefaultSettings', {
-      headers: this.getHeaders(),
-    });
+    return this.http.get(this.mainUrl + 'UserManagement/GetDefaultSettings');
   }
 
   getCachedData() {
@@ -58,38 +56,40 @@ export class JobsService {
   }
 
   getetNotesByDateRange(postData: any): Observable<any> {
-    return this.http.post(this.mainUrl + 'Support/GetNotesByDateRange', postData, {
-      headers: this.getHeaders(),
-    }).pipe(
-      tap((response) => {
-        // Store API response in IndexedDB
-        from(this.db.saveJobData(response)).subscribe();
-      }),
-      catchError(() => {
-        // If offline, return cached data
-        return from(this.db.getAllJobData()).pipe(map((items) => items.map((item) => item.data)));
-      })
-    );
+    return this.http
+      .post(this.mainUrl + 'Support/GetNotesByDateRange', postData)
+      .pipe(
+        tap((response) => {
+          // Store API response in IndexedDB
+          from(this.db.saveJobData(response)).subscribe();
+        }),
+        catchError(() => {
+          // If offline, return cached data
+          return from(this.db.getAllJobData()).pipe(
+            map((items) => items.map((item) => item.data))
+          );
+        })
+      );
   }
 
   getEventsByDateRange(postData: any): Observable<any> {
-    return this.http.get(this.mainUrl + 'Support/GetEvents', {
-      headers: this.getHeaders(),
-    }).pipe(
-      tap((response) => {
-        // Store API response in IndexedDB
-        from(this.db.saveJobData(response)).subscribe();
-      }),
-      catchError(() => {
-        // If offline, return cached data
-        return from(this.db.getAllJobData()).pipe(map((items) => items.map((item) => item.data)));
-      })
-    );
+    return this.http
+      .get(this.mainUrl + 'Support/GetEvents', postData)
+      .pipe(
+        tap((response) => {
+          // Store API response in IndexedDB
+          from(this.db.saveJobData(response)).subscribe();
+        }),
+        catchError(() => {
+          // If offline, return cached data
+          return from(this.db.getAllJobData()).pipe(
+            map((items) => items.map((item) => item.data))
+          );
+        })
+      );
   }
 
   getFormFields(): Observable<any> {
-    return this.http.get(this.mainUrl + 'Support/GetFormFields', {
-      headers: this.getHeaders(),
-    });
+    return this.http.get(this.mainUrl + 'Support/GetFormFields');
   }
 }

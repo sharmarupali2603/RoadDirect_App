@@ -19,9 +19,7 @@ export class ClientService {
   constructor(private http: HttpClient, private db: DatabaseService) { }
 
   getAllClients(): Observable<any> {
-    return this.http.get(this.mainUrl + 'ClientManagement/GetAllClients', {
-      headers: this.getHeaders(),
-    });
+    return this.http.get(this.mainUrl + 'ClientManagement/GetAllClients');
   }
 
   getCachedData() {

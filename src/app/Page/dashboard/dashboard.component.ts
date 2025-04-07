@@ -7,8 +7,24 @@ import { ClientService } from 'src/app/Services/Client/client.service';
 import { UserService } from 'src/app/Services/Users/user.service';
 import { VehicleService } from 'src/app/Services/Vehicle/vehicle.service';
 
-import { DatabaseService } from 'src/app/Services/Database/database.service';
-import { JobsService } from '../../Services/Jobs/jobs.service';
+interface JobDate {
+  allocStaff?: {
+    allocatedStaff?: string[];
+  };
+}
+
+interface JobDetail {
+  location?: string;
+  contact?: string;
+  dates?: JobDate[];
+}
+
+interface Job {
+  jobDetails: JobDetail[];
+  jobCategory?: number | string;
+  startDate?: string | Date;
+}
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -24,7 +40,7 @@ export class DashboardComponent implements OnInit {
   currentYear: number = 0;
   users = ['User 1', 'User 2', 'User 3'];
   jobs = ['User 1', 'User 2', 'User 3'];
-  jobDetails: any[] = [];
+  jobDetails: Job[] = []; // Add type annotation for the class property
   isOnline = navigator.onLine;
   openCalendar1: boolean = false;
   userList: any[] = [];
@@ -72,7 +88,7 @@ export class DashboardComponent implements OnInit {
     private dbService: DatabaseService,
     private swUpdate: SwUpdate
   ) {
-    this.updateWeek();
+    this.updateWeek(this.currentDate);
     this.getDefaultSettings();
     // this.getEventsByDateRange();
     this.getFormFields();
@@ -138,7 +154,6 @@ export class DashboardComponent implements OnInit {
     this.jobService.getCachedData().subscribe((cached) => {
       this.cachedjobData = cached;
       console.log('Cached Job Data:', this.cachedjobData);
-
     });
   }
 
@@ -146,6 +161,7 @@ export class DashboardComponent implements OnInit {
     this.jobService.getDefaultSettings().subscribe(
       (response) => {
         this.defaultSetting = response;
+        console.log('defaultSetting:', this.defaultSetting);
         this.labelStartTime1 = this.defaultSetting.labelStartTime1;
         this.labelStartTime2 = this.defaultSetting.labelStartTime2;
         // localStorage.setItem('TaskList', JSON.stringify(this.tasks));
@@ -171,11 +187,11 @@ export class DashboardComponent implements OnInit {
   applyFilter() {
     if (this.showOnlyUserTasks) {
       this.jobDetails = this.jobDetails.filter(
-        (task) =>
-          task.jobDetails[0].dates[0].allocStaff?.allocatedStaff ===
-          this.FirstName
+        (task: Job) =>
+          task.jobDetails[0]?.dates?.[0]?.allocStaff?.allocatedStaff?.includes(this.FirstName) ?? false
       );
     } else {
+      // console.log('Apply filter2222222222222222222222ssss');
       this.jobDetails = this.jobDetails;
     }
   }
@@ -186,8 +202,8 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  updateWeek() {
-    let startOfWeek = this.currentDate;
+  updateWeek(date: Date = new Date()) {
+    let startOfWeek = date;
     this.weekDates = [];
 
     for (let i = 0; i < 5; i++) {
@@ -196,43 +212,44 @@ export class DashboardComponent implements OnInit {
       this.weekDates.push({
         dates: newDate.toLocaleDateString('en-US', {}),
         dayName: newDate.toLocaleDateString('en-US', { weekday: 'short' }),
+        monthName: newDate.toLocaleDateString('en-US', { month: 'long' }),
         dayNumber: newDate.getDate(),
         selected: isToday(newDate),
         lastDate: newDate,
+        // selected: this.isSameDate(newDate, this.currentDate)
       });
     }
+    console.log('weekDates', this.weekDates);
     this.lastDate = this.weekDates[4].lastDate.toISOString();
+    // this.lastDate.toISOString(); // Returns ISO format
 
     console.log('Dates', this.currentDate, this.lastDate);
     this.currentMonth = this.currentDate.toLocaleString('en-US', {
       month: 'long',
     });
+    console.log("Current month", this.currentMonth);
+    
     this.currentYear = this.currentDate.getFullYear();
     this.getJobsByDateRange();
     this.getNotesByDateRange();
     this.getEventsByDateRange();
   }
 
-  // getMonday(d: Date): Date {
-  //   d = new Date(d);
-  //   let day = d.getDay(),
-  //     diff = d.getDate() - day + (day === 0 ? -6 : 1);
-  //   return new Date(d.setDate(diff));
-  // }
-
   prevWeek() {
     this.currentDate.setDate(this.currentDate.getDate() - 5);
-    this.updateWeek();
+    this.updateWeek(this.currentDate);
   }
 
   nextWeek() {
     this.currentDate.setDate(this.currentDate.getDate() + 5);
-    this.updateWeek();
+    this.updateWeek(this.currentDate);
   }
 
-  selectDate(day: any) {
-    this.currentDate.setDate(day.dayNumber);
-    this.updateWeek();
+  selectDate(day: any, month:any) {
+    // this.currentDate.setDate(day.dayNumber);
+    // this.currentDate.setMonth(day., day.dayNumber)
+    this.updateWeek(day.lastDate);
+  
   }
 
   isSameDate(d1: Date, d2: Date): boolean {
@@ -254,7 +271,7 @@ export class DashboardComponent implements OnInit {
       EndDate: lastDate,
     };
     this.jobService.getetNotesByDateRange(dateRange).subscribe((data) => {
-      this.noteDetails.unshift(data);
+      this.noteDetails=data;
       console.log('Notes Details', data);
       this.noteDetails = data;
     });
@@ -267,12 +284,13 @@ export class DashboardComponent implements OnInit {
       EndDate: lastDate,
     };
     this.jobService.getEventsByDateRange(dateRange).subscribe((data) => {
-      this.eventDetails.unshift(data);
+      this.eventDetails=data;
       console.log('Event Details', data);
       this.eventDetails = data;
     });
   }
   getVehicleNameById(vehicleId: any[]) {
+    // debugger;
     // return this.getVehicleNamebyID(vehicleId);
     var arr = [];
     if (vehicleId != null && vehicleId != undefined) {
@@ -327,7 +345,7 @@ export class DashboardComponent implements OnInit {
   getVehicleNamebyID(vehicleId: any) {
     if (vehicleId) {
       // const result = vehicleId.map((item, index) => {
-      const vehicle = this.vehicleList.find((c) => c.id === vehicleId); // Find vehicle by ID
+      const vehicle = this.vehicleList.find((c) => c.id == vehicleId); // Find vehicle by ID
       return vehicle ? vehicle.shortName : String(vehicleId); // Return ShortName if found, otherwise return the vehicleId as a string
       // });
       // return result;
@@ -337,11 +355,11 @@ export class DashboardComponent implements OnInit {
 
   getUserNamebyID(userId: any) {
     // const result = userId.map((item, index) => {
-    const user = this.userList.find((c) => c.id === userId); // Find vehicle by ID
+    const user = this.userList.find((c) => c.id == userId); // Find vehicle by ID
     return user ? `${user.firstName} ${user.lastName}` : String(userId); // Return ShortName if found, otherwise return the vehicleId as a string
   }
   getClientNamebyID(clientId: any) {
-    const client = this.clientList.find((c) => c.clientId === clientId); // Find vehicle by ID
+    const client = this.clientList.find((c) => c.clientId == clientId); // Find vehicle by ID
     return client ? client.clientName : String(clientId); // Return ShortName if found, otherwise return the vehicleId as a string
   }
   expandJobs(jobs: string) {
@@ -362,9 +380,9 @@ export class DashboardComponent implements OnInit {
     return user ? `${user.firstName} ${user.lastName}` : String(userId); // Return ShortName if found, otherwise return the vehicleId as a string
   }
 
-  sendData(jobs: any, day: any) {
+  sendData(job: any, day: any) {
     const dateOnly = moment(
-      jobs.jobDetails[0].dates[0].jobDetailsDate,
+      job.jobDetailsDate,
       'YYYY-MM-DD HH:mm:ss'
     ).format('M/D/YYYY');
     const dateOnly1 = day.dates;
@@ -415,54 +433,56 @@ export class DashboardComponent implements OnInit {
       return '';
     }
   }
-  filteredData() {
+  filteredData(): Job[] {
     // First filter the jobs based on existing criteria
-    const filteredJobs = this.jobDetails.filter((job) => {
+    const filteredJobs = this.jobDetails.filter((job: Job) => {
+      // Check if job has any jobDetails
+      if (!job.jobDetails || job.jobDetails.length === 0) return false;
+
+      // Search match on location and contact
       const searchMatch =
         !this.searchText ||
-        job.jobDetails[0].location
-          ?.toLowerCase()
-          .includes(this.searchText.toLowerCase());
+        job.jobDetails.some((detail: JobDetail) =>
+          (detail.location?.toLowerCase().includes(this.searchText.toLowerCase()) ||
+           detail.contact?.toLowerCase().includes(this.searchText.toLowerCase()))
+        );
 
+      // User match across all jobDetails and their dates
       const userMatch =
         !this.selectedUser ||
-        (job.jobDetails[0]?.dates?.[0]?.allocStaff?.allocatedStaff?.some(
-          (staff: string) =>
-            staff.toString().toLowerCase() === this.selectedUser.toLowerCase()
-        ) ??
-          false);
+        job.jobDetails.some((detail: JobDetail) =>
+          detail.dates?.some((date: JobDate) =>
+            date.allocStaff?.allocatedStaff?.some((staff: string) =>
+              staff.toString().toLowerCase() === this.selectedUser.toLowerCase()
+            ) ?? false
+          ) ?? false
+        );
 
+      // Job type match (using jobCategory from root level)
       const jobTypeMatch =
         !this.selectedJobType ||
-        (job.jobDetails[0]?.roadCategory &&
-          String(job.jobDetails[0].roadCategory).toLowerCase() ===
-          this.selectedJobType.toLowerCase());
+        (job.jobCategory != null &&
+          String(job.jobCategory).toLowerCase() === this.selectedJobType.toLowerCase());
 
+      // My jobs filter - check across all jobDetails and dates
       const myJob =
         !this.searchMyJob ||
-        (job.jobDetails[0]?.dates?.[0]?.allocStaff?.allocatedStaff?.some(
-          (staff: string) => staff.toString() === this.FirstName
-        ) ??
-          false);
+        job.jobDetails.some((detail: JobDetail) =>
+          detail.dates?.some((date: JobDate) =>
+            date.allocStaff?.allocatedStaff?.some((staff: string) =>
+              staff.toString() === this.FirstName
+            ) ?? false
+          ) ?? false
+        );
 
       return searchMatch && userMatch && jobTypeMatch && myJob;
     });
 
-    // Sort the filtered jobs by date
-    return filteredJobs.sort((a, b) => {
-      let tsA = 0;
-      let tsB = 0;
-      const jdA = (a?.jobDetails && a.jobDetails[0]) || a;
-      const jdB = (b?.jobDetails && b.jobDetails[0]) || a;
-      if (jdA?.dates?.length > 0) {
-        const dateA = jdA.dates[0]?.jobDetailsDate;
-        tsA = new Date(dateA).getTime();
-      }
-      if (jdB?.dates?.length > 0) {
-        const dateB = jdB.dates[0]?.jobDetailsDate;
-        tsB = new Date(dateB).getTime();
-      }
-      return tsA - tsB;
+    // Sort the filtered jobs by startDate
+    return filteredJobs.sort((a: Job, b: Job) => {
+      const dateA = new Date(a.startDate || 0);
+      const dateB = new Date(b.startDate || 0);
+      return dateA.getTime() - dateB.getTime();
     });
   }
 
