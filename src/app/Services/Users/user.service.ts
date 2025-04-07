@@ -1,4 +1,3 @@
-
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -20,7 +19,7 @@ export class UserService {
   constructor(private http: HttpClient, private db: DatabaseService) { }
 
   getAllUsers(): Observable<any> {
-      return this.http.get(this.mainUrl + 'UserManagement/GetAllUsers');
+    return this.http.get(this.mainUrl + 'UserManagement/GetAllUsers');
   }
   getUserByID(paramsObj: any): Observable<any> {
     let params = new HttpParams();
@@ -32,7 +31,7 @@ export class UserService {
       }
     }
 
-      return this.http.get(this.mainUrl + 'UserManagement/GetUserById', {
+    return this.http.get(this.mainUrl + 'UserManagement/GetUserById', {
       params,
     }).pipe(
     );

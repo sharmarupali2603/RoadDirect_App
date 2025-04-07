@@ -4,6 +4,8 @@ import { SwUpdate } from '@angular/service-worker';
 import { isToday } from 'date-fns';
 import * as moment from 'moment';
 import { ClientService } from 'src/app/Services/Client/client.service';
+import { DatabaseService } from 'src/app/Services/Database/database.service';
+import { JobsService } from 'src/app/Services/Jobs/jobs.service';
 import { UserService } from 'src/app/Services/Users/user.service';
 import { VehicleService } from 'src/app/Services/Vehicle/vehicle.service';
 
@@ -228,7 +230,7 @@ export class DashboardComponent implements OnInit {
       month: 'long',
     });
     console.log("Current month", this.currentMonth);
-    
+
     this.currentYear = this.currentDate.getFullYear();
     this.getJobsByDateRange();
     this.getNotesByDateRange();
@@ -245,11 +247,11 @@ export class DashboardComponent implements OnInit {
     this.updateWeek(this.currentDate);
   }
 
-  selectDate(day: any, month:any) {
+  selectDate(day: any, month: any) {
     // this.currentDate.setDate(day.dayNumber);
     // this.currentDate.setMonth(day., day.dayNumber)
     this.updateWeek(day.lastDate);
-  
+
   }
 
   isSameDate(d1: Date, d2: Date): boolean {
@@ -270,8 +272,8 @@ export class DashboardComponent implements OnInit {
       StartDate: currentDate,
       EndDate: lastDate,
     };
-    this.jobService.getetNotesByDateRange(dateRange).subscribe((data) => {
-      this.noteDetails=data;
+    this.jobService.getetNotesByDateRange(dateRange).subscribe((data: any) => {
+      this.noteDetails = data;
       console.log('Notes Details', data);
       this.noteDetails = data;
     });
@@ -283,8 +285,8 @@ export class DashboardComponent implements OnInit {
       StartDate: currentDate,
       EndDate: lastDate,
     };
-    this.jobService.getEventsByDateRange(dateRange).subscribe((data) => {
-      this.eventDetails=data;
+    this.jobService.getEventsByDateRange(dateRange).subscribe((data: any) => {
+      this.eventDetails = data;
       console.log('Event Details', data);
       this.eventDetails = data;
     });
@@ -443,8 +445,8 @@ export class DashboardComponent implements OnInit {
       const searchMatch =
         !this.searchText ||
         job.jobDetails.some((detail: JobDetail) =>
-          (detail.location?.toLowerCase().includes(this.searchText.toLowerCase()) ||
-           detail.contact?.toLowerCase().includes(this.searchText.toLowerCase()))
+        (detail.location?.toLowerCase().includes(this.searchText.toLowerCase()) ||
+          detail.contact?.toLowerCase().includes(this.searchText.toLowerCase()))
         );
 
       // User match across all jobDetails and their dates
