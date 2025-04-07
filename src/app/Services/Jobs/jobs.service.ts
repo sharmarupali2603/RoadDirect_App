@@ -7,8 +7,10 @@ import { DatabaseService } from '../Database/database.service';
   providedIn: 'root',
 })
 export class JobsService {
-  private mainUrl =
-    'https://fabricate.mockaroo.com/api/v1/databases/eboard/api/';
+  // private mainUrl =
+  //   'https://fabricate.mockaroo.com/api/v1/databases/eboard/api/';
+   private mainUrl =
+    'https://pwa-alpha-aws.roaddirect.co.nz/api/';
   private token = '76fda9e0-486a-4efc-b4ee-3ea32d774c8c'; // Replace with your actual token
 
   constructor(private http: HttpClient, private db: DatabaseService) {}
@@ -22,42 +24,35 @@ export class JobsService {
 
   // GET request
   getCurrentUser(): Observable<any> {
-    return this.http.get(this.mainUrl + 'GetCurrentUser', {
-      headers: this.getHeaders(),
-    });
+    return this.http.get(this.mainUrl + 'UserManagement/GetCurrentUser');
   }
 
   // POST request with Bearer token
   getJobsByDateRange(postData: any): Observable<any> {
     return this.http
-      .post(this.mainUrl + 'GetJobsByDateRange', postData, {
-        headers: this.getHeaders(),
-      })
+      .post(this.mainUrl + 'Job/GetJobsByDateRange', postData)
       .pipe(
         tap((response) => {
           // Store API response in IndexedDB
           from(this.db.saveJobData(response)).subscribe();
         }),
         catchError(() => {
-          // If offline, return cached data
-          return from(this.db.getAllJobData()).pipe(
-            map((items) => items.map((item) => item.data))
-          );
+          // If offline, return cached data 
+          return '';
+          // return from(this.db.getAllJobData()).pipe(
+          //   map((items) => items.map((item) => item.data))
+          // );
         })
       );
   }
 
   // GET request
   getMyTasks(): Observable<any> {
-    return this.http.get(this.mainUrl + 'GetMyTasks', {
-      headers: this.getHeaders(),
-    });
+    return this.http.get(this.mainUrl + 'Tracking/GetMyTasks');
   }
 
   getDefaultSettings(): Observable<any> {
-    return this.http.get(this.mainUrl + 'GetDefaultSettings', {
-      headers: this.getHeaders(),
-    });
+    return this.http.get(this.mainUrl + 'UserManagement/GetDefaultSettings');
   }
 
   getCachedData() {
@@ -67,9 +62,7 @@ export class JobsService {
   // POST request with Bearer token
   getetNotesByDateRange(postData: any): Observable<any> {
     return this.http
-      .post(this.mainUrl + 'GetNotesByDateRange', postData, {
-        headers: this.getHeaders(),
-      })
+      .post(this.mainUrl + 'Support/GetNotesByDateRange', postData)
       .pipe(
         tap((response) => {
           // Store API response in IndexedDB
@@ -86,9 +79,7 @@ export class JobsService {
 
   getEventsByDateRange(postData: any): Observable<any> {
     return this.http
-      .post(this.mainUrl + 'GetEventsByDateRange', postData, {
-        headers: this.getHeaders(),
-      })
+      .get(this.mainUrl + 'Support/GetEvents', postData)
       .pipe(
         tap((response) => {
           // Store API response in IndexedDB
@@ -104,8 +95,6 @@ export class JobsService {
   }
 
   getFormFields(): Observable<any> {
-    return this.http.get(this.mainUrl + 'GetFormFields', {
-      headers: this.getHeaders(),
-    });
+    return this.http.get(this.mainUrl + 'Support/GetFormFields');
   }
 }

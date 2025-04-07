@@ -8,8 +8,10 @@ import { catchError, map, tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class ClientService {
+    // private mainUrl =
+  //   'https://fabricate.mockaroo.com/api/v1/databases/eboard/api/';
   private mainUrl =
-    'https://fabricate.mockaroo.com/api/v1/databases/eboard/api/';
+  'https://pwa-alpha-aws.roaddirect.co.nz/api/';
   private token = '76fda9e0-486a-4efc-b4ee-3ea32d774c8c'; // Replace with your actual token
 
   // Function to get headers with Bearer token
@@ -23,9 +25,7 @@ export class ClientService {
   constructor(private http: HttpClient,  private db: DatabaseService) {}
 
   getAllClients(): Observable<any> {
-    return this.http.get(this.mainUrl + 'GetAllClients', {
-      headers: this.getHeaders(),
-    });
+    return this.http.get(this.mainUrl + 'ClientManagement/GetAllClients');
   }
 
   getCachedData() {
