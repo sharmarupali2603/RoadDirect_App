@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JobsService } from 'src/app/Services/Jobs/jobs.service';
-import * as moment from 'moment';
+import moment from 'moment';
+import { PdfService } from 'src/app/Services/pdf/pdf.service';
 @Component({
   selector: 'app-job-expand',
   templateUrl: './job-expand.component.html',
@@ -13,6 +14,8 @@ export class JobExpandComponent implements OnInit {
   vehicleList: any[] = [];
   userList: any[] = [];
   jobs: any;
+  jobDetails: any;
+  jobDate: any;
   currentDate: Date = new Date();
   lastDate: any;
   noteDetails: any[] = [];
@@ -29,14 +32,23 @@ export class JobExpandComponent implements OnInit {
   matchedDate: boolean = false;
   matchednote: boolean = false;
   matchedEvent: boolean = false;
-  constructor(private route: Router, public jobService:JobsService
+  clientID:any;
+  constructor(
+    private route: Router,
+    public jobService: JobsService,
+    public pdfService: PdfService
   ) {
     const navigation = this.route.getCurrentNavigation();
     this.jobs = navigation?.extras.state?.['data'] || {};
-    console.log("Job>>>>>>>>>>>",this.jobs);
-    
+    console.log('Job>>>>>>>>>>>', this.jobs);
+
     this.currentDate = navigation?.extras.state?.['date'] || {};
     this.lastDate = navigation?.extras.state?.['lastdate'] || {};
+    this.jobDetails = navigation?.extras.state?.['jobDetails'] || {};
+    this.jobDate = navigation?.extras.state?.['jobDate'] || {};
+    console.log('job details>>>>>>>>>', this.jobDetails);
+    console.log('job date>>>>>>>>>', this.jobDate);
+
     this.getDefaultSettings();
     this.getEventsByDateRange();
     // Detect online/offline status
@@ -94,7 +106,7 @@ export class JobExpandComponent implements OnInit {
 
   getNotesByDateRange() {
     debugger;
-    let current= this.currentDate.toISOString();
+    let current = this.currentDate.toISOString();
     let currentDate = current;
     let lastDate = this.lastDate;
     const dateRange = {
@@ -177,7 +189,7 @@ export class JobExpandComponent implements OnInit {
   getVehicleNamebyID(vehicleId: any) {
     if (vehicleId) {
       // const result = vehicleId.map((item, index) => {
-      const vehicle = this.vehicleList.find((c) => c.id === vehicleId); // Find vehicle by ID
+      const vehicle = this.vehicleList.find((c) => c.id == vehicleId); // Find vehicle by ID
       return vehicle ? vehicle.shortName : String(vehicleId); // Return ShortName if found, otherwise return the vehicleId as a string
       // });
       // return result;
@@ -187,15 +199,18 @@ export class JobExpandComponent implements OnInit {
 
   getUserNamebyID(userId: any) {
     // const result = userId.map((item, index) => {
-    const user = this.userList.find((c) => c.id === userId); // Find vehicle by ID
+    const user = this.userList.find((c) => c.id == userId); // Find vehicle by ID
     return user ? `${user.firstName} ${user.lastName}` : String(userId); // Return ShortName if found, otherwise return the vehicleId as a string
   }
   getClientNamebyID(clientId: any) {
     // debugger;
     // const result = clientId.map((item, index) => {
-    const client = this.clientList.find((c) => c.clientId === clientId); // Find vehicle by ID
-    return client ? client.clientName : String(clientId); // Return ShortName if found, otherwise return the vehicleId as a string
+    const clientID= this.clientList.find((c) => c.clientId == clientId); // Find vehicle by ID
+    this.clientID= clientID ?  this.clientID.clientName : String(clientId);
+    // console.log('clientID:',this.clientID);
+    return  clientID ?  this.clientID.clientName : String(clientId); // Return ShortName if found, otherwise return the vehicleId as a string
     // });
+    // console.log('clientID:',this.clientID);
     // return result;
   }
   getTypeOfWork(rowData1: any) {
@@ -210,7 +225,7 @@ export class JobExpandComponent implements OnInit {
       return rowData1;
     }
   }
-  
+
   getElements(allocTrucks: any[]) {
     // return allocTrucks.map(item => String(item)).join(', ');
     // debugger;
@@ -247,7 +262,6 @@ export class JobExpandComponent implements OnInit {
     // );
   }
 
-  
   collapseJobs() {
     this.route.navigate(['/dashboard']);
   }
@@ -271,7 +285,7 @@ export class JobExpandComponent implements OnInit {
   }
   getTaskStatus(jobs: any, _userId: any[]) {
     // debugger;
-    const task = this.taskList.find((c) => c.jobId === jobs.id); // Find vehicle by ID
+    const task = this.taskList.find((c) => c.jobId == jobs.id); // Find vehicle by ID
     const taskStatus = task ? task.status : String(jobs.id);
     if (taskStatus == '2') {
       return '(L)';
@@ -286,16 +300,68 @@ export class JobExpandComponent implements OnInit {
     }
   }
 
-   sendEventData(day: any, event: any[]) {
-      // debugger;
-      const dateOnly1 =  moment(day, 'YYYY-MM-DD HH:mm:ss').format('M/D/YYYY')
-      for (let i = 0; i < event.length; i++) {
-        let dateOnly = moment(event, 'YYYY-MM-DD HH:mm:ss').format('M/D/YYYY');
-        if (dateOnly == dateOnly1) {
-          this.matchedEvent = true;
-        } else {
-          this.matchedEvent = false;
-        }
+  sendEventData(day: any, event: any[]) {
+    // debugger;
+    const dateOnly1 = moment(day, 'YYYY-MM-DD HH:mm:ss').format('M/D/YYYY');
+    for (let i = 0; i < event.length; i++) {
+      let dateOnly = moment(event, 'YYYY-MM-DD HH:mm:ss').format('M/D/YYYY');
+      if (dateOnly == dateOnly1) {
+        this.matchedEvent = true;
+      } else {
+        this.matchedEvent = false;
       }
     }
+  }
+
+  // openMap(lat: number, lng: number) {
+  //   const url = `https://www.google.com/maps?q=${lat},${lng}`;
+  //   window.open(url, '_blank');
+  // }
+
+  openMap(location: string) {
+    debugger;
+    const query = encodeURIComponent(location);
+    const geoUrl = `geo:0,0?q=${query}`;
+    const webUrl = `https://www.google.com/maps/search/?api=1&query=${query}`;
+
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      // Try geo: URL on mobile
+      setTimeout(() => {
+        // Fallback to Google Maps in browser if geo fails (e.g. unsupported browser)
+        window.location.href = webUrl;
+      }, 1000);
+
+      // Try launching the geo: URL
+      window.location.href = geoUrl;
+    } else {
+      // On desktop: just open Google Maps
+      window.open(webUrl, '_blank');
+    }
+    // <!--- open with new tab --->
+    // const query = encodeURIComponent(location);
+    // const url = `https://www.google.com/maps/search/?api=1&query=${query}`;
+    // window.open(url, '_blank');
+
+    // <!--- open with iframe --->
+    // this.route.navigate(['/location'], { state: { location: location}});
+  }
+
+  downloadPdf(jobs:any,jobDetails:any,jobDate:any) {
+    debugger;
+    const details = {
+      jobs: jobs,
+      jobDetails: jobDetails,
+      jobDate: jobDate,
+      clientID:this.clientID
+    };
+console.log('clientID:',this.clientID);
+    this.pdfService.generatePdf(details);
+  }
+
+  recordTask(jobs:any,jobDetails:any,jobDate:any){
+    console.log('clientID:',this.clientID);
+  this.route.navigate(['/create-record-task'],{ state: { data: jobs, jobDetails: jobDetails, jobDate: jobDate, clientID:this.clientID } });
+  }
 }

@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { ClientService } from 'src/app/Services/Client/client.service';
 import { VehicleService } from 'src/app/Services/Vehicle/vehicle.service';
 import { UserService } from 'src/app/Services/Users/user.service';
-import * as moment from 'moment';
+import moment from 'moment';
 
 interface JobDate {
   allocStaff?: {
@@ -362,18 +362,18 @@ export class DashboardComponent implements OnInit {
     return user ? `${user.firstName} ${user.lastName}` : String(userId); // Return ShortName if found, otherwise return the vehicleId as a string
   }
   getClientNamebyID(clientId: any) {
-    debugger;
+    // debugger;
     // const result = clientId.map((item, index) => {
     const client = this.clientList.find((c) => c.clientId == clientId); // Find vehicle by ID
     return client ? client.clientName : String(clientId); // Return ShortName if found, otherwise return the vehicleId as a string
     // });
     // return result;
   }
-  expandJobs(jobs: string) {
+  expandJobs(jobs: string, jobDetails: string, date: string) {
     console.log('Navigate to Job Expand Page', this.currentDate, this.lastDate);
-    console.log('Job Details..........', jobs);
+    // console.log('Job Details..........', jobs);
 
-    this.router.navigate(['/job-expand'], { state: { data: jobs, date: this.currentDate, lastdate: this.lastDate } });
+    this.router.navigate(['/job-expand'], { state: { data: jobs, date: this.currentDate, lastdate: this.lastDate, jobDetails: jobDetails, jobDate: date } });
   }
 
   getElements(allocTrucks: any[]) {

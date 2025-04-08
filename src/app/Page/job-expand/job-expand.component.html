@@ -5,12 +5,12 @@
   >
     <p class="mb-0">
       <i class="fas fa-calendar-alt"></i> 
-      {{ jobs.jobDetails[0].dates[0].jobDetailsDate | date : "fullDate" }}
+      {{ jobDate.jobDetailsDate | date : "fullDate" }}
     </p>
     <div>
       <span *ngFor="let event of eventDetails">
         <span *ngFor="let ev of event.eventDates">
-          {{ sendEventData(jobs.jobDetails[0].dates[0].jobDetailsDate, ev.eventDateDate) }}
+          {{ sendEventData(jobDate.jobDetailsDate, ev.eventDateDate) }}
           <span
             *ngIf="matchedEvent"
             class="circle"
@@ -22,9 +22,7 @@
     </div>
   </div>
 
-  <!-- Job Card -->
   <div class="card shadow-sm mt-3">
-    <!-- <div *ngFor="let jobs of jobDetails" class="card shadow-sm mt-3"> -->
     <div class="card-hea h-25  d-flex justify-content-between bg-light">
       <p  class="padding-p">
         <i class="fas fa-building"></i>{{ getClientNamebyID(jobs.clientId) }}
@@ -53,49 +51,41 @@
     <div class="d-flex justify-content-between">
       <div class="card-body">
         <p>
-          <i class="fas fa-map-marker-alt"></i>{{ jobs.jobDetails[0].location }}
+          <i class="fas fa-map-marker-alt"></i>{{ jobDetails.location }}
         </p>
         <p>
           <i class="fas fa-clock"></i>
-          {{ jobs.jobDetails[0].dates[0].duration.durationType }}.
+          {{ jobDate?.duration?.durationType }}.
           {{ labelStartTime1 }}:
           <strong>{{
-            jobs.jobDetails[0].dates[0].startTime.startTime1 | date : "hh:mm"
+            jobDate?.startTime?.startTime1 | date : "hh:mm"
           }}</strong
           >, {{ labelStartTime2 }}
           <strong>{{
-            jobs.jobDetails[0].dates[0].startTime.startTime2 | date : "hh:mm"
+            jobDate?.startTime?.startTime2 | date : "hh:mm"
           }}</strong>
         </p>
         <p>
           <i class="fas fa-truck-pickup"></i>{{
             getVehicleNameById(
-              jobs.jobDetails[0].dates[0].allocTrucks?.allocTrucks
+              jobDate?.allocTrucks?.allocTrucks
             )
           }}
         </p>
-        <!-- Staff Details -->
         <p class="fw-bold text-dark">
           <i class="fas fa-users"></i>
           <span class="text-primary">{{
             getTaskStatus(
               jobs,
-              jobs.jobDetails[0].dates[0].allocStaff?.allocatedStaff
+              jobDate?.allocStaff?.allocatedStaff
             )
           }}{{
             getStaffNameById(
-              jobs.jobDetails[0].dates[0].allocStaff?.allocatedStaff
+              jobDate?.allocStaff?.allocatedStaff
             )
           }}</span>
         </p>
-        <!-- <p class="mt-2"><i class="fas fa-traffic-light"></i>Static Data......</p>
-      <p><i class="fas fa-flag"></i> Static Data......</p> -->
-        <!-- <p class="fas fa-traffic-light"></p>
-        <pre>{{
-          getClosureOptions(jobs.jobDetails[0].dates[0].closures[0]._closures)
-        }}</pre> -->
-
-        <span *ngFor="let task of jobs.jobDetails[0].dates[0].closures">
+        <span *ngFor="let task of jobDate?.closures">
           <span *ngIf="task.closureType == 1">
             <p>
               <i class="fas fa-road"></i
@@ -111,13 +101,12 @@
         </span>
 
       </div>
-      <!-- Extra Info Section -->
       <div class="paddingright text-center">
         <div
           class="row-margin row-extra border py-2 fw-bold"
           data-bs-toggle="modal"
           data-bs-target="#noteModal"
-          *ngIf="jobs.jobDetails[0].dates[0].jobDailyNote.note"
+          *ngIf="jobDate?.jobDailyNote.note"
         >
           Extra Info
         </div>
@@ -140,7 +129,7 @@
                 ></button>
               </div>
               <div class="modal-body">
-                {{ jobs.jobDetails[0].dates[0].jobDailyNote.note }}
+                {{ jobDate?.jobDailyNote.note }}
               </div>
               <div class="modal-footer">
                 <button
@@ -159,7 +148,7 @@
           <div
             class="NP-green"
             *ngIf="
-              jobs.jobDetails[0].dates[0].removeParks?.removeParksTypes !=
+              jobDate?.removeParks?.removeParksTypes !=
               null
             "
           >
@@ -168,45 +157,45 @@
           <div
             style="color: red"
             *ngIf="
-              jobs.jobDetails[0].dates[0].removeParks?.removeParksTypes ==
+              jobDate?.removeParks?.removeParksTypes ==
               null
             "
           >
             NA
           </div>
         </div>
-        <div class="row-margin row-extra border py-2">
+        <div *ngIf="jobDetails.siteAudits != null || jobDetails.siteSafetyBriefings != '' || jobDetails.siteInspections != ''" class="row-margin row-extra border py-2">
           <span
             class="audit-check"
-            *ngIf="jobs.jobDetails[0].siteSafetyBriefings != []"
+            *ngIf="jobDetails.siteSafetyBriefings != []"
           >
             ✔
           </span>
-          <span *ngIf="jobs.jobDetails[0].siteInspections != []">
-            ({{ jobs.jobDetails[0].siteInspections.length }})
+          <span *ngIf="jobDetails.siteInspections != []">
+            ({{ jobDetails.siteInspections.length }})
           </span>
-          <span *ngIf="jobs.jobDetails[0].siteAudits != []"> A </span>
+          <span *ngIf="jobDetails.siteAudits != []"> A </span>
         </div>
         <div class="row-margin row-extra border py-2">
-          Job {{ jobs.jobDetails[0].jobId }}
+          Job {{ jobDetails.jobId }}
         </div>
       </div>
     </div>
     <div class="d-flex gap border-bottom">
-      <button class="btn btn-outline-primary">📂 Documents</button>
+      <button class="btn btn-outline-primary" (click)="downloadPdf(jobs,jobDetails,jobDate)">📂 Documents</button>
 
       <button class="btn btn-outline-primary">📷 Photos</button>
 
-      <button class="btn btn-outline-primary">📍 Location</button>
+      <button class="btn btn-outline-primary" (click)="openMap(jobDetails.location)">📍 Location</button>
     </div>
-
+    <!-- 18.8632124 52.1899235 -->
     <div>
       <p class="border-bottom">
-        <strong>🛠 Type of Work:</strong> {{ getTypeOfWork(jobs.jobDetails[0].descActivity) }}
+        <strong>🛠 Type of Work:</strong> {{ getTypeOfWork(jobDetails.descActivity) }}
       </p>
 
       <span
-        *ngFor="let task of jobs.jobDetails[0].dates[0].closures"
+        *ngFor="let task of jobDate?.closures"
         class="border-bottom"
       >
         <span *ngIf="task.closureType == 1">
@@ -224,13 +213,13 @@
       </span>
 
       <div class="mt-3">
-        <button class="btn btn-primary w-100">📌 Record Task</button>
+        <button class="btn btn-primary w-100" (click)="recordTask(jobs,jobDetails,jobDate)">📌 Record Task</button>
         <button class="btn btn-secondary w-100 mt-2">📝 Add Job Note</button>
         <button class="btn btn-warning w-100 mt-2">🔧 Edit Equipment</button>
       </div>
     </div>
 
-    <!-- Notes Section -->
+  
     <div class="mt-3">
       <input type="text" class="form-control" placeholder="All Staff Notes" />
     </div>
