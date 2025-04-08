@@ -292,7 +292,6 @@ export class DashboardComponent implements OnInit {
     });
   }
   getVehicleNameById(vehicleId: any[]) {
-    // debugger;
     // return this.getVehicleNamebyID(vehicleId);
     var arr = [];
     if (vehicleId != null && vehicleId != undefined) {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { JobsService } from 'src/app/Services/Jobs/jobs.service';
 import moment from 'moment';
+import { JobsService } from 'src/app/Services/Jobs/jobs.service';
 import { PdfService } from 'src/app/Services/pdf/pdf.service';
 @Component({
   selector: 'app-job-expand',
@@ -32,7 +32,7 @@ export class JobExpandComponent implements OnInit {
   matchedDate: boolean = false;
   matchednote: boolean = false;
   matchedEvent: boolean = false;
-  clientID:any;
+  clientID: any;
   constructor(
     private route: Router,
     public jobService: JobsService,
@@ -201,10 +201,10 @@ export class JobExpandComponent implements OnInit {
   }
   getClientNamebyID(clientId: any) {
     // const result = clientId.map((item, index) => {
-    const clientID= this.clientList.find((c) => c.clientId == clientId); // Find vehicle by ID
-    this.clientID= clientID ?  this.clientID.clientName : String(clientId);
+    const clientID = this.clientList.find((c) => c.clientId == clientId); // Find vehicle by ID
+    this.clientID = clientID ? this.clientID.clientName : String(clientId);
     // console.log('clientID:',this.clientID);
-    return  clientID ?  this.clientID.clientName : String(clientId); // Return ShortName if found, otherwise return the vehicleId as a string
+    return clientID ? this.clientID.clientName : String(clientId); // Return ShortName if found, otherwise return the vehicleId as a string
     // });
     // console.log('clientID:',this.clientID);
     // return result;
@@ -287,7 +287,6 @@ export class JobExpandComponent implements OnInit {
   // }
 
   openMap(location: string) {
-    debugger;
     const query = encodeURIComponent(location);
     const geoUrl = `geo:0,0?q=${query}`;
     const webUrl = `https://www.google.com/maps/search/?api=1&query=${query}`;
@@ -316,20 +315,19 @@ export class JobExpandComponent implements OnInit {
     // this.route.navigate(['/location'], { state: { location: location}});
   }
 
-  downloadPdf(jobs:any,jobDetails:any,jobDate:any) {
-    debugger;
+  downloadPdf(jobs: any, jobDetails: any, jobDate: any) {
     const details = {
       jobs: jobs,
       jobDetails: jobDetails,
       jobDate: jobDate,
-      clientID:this.clientID
+      clientID: this.clientID
     };
-console.log('clientID:',this.clientID);
+    console.log('clientID:', this.clientID);
     this.pdfService.generatePdf(details);
   }
 
-  recordTask(jobs:any,jobDetails:any,jobDate:any){
-    console.log('clientID:',this.clientID);
-  this.route.navigate(['/create-record-task'],{ state: { data: jobs, jobDetails: jobDetails, jobDate: jobDate, clientID:this.clientID } });
+  recordTask(jobs: any, jobDetails: any, jobDate: any) {
+    console.log('clientID:', this.clientID);
+    this.route.navigate(['/create-record-task'], { state: { data: jobs, jobDetails: jobDetails, jobDate: jobDate, clientID: this.clientID } });
   }
 }

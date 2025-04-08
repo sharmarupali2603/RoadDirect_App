@@ -2,17 +2,14 @@
   <!-- Header Section -->
   <div class="d-flex justify-content-between align-items-center rounded header-bar">
     <p class="mb-0">
-      <i class="fas fa-calendar-alt"></i> 
+      <i class="fas fa-calendar-alt"></i>
       {{ jobDate.jobDetailsDate | date : "fullDate" }}
     </p>
     <div>
       <span *ngFor="let event of eventDetails">
         <span *ngFor="let ev of event.eventDates">
           {{ sendEventData(jobDate.jobDetailsDate, ev.eventDateDate) }}
-          <span
-            *ngIf="matchedEvent"
-            class="circle"
-            [ngStyle]="{ 'background-color': '#' + event.eventColour }"
+          <span *ngIf="matchedEvent" class="circle" [ngStyle]="{ 'background-color': '#' + event.eventColour }"
             [title]="ev.eventName">
           </span>
         </span>
@@ -22,10 +19,10 @@
 
   <div class="card shadow-sm mt-3">
     <div class="card-hea h-25  d-flex justify-content-between bg-light">
-      <p  class="padding-p">
+      <p class="padding-p">
         <i class="fas fa-building"></i>{{ getClientNamebyID(jobs.clientId) }}
       </p>
-      <button  class="expand-btn btn btn-primary btn-sm" (click)="collapseJobs()">
+      <button class="expand-btn btn btn-primary btn-sm" (click)="collapseJobs()">
         <i class="fas fa-chevron-up"></i> Collapse Job
       </button>
     </div>
@@ -57,84 +54,62 @@
           {{ labelStartTime1 }}:
           <strong>{{
             jobDate?.startTime?.startTime1 | date : "hh:mm"
-          }}</strong
-          >, {{ labelStartTime2 }}
+            }}</strong>, {{ labelStartTime2 }}
           <strong>{{
             jobDate?.startTime?.startTime2 | date : "hh:mm"
-          }}</strong>
+            }}</strong>
         </p>
         <p>
           <i class="fas fa-truck-pickup"></i>{{
-            getVehicleNameById(
-              jobDate?.allocTrucks?.allocTrucks
-            )
+          getVehicleNameById(
+          jobDate?.allocTrucks?.allocTrucks
+          )
           }}
         </p>
         <p class="fw-bold text-dark">
           <i class="fas fa-users"></i>
           <span class="text-primary">{{
             getTaskStatus(
-              jobs,
-              jobDate?.allocStaff?.allocatedStaff
+            jobs,
+            jobDate?.allocStaff?.allocatedStaff
             )
-          }}{{
+            }}{{
             getStaffNameById(
-              jobDate?.allocStaff?.allocatedStaff
+            jobDate?.allocStaff?.allocatedStaff
             )
-          }}</span>
+            }}</span>
         </p>
         <span *ngFor="let task of jobDate?.closures">
           <span *ngIf="task.closureType == 1">
             <p>
-              <i class="fas fa-road"></i
-              >{{ getClosureOptions(task.closures) }}
+              <i class="fas fa-road"></i>{{ getClosureOptions(task.closures) }}
             </p>
           </span>
           <span *ngIf="task.closureType != 1">
             <p>
-              <i class="bi bi-person-walking"></i
-              >{{ getClosureOptions(task.closures) }}
+              <i class="bi bi-person-walking"></i>{{ getClosureOptions(task.closures) }}
             </p>
           </span>
         </span>
 
       </div>
       <div class="paddingright text-center">
-        <div
-          class="row-margin row-extra border py-2 fw-bold"
-          data-bs-toggle="modal"
-          data-bs-target="#noteModal"
-          *ngIf="jobDate?.jobDailyNote.note"
-        >
+        <div class="row-margin row-extra border py-2 fw-bold" data-bs-toggle="modal" data-bs-target="#noteModal"
+          *ngIf="jobDate?.jobDailyNote.note">
           Extra Info
         </div>
-        <div
-          class="modal fade"
-          id="noteModal"
-          tabindex="-1"
-          aria-labelledby="noteModalLabel"
-          aria-hidden="true"
-        >
+        <div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="noteModalLabel">Note</h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
                 {{ jobDate?.jobDailyNote.note }}
               </div>
               <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                   Close
                 </button>
               </div>
@@ -143,30 +118,23 @@
         </div>
         <div class="row-margin row-extra border py-2">
           NP
-          <div
-            class="NP-green"
-            *ngIf="
+          <div class="NP-green" *ngIf="
               jobDate?.removeParks?.removeParksTypes !=
               null
-            "
-          >
+            ">
             Y
           </div>
-          <div
-            style="color: red"
-            *ngIf="
+          <div style="color: red" *ngIf="
               jobDate?.removeParks?.removeParksTypes ==
               null
-            "
-          >
+            ">
             NA
           </div>
         </div>
-        <div *ngIf="jobDetails.siteAudits != null || jobDetails.siteSafetyBriefings != '' || jobDetails.siteInspections != ''" class="row-margin row-extra border py-2">
-          <span
-            class="audit-check"
-            *ngIf="jobDetails.siteSafetyBriefings != []"
-          >
+        <div
+          *ngIf="jobDetails.siteAudits != null || jobDetails.siteSafetyBriefings != '' || jobDetails.siteInspections != ''"
+          class="row-margin row-extra border py-2">
+          <span class="audit-check" *ngIf="jobDetails.siteSafetyBriefings != []">
             ✔
           </span>
           <span *ngIf="jobDetails.siteInspections != []">
@@ -192,20 +160,15 @@
         <strong>🛠 Type of Work:</strong> {{ getTypeOfWork(jobDetails.descActivity) }}
       </p>
 
-      <span
-        *ngFor="let task of jobDate?.closures"
-        class="border-bottom"
-      >
+      <span *ngFor="let task of jobDate?.closures" class="border-bottom">
         <span *ngIf="task.closureType == 1">
           <p>
-            <strong>🔹TTM Road Set-Up-</strong
-            >{{ getClosure(task.closures) }}
+            <strong>🔹TTM Road Set-Up-</strong>{{ getClosure(task.closures) }}
           </p>
         </span>
         <span *ngIf="task.closureType != 1">
           <p>
-            <strong>TTM FootPath Set-Up -</strong
-            >{{ getClosure(task.closures) }}
+            <strong>TTM FootPath Set-Up -</strong>{{ getClosure(task.closures) }}
           </p>
         </span>
       </span>
@@ -217,7 +180,7 @@
       </div>
     </div>
 
-  
+
     <div class="mt-3">
       <input type="text" class="form-control" placeholder="All Staff Notes" />
     </div>
