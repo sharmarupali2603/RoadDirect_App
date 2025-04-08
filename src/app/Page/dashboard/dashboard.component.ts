@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 import { isToday } from 'date-fns';
-import * as moment from 'moment';
+import moment from 'moment';
 import { ClientService } from 'src/app/Services/Client/client.service';
-import { DatabaseService } from 'src/app/Services/Database/database.service';
-import { JobsService } from 'src/app/Services/Jobs/jobs.service';
 import { UserService } from 'src/app/Services/Users/user.service';
 import { VehicleService } from 'src/app/Services/Vehicle/vehicle.service';
+import { DatabaseService } from '../../Services/Database/database.service';
+import { JobsService } from '../../Services/Jobs/jobs.service';
 
 interface JobDate {
   allocStaff?: {
@@ -364,11 +364,11 @@ export class DashboardComponent implements OnInit {
     const client = this.clientList.find((c) => c.clientId == clientId); // Find vehicle by ID
     return client ? client.clientName : String(clientId); // Return ShortName if found, otherwise return the vehicleId as a string
   }
-  expandJobs(jobs: string) {
+  expandJobs(jobs: string, jobDetails: string, date: string) {
     console.log('Navigate to Job Expand Page', this.currentDate, this.lastDate);
-    console.log('Job Details..........', jobs);
+    // console.log('Job Details..........', jobs);
 
-    this.router.navigate(['/job-expand'], { state: { data: jobs, date: this.currentDate, lastdate: this.lastDate } });
+    this.router.navigate(['/job-expand'], { state: { data: jobs, date: this.currentDate, lastdate: this.lastDate, jobDetails: jobDetails, jobDate: date } });
   }
 
   getElements(allocTrucks: any[]) {

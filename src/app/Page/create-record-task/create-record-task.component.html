@@ -1,0 +1,29 @@
+<div class="container mt-3 p-3 shadow rounded bg-white" style="max-width: 400px;">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="fw-bold mb-0">Create task</h4>
+    </div>
+  
+    <div class="mb-2">
+      <small class="text-muted fw-bold">CLIENT</small>
+      <div class="bg-light p-2 rounded">{{clientId}}</div>
+    </div>
+  
+    <div class="mb-3">
+      <small class="text-muted fw-bold">ADDRESS</small>
+      <div class="bg-light p-2 rounded">{{ jobDetails.location }}</div>
+    </div>
+  
+    <div class="mb-3">
+      <select class="form-select" [(ngModel)]="selectedResource">
+        <option value="" disabled selected>Resource</option>
+        <option *ngFor="let resource of resources" [value]="resource">{{ resource }}</option>
+      </select>
+    </div>
+  
+    <div class="mb-3">
+      <textarea class="form-control" rows="3" placeholder="Notes (Always state your vehicle name and ...)"
+                [(ngModel)]="notes"></textarea>
+    </div>
+  
+    <button class="btn btn-secondary w-100" [disabled]="!selectedResource || !notes">CREATE</button>
+  </div>

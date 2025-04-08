@@ -110,7 +110,7 @@
               <i class="fas fa-building"></i>
               {{ getClientNamebyID(jobs.clientId) }}
             </p>
-            <button class="expand-btn btn btn-primary btn-sm" (click)="expandJobs(job)">
+            <button class="expand-btn btn btn-primary btn-sm" (click)="expandJobs(jobs, job, date)">
               <i class="fas fa-chevron-down"></i> Expand Job
             </button>
           </div>

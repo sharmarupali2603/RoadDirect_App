@@ -24,6 +24,9 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { JobCardComponent } from './Components/job-card/job-card.component';
 import { JobExpandComponent } from './Page/job-expand/job-expand.component';
 import { TasksComponent } from './Page/tasks/tasks.component';
+import { LocationComponent } from './Page/location/location.component';
+import { SafeUrlPipe } from './safe-url.pipe';
+import { CreateRecordTaskComponent } from './Page/create-record-task/create-record-task.component';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { Storage } from '@ionic/storage';
 @NgModule({
@@ -38,7 +41,10 @@ import { TasksComponent } from './Page/tasks/tasks.component';
     StopwatchComponent,
     JobCardComponent,
     JobExpandComponent,
-    TasksComponent
+    TasksComponent,
+    LocationComponent,
+    SafeUrlPipe,
+    CreateRecordTaskComponent
   ],
   imports: [
     BrowserModule,
