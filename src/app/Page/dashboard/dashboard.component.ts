@@ -39,6 +39,7 @@ export class DashboardComponent implements OnInit {
   lastDate: any;
   cachedjobData: any[] = [];
   currentMonth: string = '';
+  monthName: string = '';
   currentYear: number = 0;
   users = ['User 1', 'User 2', 'User 3'];
   jobs = ['User 1', 'User 2', 'User 3'];
@@ -211,22 +212,27 @@ export class DashboardComponent implements OnInit {
     for (let i = 0; i < 5; i++) {
       let newDate = new Date(startOfWeek);
       newDate.setDate(startOfWeek.getDate() + i);
+      const monthName = newDate.toLocaleDateString('en-NZ', { month: 'long' });
       this.weekDates.push({
         dates: newDate.toLocaleDateString('en-US', {}),
-        dayName: newDate.toLocaleDateString('en-US', { weekday: 'short' }),
-        monthName: newDate.toLocaleDateString('en-US', { month: 'long' }),
+        dateTitle: newDate.toLocaleDateString('en-NZ', { dateStyle: 'full' }),
+        dayName: newDate.toLocaleDateString('en-NZ', { weekday: 'narrow' }),
+        monthName: monthName,
         dayNumber: newDate.getDate(),
         selected: isToday(newDate),
         lastDate: newDate,
         // selected: this.isSameDate(newDate, this.currentDate)
       });
+      if (i == 0) {
+        this.monthName = monthName;
+      }
     }
     console.log('weekDates', this.weekDates);
     this.lastDate = this.weekDates[4].lastDate.toISOString();
     // this.lastDate.toISOString(); // Returns ISO format
 
     console.log('Dates', this.currentDate, this.lastDate);
-    this.currentMonth = this.currentDate.toLocaleString('en-US', {
+    this.currentMonth = this.currentDate.toLocaleString('en-NZ', {
       month: 'long',
     });
     console.log("Current month", this.currentMonth);
@@ -333,8 +339,8 @@ export class DashboardComponent implements OnInit {
       for (let i = 0; i < rowData1.length; i++) {
         if (typeof rowData1[i] === 'object') {
           let m = rowData1[i];
-          if (m && m.option) {
-            arr.push(m.option);
+          if (m && m.fullName) {
+            arr.push(m.fullName);
           }
         } else {
           arr.push(rowData1[i]);
