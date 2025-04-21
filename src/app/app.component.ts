@@ -56,7 +56,7 @@ export class AppComponent implements OnInit{
       (data) => {
         this.User = data;
         localStorage.setItem ('User', JSON.stringify(this.User));
-        localStorage.setItem ('User', JSON.stringify(this.User));
+        // localStorage.setItem ('User', JSON.stringify(this.User));
         console.log('User:', this.User);
       },
       (error) => {

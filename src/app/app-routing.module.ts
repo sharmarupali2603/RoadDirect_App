@@ -5,6 +5,8 @@ import { JobExpandComponent } from './Page/job-expand/job-expand.component';
 import { TasksComponent } from './Page/tasks/tasks.component';
 import { LocationComponent } from './Page/location/location.component';
 import { CreateRecordTaskComponent } from './Page/create-record-task/create-record-task.component';
+import { EditTimeComponent } from './Page/edit-time/edit-time.component';
+import { EditEquipmentComponent } from './Page/edit-equipment/edit-equipment.component';
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' }, // Default route
   { path: 'dashboard', component: DashboardComponent },
@@ -12,6 +14,8 @@ const routes: Routes = [
   { path: 'tasks', component: TasksComponent },
   { path: 'location', component: LocationComponent },
   {path: 'create-record-task', component: CreateRecordTaskComponent},
+  {path: 'edit-time', component: EditTimeComponent},
+  {path: 'edit-equipment', component: EditEquipmentComponent},
   // { path: '',   redirectTo: '/dashboard', pathMatch: 'full' }, // redirect to `first-component`
 ];
 

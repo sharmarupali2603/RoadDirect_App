@@ -12,7 +12,7 @@
     position: fixed;
     width:100%;
     z-index: 1000;
-  };
+  }
   app-footer{
     position: fixed;
     /* width:75%; */

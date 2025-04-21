@@ -80,6 +80,7 @@ export class DashboardComponent implements OnInit {
   primaryManager: any;
   secondaryManager: any;
   callOutOFficer: any;
+  productList: any[] = [];
   // jobTypes: string[] = ['Repair', 'Maintenance', 'Inspection', 'Emergency'];
 
   constructor(
@@ -178,7 +179,14 @@ export class DashboardComponent implements OnInit {
   getFormFields() {
     this.jobService.getFormFields().subscribe(
       (response) => {
-        this.jobType = response[0].items;
+        console.log('jobType:', response);
+        for(let i=0; i<response.length; i++){
+          if(response[i].formFieldName == "roadCategory"){
+            if(response[i].items != null){
+              this.jobType= response[i].items;
+            }
+          }
+        }
         // localStorage.setItem('TaskList', JSON.stringify(this.tasks));
         console.log('jobType:', this.jobType);
       },
@@ -369,12 +377,7 @@ export class DashboardComponent implements OnInit {
     // });
     // return result;
   }
-  expandJobs(jobs: string, jobDetails: string, date: string) {
-    console.log('Navigate to Job Expand Page', this.currentDate, this.lastDate);
-    // console.log('Job Details..........', jobs);
 
-    this.router.navigate(['/job-expand'], { state: { data: jobs, date: this.currentDate, lastdate: this.lastDate, jobDetails: jobDetails, jobDate: date } });
-  }
 
   getElements(allocTrucks: any[]) {
     // return allocTrucks.map(item => String(item)).join(', ');
@@ -523,5 +526,11 @@ export class DashboardComponent implements OnInit {
 
   toggleMyJobs() {
     this.searchMyJob = this.showOnlyUserTasks ? this.FirstName : false;
+  }
+  expandJobs(jobs: string, jobDetails: string, date: string) {
+    console.log('Navigate to Job Expand Page', this.currentDate, this.lastDate);
+    // console.log('Job Details..........', jobs);
+
+    this.router.navigate(['/job-expand'], { state: { data: jobs, date: this.currentDate, lastdate: this.lastDate, jobDetails: jobDetails, jobDate: date } });
   }
 }
