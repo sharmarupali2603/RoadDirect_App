@@ -3,6 +3,10 @@ import { Router } from '@angular/router';
 import moment from 'moment';
 import { JobsService } from 'src/app/Services/Jobs/jobs.service';
 import { PdfService } from 'src/app/Services/pdf/pdf.service';
+// import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CreateRecordTaskComponent } from '../create-record-task/create-record-task.component';
+import { TrackingService } from 'src/app/Services/Tracking/tracking.service';
+import { modalConfigDefaults } from 'ngx-bootstrap/modal/modal-options.class';
 @Component({
   selector: 'app-job-expand',
   templateUrl: './job-expand.component.html',
@@ -33,11 +37,26 @@ export class JobExpandComponent implements OnInit {
   matchednote: boolean = false;
   matchedEvent: boolean = false;
   clientID: any;
+  files: any = {};
+  dropdownOpen = false;
+  downloadTmp: string = 'https://eboard-alpha-aws.roaddirect.co.nz/tmp/';
+  downloadDoc: string = 'https://eboard-alpha-aws.roaddirect.co.nz/document/';
+  images: any[] = [];
+  task: any;
+  taskId: any;
+  updatedTime: any;
+  finishTime: any;
+  submitTime: any;
+  userId:any;
+  equipments:any[]=[];
+  editEquipmentData: any
   constructor(
     private route: Router,
     public jobService: JobsService,
-    public pdfService: PdfService
+    public pdfService: PdfService,
+    public trackingService: TrackingService // private modalService: NgbModal
   ) {
+ 
     const navigation = this.route.getCurrentNavigation();
     this.jobs = navigation?.extras.state?.['data'] || {};
     console.log('Job>>>>>>>>>>>', this.jobs);
@@ -48,7 +67,7 @@ export class JobExpandComponent implements OnInit {
     this.jobDate = navigation?.extras.state?.['jobDate'] || {};
     console.log('job details>>>>>>>>>', this.jobDetails);
     console.log('job date>>>>>>>>>', this.jobDate);
-
+    this.fetchLatestJobItemCounts();
     this.getDefaultSettings();
     this.getEventsByDateRange();
     // Detect online/offline status
@@ -88,6 +107,30 @@ export class JobExpandComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('Enter in expand job page');
+    if (localStorage.getItem('TaskId')) {
+      const TaskId = localStorage.getItem('TaskId');
+      this.taskId = TaskId ? JSON.parse(TaskId) : null;
+      console.log('TaskId:', this.taskId);
+      this.fetchTrackingTaskById(this.taskId);
+    }
+    if (localStorage.getItem('UpdatedTime')) {
+      const updatedTime = localStorage.getItem('UpdatedTime');
+      this.updatedTime = updatedTime ? JSON.parse(updatedTime) : null;
+      console.log('updatedTime:', this.updatedTime);
+      // this.fetchTrackingTaskById(this.taskId);
+    }
+    if (localStorage.getItem('finishTime')) {
+      const finishTime = localStorage.getItem('finishTime');
+      this.finishTime = finishTime ? JSON.parse(finishTime) : null;
+      console.log('finishTime:', this.finishTime);
+      // this.fetchTrackingTaskById(this.taskId);
+    }
+    if (localStorage.getItem('submitTime')) {
+      const submitTime = localStorage.getItem('submitTime');
+      this.submitTime = submitTime ? JSON.parse(submitTime) : null;
+      console.log('submitTime:', this.submitTime);
+      // this.fetchTrackingTaskById(this.taskId);
+    }
   }
   getDefaultSettings() {
     this.jobService.getDefaultSettings().subscribe(
@@ -97,6 +140,23 @@ export class JobExpandComponent implements OnInit {
         this.labelStartTime1 = this.defaultSetting.labelStartTime1;
         this.labelStartTime2 = this.defaultSetting.labelStartTime2;
         // localStorage.setItem('TaskList', JSON.stringify(this.tasks));
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+      }
+    );
+  }
+  fetchTrackingTaskById(taskId: any) {
+    const queryParams = {
+      taskId: taskId,
+      withTmps: false,
+    };
+
+    this.trackingService.getTrackingTaskById(queryParams).subscribe(
+      (response) => {
+        this.task = response;
+        // localStorage.setItem('VehicleList', JSON.stringify(this.vehicles));
+        console.log('Task:', this.task);
       },
       (error) => {
         console.error('Error fetching data:', error);
@@ -314,7 +374,9 @@ export class JobExpandComponent implements OnInit {
     // <!--- open with iframe --->
     // this.route.navigate(['/location'], { state: { location: location}});
   }
-
+  toggleDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
   downloadPdf(jobs: any, jobDetails: any, jobDate: any) {
     const details = {
       jobs: jobs,
@@ -326,8 +388,228 @@ export class JobExpandComponent implements OnInit {
     this.pdfService.generatePdf(details);
   }
 
-  recordTask(jobs: any, jobDetails: any, jobDate: any) {
-    console.log('clientID:', this.clientID);
-    this.route.navigate(['/create-record-task'], { state: { data: jobs, jobDetails: jobDetails, jobDate: jobDate, clientID: this.clientID } });
+  loadImages() {
+    // this.http.get<any[]>('/api/images').subscribe(data => {
+    this.images = this.jobDetails.photoLookups;
+    // });
   }
+
+  addRecordTask(jobs: any, jobDetails: any, jobDate: any) {
+    console.log('clientID:', this.clientID);
+    this.route.navigate(['/create-record-task'], {
+      state: {
+        title: 'Create Record Task',
+        data: jobs,
+        jobDetails: jobDetails,
+        jobDate: jobDate,
+        clientID: this.clientID,
+        date: this.currentDate,
+        lastdate: this.lastDate,
+      },
+    });
+  }
+  editRecordTask(jobs: any, jobDetails: any, jobDate: any, taskId: any) {
+    console.log('clientID:', this.clientID);
+    this.route.navigate(['/create-record-task'], {
+      state: {
+        title: 'Edit Record Task',
+        data: jobs,
+        jobDetails: jobDetails,
+        jobDate: jobDate,
+        clientID: this.clientID,
+        date: this.currentDate,
+        lastdate: this.lastDate,
+        taskId: taskId,
+      },
+    });
+  }
+  updateTaskTime(jobs: any, jobDetails: any, jobDate: any, taskId: any) {
+    const today = new Date();
+    const postData = {
+      taskId: taskId,
+      Status: '6',
+      TaskTime: today,
+    };
+
+    this.trackingService.updateTaskTime(postData).subscribe({
+      next: (res) => {
+        this.updatedTime = postData.TaskTime;
+        localStorage.setItem('UpdatedTime', JSON.stringify(this.updatedTime));
+        alert('✅' + res);
+      },
+      error: (err) => {
+        alert('❌ Task submission failed!');
+        console.error(err);
+      },
+    });
+  }
+
+  FinishTaskTime(jobs: any, jobDetails: any, jobDate: any, taskId: any) {
+    const today = new Date();
+    const postData = {
+      taskId: taskId,
+      Status: '6',
+      TaskTime: today,
+    };
+
+    this.trackingService.updateTaskTime(postData).subscribe({
+      next: (res) => {
+        this.finishTime = postData.TaskTime;
+        localStorage.setItem('finishTime', JSON.stringify(this.finishTime));
+        alert('✅' + res);
+      },
+      error: (err) => {
+        alert('❌ Task submission failed!');
+        console.error(err);
+      },
+    });
+  }
+
+  submitTaskTime(jobs: any, jobDetails: any, jobDate: any, taskId: any) {
+    const today = new Date();
+    const postData = {
+      taskId: taskId,
+      Status: '6',
+      TaskTime: today,
+    };
+
+    this.trackingService.updateTaskTime(postData).subscribe({
+      next: (res) => {
+        this.submitTime = postData.TaskTime;
+        // this.task='';
+        localStorage.setItem('submitTime', JSON.stringify(this.submitTime));
+        alert('✅' + res);
+      },
+      error: (err) => {
+        alert('❌ Task submission failed!');
+        console.error(err);
+      },
+    });
+  }
+  AddRecordTask(jobs: any, jobDetails: any, jobDate: any) {
+    this.addRecordTask(jobs, jobDetails, jobDate);
+    localStorage.setItem('UpdatedTime', '');
+    localStorage.setItem('finishTime', '');
+    localStorage.setItem('submitTime', '');
+  }
+
+  editTime(jobs: any, jobDetails: any, jobDate: any,SubmitTime:any,taskId:any) {
+    console.log('clientID:', this.clientID);
+    this.route.navigate(['/edit-time'], {
+      state: {
+        title: 'edit time',
+        data: jobs,
+        jobDetails: jobDetails,
+        jobDate: jobDate,
+        clientID: this.clientID,
+        date: this.currentDate,
+        lastdate: this.lastDate,
+        SubmitTime:SubmitTime,
+        finishTime:'',
+        taskId:taskId
+      },
+    });
+  }
+  navigateToFinishTime(jobs: any, jobDetails: any, jobDate: any, SubmitTime: any, finishTimeParam: any,taskId:any) {
+    console.log('clientID:', this.clientID);
+    this.route.navigate(['/edit-time'], {
+      state: {
+        title: 'finish time',
+        data: jobs,
+        jobDetails: jobDetails,
+        jobDate: jobDate,
+        clientID: this.clientID,
+        date: this.currentDate,
+        lastdate: this.lastDate,
+        SubmitTime:SubmitTime,
+        finishTime:finishTimeParam,
+        taskId:taskId
+      },
+    });
+  }
+  fileName = '';
+fileChanged(evt: Event) {
+  const f = (evt.target as HTMLInputElement).files;
+  if (f?.length) this.fileName = f[0].name;
 }
+onSubmit(val: any) {
+  console.log('Form data', val);
+  if (localStorage.getItem('User')) {
+    const user = localStorage.getItem('User');
+    this.userId = user ? JSON.parse(user) : null;
+  }
+  this.userId = this.userId.userId;
+  const postData = [{
+    jobId:this.jobDetails.jobId,
+    note: val.note,
+    noteType: 3,
+    userId:'c2562ddb-4225-45a3-8a94-d7f6015e6788'
+  }];
+  this.trackingService.addTrackingNotes(postData).subscribe({
+    next: (res) => {
+      alert('✅ Note added successfully!');
+      // this.taskForm.reset();
+
+    },
+    error: (err) => {
+      alert('❌ Task submission failed!');
+      console.error(err);
+    },
+  });
+}
+
+editEquipment(jobs: any, jobDetails: any, jobDate: any,taskId:any){
+  console.log("fbdhsbfuhasdbuyyfbsaduyubfuyshd",taskId);
+  
+  this.route.navigate(['/edit-equipment'], {
+    state: {
+      data: jobs,
+      jobDetails: jobDetails,
+      jobDate: jobDate,
+      clientID: this.clientID,
+      date: this.currentDate,
+      lastdate: this.lastDate,
+      taskId:taskId
+    },
+  })
+}
+
+fetchLatestJobItemCounts() {
+  const queryParams = {
+    jobId: this.jobDetails.jobId
+  };
+
+  this.trackingService.getLatestJobItemCounts(queryParams).subscribe(
+    (response) => {
+      this.equipments = response;
+      // localStorage.setItem('VehicleList', JSON.stringify(this.vehicles));
+      console.log('equipments:', this.equipments);
+    },
+    (error) => {
+      console.error('Error fetching data:', error);
+    }
+  );
+}
+
+
+}
+
+// recordTask(jobs:any,jobDetails:any,jobDate:any) {
+//   const modalRef = this.modalService.open(CreateRecordTaskComponent, {
+//     centered: true,
+//     backdrop: 'static'
+//   });
+
+//   modalRef.componentInstance.data =jobs; // 👈 pass data
+//   modalRef.componentInstance.jobDetails =jobDetails;
+//   modalRef.componentInstance.jobDate =jobDate;
+//   modalRef.componentInstance.clientID = this.clientID;
+
+//   modalRef.result.then((result) => {
+//     // 👈 returned value from modal
+//     console.log('Modal returned:', result);
+//     alert(result.message);
+//   }).catch((reason) => {
+//     console.log('Modal dismissed:', reason);
+//   });
+// }

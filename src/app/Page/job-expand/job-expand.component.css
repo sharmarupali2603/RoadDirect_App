@@ -279,10 +279,39 @@ button {
 .paddingright {
   padding-right: 5%;
 }
+.dropdown-menu {
+  min-width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+.dropdown-item i {
+  color: #0d6efd;
+}
+.borderUnder{
+  border-bottom: 1px solid #dee2e6;
+}
+.task-bootstrap-card {
+  border-radius: 10px;
 
-@media (max-width: 576px) {
+  .btn {
+    text-align: left;
+  }
 
-  /* Styles for small devices (phones) */
+  .text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-grow: 1;
+  }
+}
+.leftmargin{    
+  margin-left: 2%;}
+  .mb-5{
+    margin-bottom: 5% !important;
+  }
+  .mb-10{
+    margin-bottom: 10%;
+  }
   p {
     font-size: .75em;
     padding-left: 1%;
