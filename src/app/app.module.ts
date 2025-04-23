@@ -17,9 +17,7 @@ import { AppComponent } from './app.component';
 import { CalenderComponent } from './Components/calender/calender.component';
 import { FooterComponent } from './Components/footer/footer.component';
 import { HeaderComponent } from './Components/header/header.component';
-import { JobCardComponent } from './Components/job-card/job-card.component';
 import { StopwatchComponent } from './Components/stopwatch/stopwatch.component';
-import { AddNoteComponent } from './Page/add-note/add-note.component';
 import { CreateRecordTaskComponent } from './Page/create-record-task/create-record-task.component';
 import { DashboardComponent } from './Page/dashboard/dashboard.component';
 import { EditEquipmentComponent } from './Page/edit-equipment/edit-equipment.component';
@@ -40,14 +38,12 @@ import { SafeUrlPipe } from './safe-url.pipe';
     HeaderComponent,
     FooterComponent,
     StopwatchComponent,
-    JobCardComponent,
     JobExpandComponent,
     TasksComponent,
     LocationComponent,
     SafeUrlPipe,
     CreateRecordTaskComponent,
     EditTimeComponent,
-    AddNoteComponent,
     EditEquipmentComponent
   ],
   imports: [
