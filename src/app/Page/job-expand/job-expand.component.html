@@ -1,8 +1,8 @@
 <div class="container-fluid">
   <!-- Header Section -->
-  <div class="d-flex justify-content-between align-items-center rounded header-bar">
-    <p class="mb-0">
-      <i class="fas fa-calendar-alt"></i>
+  <div class="d-flex justify-content-between align-items-center header-bar">
+    <p class="mb-0 d-flex align-items-center gap-1">
+      <mat-icon class="md-18" aria-hidden="false">today</mat-icon>
       {{ jobDate.jobDetailsDate | date : "fullDate" }}
     </p>
     <div>
@@ -18,61 +18,68 @@
   </div>
 
   <div class="card shadow-sm mt-3">
-    <div class="card-hea h-25 d-flex justify-content-between bg-light">
-      <p class="padding-p">
-        <i class="fas fa-building"></i>{{ getClientNamebyID(jobs.clientId) }}
+    <div class="card-hea h-25 d-flex justify-content-between">
+      <p class="padding-p d-flex align-items-center gap-1">
+        <mat-icon class="md-18" aria-hidden="false">store</mat-icon>
+        {{ getClientNamebyID(jobs.clientId) }}
       </p>
-      <button class="expand-btn btn btn-primary btn-sm" (click)="collapseJobs()">
-        <i class="fas fa-chevron-up"></i> Collapse Job
+      <button class="expand-btn btn btn-primary btn-sm btn-job-action" (click)="collapseJobs()">
+        <mat-icon class="md-18" aria-hidden="false">expand_less</mat-icon>
+        Collapse Job
       </button>
     </div>
-    <div class="d-flex gap">
-      <button class="btn btn-primary">
-        <i class="fa fa-tools"></i>
+
+    <div class="d-flex gap-2 btn-group-job-actions">
+      <button class="btn btn-primary rd-bg-blue btn-job-action">
+        <mat-icon class="md-18" aria-hidden="false">fact_check</mat-icon>
         Create OSR
       </button>
 
-      <button class="btn btn-primary">
-        <i class="fa fa-chat-dots"></i>
+      <button class="btn btn-primary rd-bg-blue btn-job-action">
+        <mat-icon class="md-18" aria-hidden="false">sms</mat-icon>
         Job Status
       </button>
 
-      <button class="btn btn-primary">
-        <i class="fa fa-telephone"></i>
+      <button class="btn btn-primary rd-bg-blue btn-job-action">
+        <mat-icon class="md-18" aria-hidden="false">call</mat-icon>
         Call Client
       </button>
     </div>
 
     <div class="d-flex justify-content-between">
       <div class="card-body">
-        <p><i class="fas fa-map-marker-alt"></i>{{ jobDetails.location }}</p>
         <p>
-          <i class="fas fa-clock"></i>
-          {{ jobDate?.duration?.durationType }}. {{ labelStartTime1 }}:
-          <strong>{{ jobDate?.startTime?.startTime1 | date : "hh:mm" }}</strong
-          >, {{ labelStartTime2 }}
-          <strong>{{ jobDate?.startTime?.startTime2 | date : "hh:mm" }}</strong>
+          <mat-icon class="md-18" aria-hidden="false">place</mat-icon>
+          {{ jobDetails.location }}
         </p>
         <p>
-          <i class="fas fa-truck-pickup"></i
-          >{{ getVehicleNameById(jobDate?.allocTrucks?.allocTrucks) }}
+          <mat-icon class="md-18" aria-hidden="false">schedule</mat-icon>
+          {{ jobDate?.duration?.durationType }}
+          {{ labelStartTime1 }}: <strong>{{ jobDate?.startTime?.startTime1 | date : "hh:mm" }}</strong>,
+          {{ labelStartTime2 }} <strong>{{ jobDate?.startTime?.startTime2 | date : "hh:mm" }}</strong>
+        </p>
+        <p>
+          <mat-icon class="md-18" aria-hidden="false">local_shipping</mat-icon>
+          {{ getVehicleNameById(jobDate?.allocTrucks?.allocTrucks) }}
         </p>
         <p class="fw-bold text-dark">
-          <i class="fas fa-users"></i>
-          <span class="text-primary"
-            >{{ getTaskStatus(jobs, jobDate?.allocStaff?.allocatedStaff)
-            }}{{ getStaffNameById(jobDate?.allocStaff?.allocatedStaff) }}</span
-          >
+          <mat-icon class="md-18" aria-hidden="false">people</mat-icon>
+          <span class="text-primary">
+            {{ getTaskStatus(jobs, jobDate?.allocStaff?.allocatedStaff)}}
+            {{ getStaffNameById(jobDate?.allocStaff?.allocatedStaff) }}
+          </span>
         </p>
         <span *ngFor="let task of jobDate?.closures">
           <span *ngIf="task.closureType == 1">
             <p>
-              <i class="fas fa-road"></i>{{ getClosureOptions(task.closures) }}
+              <mat-icon class="md-18" aria-hidden="false">edit_road</mat-icon>
+              {{ getClosureOptions(task.closures) }}
             </p>
           </span>
           <span *ngIf="task.closureType != 1">
             <p>
-              <i class="fa fa-person-walking"></i>{{ getClosureOptions(task.closures) }}
+              <mat-icon class="md-18" aria-hidden="false">follow_the_signs</mat-icon>
+              {{ getClosureOptions(task.closures) }}
             </p>
           </span>
         </span>
@@ -102,31 +109,19 @@
         </div>
         <div class="row-margin row-extra border py-2">
           NP
-          <div
-            class="NP-green"
-            *ngIf="jobDate?.removeParks?.removeParksTypes != null"
-          >
+          <div class="NP-green" *ngIf="jobDate?.removeParks?.removeParksTypes != null">
             Y
           </div>
-          <div
-            style="color: red"
-            *ngIf="jobDate?.removeParks?.removeParksTypes == null"
-          >
+          <div style="color: red" *ngIf="jobDate?.removeParks?.removeParksTypes == null">
             NA
           </div>
         </div>
-        <div
-          *ngIf="
+        <div *ngIf="
             jobDetails.siteAudits != null ||
             jobDetails.siteSafetyBriefings != '' ||
             jobDetails.siteInspections != ''
-          "
-          class="row-margin row-extra border py-2"
-        >
-          <span
-            class="audit-check"
-            *ngIf="jobDetails.siteSafetyBriefings != []"
-          >
+          " class="row-margin row-extra border py-2">
+          <span class="audit-check" *ngIf="jobDetails.siteSafetyBriefings != []">
             ✔
           </span>
           <span *ngIf="jobDetails.siteInspections != []">
@@ -139,50 +134,44 @@
         </div>
       </div>
     </div>
-    <div class="d-flex gap border-bottom">
+
+    <div class="d-flex gap-3 btn-group-job-actions">
       <!-- <button class="btn btn-outline-primary" (click)="downloadPdf(jobs,jobDetails,jobDate)">📂 Documents</button> -->
       <div class="dropdown" [ngClass]="{ show: dropdownOpen }">
-        <button class="btn btn-outline-primary" (click)="toggleDropdown()">
-          📎 Documents
+        <button class="btn btn-outline-primary btn-job-action" (click)="toggleDropdown()">
+          <mat-icon class="md-18" aria-hidden="false">attach_file</mat-icon>
+          Documents
         </button>
         <div class="dropdown-menu show" *ngIf="dropdownOpen">
           <div class="borderUnder" *ngIf="jobDetails?.tmpLookups?.length">
             <h6 class="dropdown-header">TMPs</h6>
-            <a
-              *ngFor="let file of jobDetails.tmpLookups"
-              class="dropdown-item d-flex align-items-center"
-              [href]="downloadTmp + file.tmp.tmpId"
-              download
-            >
-              <i class="bi bi-cloud-download-fill me-2"></i
-              >{{ file.tmp.filename }}
+            <a *ngFor="let file of jobDetails.tmpLookups" class="dropdown-item d-flex align-items-center"
+              [href]="downloadTmp + file.tmp.tmpId" download>
+              <mat-icon class="md-18" aria-hidden="false">cloud_download</mat-icon>
+              {{ file.tmp.filename }}
             </a>
           </div>
           <div class="borderUnder" *ngIf="jobs?.documentLookups?.length">
             <h6 class="dropdown-header">Documents</h6>
-            <a
-              *ngFor="let file of jobs.documentLookups"
-              class="dropdown-item d-flex align-items-center"
-              [href]="downloadDoc + file.document.documentId"
-              download
-            >
-              <i class="bi bi-cloud-download-fill me-2"></i
-              >{{ file.document.filename }}
+            <a *ngFor="let file of jobs.documentLookups" class="dropdown-item d-flex align-items-center"
+              [href]="downloadDoc + file.document.documentId" download>
+              <mat-icon class="md-18" aria-hidden="false">cloud_download</mat-icon>
+              {{ file.document.filename }}
             </a>
           </div>
           <div>
-            <a
-              (click)="downloadPdf(jobs, jobDetails, jobDate)"
-              class="dropdown-item d-flex align-items-center"
-            >
-              <i class="bi bi-cloud-download-fill me-2"></i>Download Job Details
+            <a (click)="downloadPdf(jobs, jobDetails, jobDate)" class="dropdown-item d-flex align-items-center">
+              <mat-icon class="md-18" aria-hidden="false">cloud_download</mat-icon>
+              Download Job Details
             </a>
           </div>
         </div>
       </div>
-      <button class="btn btn-outline-primary" (click)="loadImages()">
-        📷 Photos
+      <button class="btn btn-outline-primary btn-job-action" (click)="loadImages()">
+        <mat-icon class="md-18" aria-hidden="false">photo_camera</mat-icon>
+        Photos
       </button>
+
       <!-- Display images only after button click -->
       <div *ngIf="images.length > 0">
         <div class="col-6 col-md-4 col-lg-3" *ngFor="let image of images">
@@ -194,24 +183,25 @@
           </div>
         </div>
       </div>
-      <button
-        class="btn btn-outline-primary"
-        (click)="openMap(jobDetails.location)"
-      >
-        📍 Location
+      <button class="btn btn-outline-primary btn-job-action" (click)="openMap(jobDetails.location)">
+        <mat-icon class="md-18" aria-hidden="false">public</mat-icon>
+        Location
       </button>
     </div>
+
+    <hr>
+
     <!-- 18.8632124 52.1899235 -->
     <div>
-      <p class="border-bottom">
-        <strong>🛠 Type of Work:</strong>
+      <p>
+        <strong>Type of Work:</strong>
         {{ getTypeOfWork(jobDetails.descActivity) }}
       </p>
-
-      <span *ngFor="let task of jobDate?.closures" class="border-bottom">
+      <hr>
+      <span *ngFor="let task of jobDate?.closures">
         <span *ngIf="task.closureType == 1">
           <p>
-            <strong>🔹TTM Road Set-Up-</strong>{{ getClosure(task.closures) }}
+            <strong>TTM Road Set-Up-</strong>{{ getClosure(task.closures) }}
           </p>
         </span>
         <span *ngIf="task.closureType != 1">
@@ -227,118 +217,73 @@
     </div>
   </div>
   <div class="mt-3">
-    <!-- <button
-      class="btn btn-primary w-100"
-      (click)="recordTask(jobs, jobDetails, jobDate)"
-    >
-      📌 Record Task
-    </button> -->
     <div class="card mb-5">
       <div class="card-header">
         <h5 class="mb-0 leftmargin">Record task</h5>
       </div>
 
-      <div class="card-body">
-        <!-- <div class="mt-3"> -->
+      <div class="card-body btn-group-task-timer">
+
         <div *ngIf="task">
-          <a
-            class="btn btn-outline-primary w-100 d-flex justify-content-between align-items-center mb-3"
-          >
+          <a class="btn btn-outline-primary mb-3" (click)="editRecordTask(jobs, jobDetails, jobDate, task?.id)">
             <span class="text-truncate">
               {{ task.vehicleRate?.title }}
             </span>
-            <i
-              class="fas fa-edit text-primary ms-2"
-              (click)="editRecordTask(jobs, jobDetails, jobDate, task?.id)"
-            ></i>
+            <mat-icon class="rd-blue" aria-hidden="false">note_alt</mat-icon>
           </a>
 
-          <a
-            *ngIf="updatedTime"
-            class="btn btn-outline-primary w-100 d-flex justify-content-between align-items-center mb-3"
-          >
+          <a *ngIf="updatedTime" (click)="editTime(jobs, jobDetails, jobDate, updatedTime, task?.id)"
+            class="btn btn-outline-primary mb-3">
             <span class="text-truncate">
               STARTED AT {{ updatedTime | date : "shortTime" }}
             </span>
-            <i
-              class="fas fa-edit text-primary ms-2"
-              (click)="
-                editTime(jobs, jobDetails, jobDate, updatedTime, task?.id)
-              "
-            ></i>
+            <mat-icon class="rd-blue" aria-hidden="false">note_alt</mat-icon>
           </a>
-          <a
-            *ngIf="finishTime"
-            class="btn btn-outline-primary w-100 d-flex justify-content-between align-items-center mb-3"
-          >
+
+          <a *ngIf="finishTime"
+            (click)="navigateToFinishTime(jobs, jobDetails, jobDate, updatedTime, finishTime, task?.id)"
+            class="btn btn-outline-primary mb-3">
             <span class="text-truncate">
               FINISHED AT {{ finishTime | date : "shortTime" }}
             </span>
-            <i
-              class="fas fa-edit text-primary ms-2"
-              (click)="
-                navigateToFinishTime(
-                  jobs,
-                  jobDetails,
-                  jobDate,
-                  updatedTime,
-                  finishTime,
-                  task?.id
-                )
-              "
-            ></i>
+            <mat-icon class="rd-blue" aria-hidden="false">note_alt</mat-icon>
           </a>
-          <a
-            *ngIf="submitTime"
-            class="btn btn-outline-primary w-100 d-flex justify-content-between align-items-center mb-3"
-          >
+
+          <a *ngIf="submitTime" (click)="editTime(jobs, jobDetails, jobDate, submitTime, task?.id)"
+            class="btn btn-outline-primary mb-3">
             <span class="text-truncate">
               SUBMITTED (0.15 hrs) AT {{ submitTime | date : "shortTime" }}
             </span>
-            <i
-              class="fas fa-edit text-primary ms-2"
-              (click)="
-                editTime(jobs, jobDetails, jobDate, submitTime, task?.id)
-              "
-            ></i>
+            <mat-icon class="rd-blue" aria-hidden="false">note_alt</mat-icon>
           </a>
-          <button
-            *ngIf="!updatedTime"
-            class="btn btn-primary w-100"
-            (click)="updateTaskTime(jobs, jobDetails, jobDate, task?.id)"
-          >
-            <i class="fas fa-clock"></i> Start Recording Time
+
+          <button *ngIf="!updatedTime" class="btn btn-primary"
+            (click)="updateTaskTime(jobs, jobDetails, jobDate, task?.id)">
+            <mat-icon aria-hidden="false">schedule</mat-icon>
+            START RECORDING TIME
           </button>
-          <button
-            *ngIf="updatedTime && !finishTime"
-            class="btn btn-primary w-100"
-            (click)="FinishTaskTime(jobs, jobDetails, jobDate, task?.id)"
-          >
-            <i class="fas fa-clock"></i> Finish Recording Time
+
+          <button *ngIf="updatedTime && !finishTime" class="btn btn-primary"
+            (click)="FinishTaskTime(jobs, jobDetails, jobDate, task?.id)">
+            <mat-icon aria-hidden="false">schedule</mat-icon>
+            FINISH RECORDING TIME
           </button>
-          <button
-            *ngIf="finishTime && finishTime && !submitTime"
-            class="btn btn-success w-100"
-            (click)="submitTaskTime(jobs, jobDetails, jobDate, task?.id)"
-          >
-            <i class="fas fa-clock"></i> ✔ SUBMIT THIS TASK
+
+          <button *ngIf="finishTime && finishTime && !submitTime" class="btn btn-success"
+            (click)="submitTaskTime(jobs, jobDetails, jobDate, task?.id)">
+            <mat-icon aria-hidden="false">check</mat-icon>
+            SUBMIT THIS TASK
           </button>
-          <button
-            *ngIf="finishTime && finishTime && submitTime"
-            class="btn btn-primary w-100"
-            (click)="AddRecordTask(jobs, jobDetails, jobDate)"
-          >
-            📌 Record Task
+
+          <button *ngIf="finishTime && finishTime && submitTime" class="btn btn-primary"
+            (click)="AddRecordTask(jobs, jobDetails, jobDate)">
+            RECORD TASK
           </button>
         </div>
-        <button
-          *ngIf="!task"
-          class="btn btn-primary w-100"
-          (click)="addRecordTask(jobs, jobDetails, jobDate)"
-        >
-          📌 Record Task
+
+        <button *ngIf="!task" class="btn btn-primary" (click)="addRecordTask(jobs, jobDetails, jobDate)">
+          RECORD TASK
         </button>
-        <!-- </div> -->
       </div>
     </div>
 
@@ -348,12 +293,8 @@
       </div>
 
       <div class="card-body">
-        <button
-          class="btn btn-primary w-100"
-          data-bs-toggle="modal"
-          data-bs-target="#noteModal1"
-        >
-          <i class="bi bi-plus-lg"></i> Add Job Note
+        <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#noteModal1">
+          Add Job Note
         </button>
 
         <div class="modal fade" id="noteModal1" tabindex="-1">
@@ -366,37 +307,22 @@
               <form #f="ngForm" (ngSubmit)="onSubmit(f.value)">
                 <div class="modal-body">
                   <div class="mb-3">
-                    <label class="form-label"
-                      >Note <span class="text-danger">*</span></label
-                    >
+                    <label class="form-label">Note <span class="text-danger">*</span></label>
                     <input name="note" ngModel required class="form-control" />
                   </div>
                   <div class="mb-3">
                     <label class="form-label">Select attachment</label>
-                    <input
-                      type="file"
-                      (change)="fileChanged($event)"
-                      class="form-control"
-                    />
+                    <input type="file" (change)="fileChanged($event)" class="form-control" />
                     <small class="text-muted">{{
                       fileName || "No file chosen"
-                    }}</small>
+                      }}</small>
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button
-                    type="button"
-                    class="btn btn-light"
-                    data-bs-dismiss="modal"
-                  >
+                  <button type="button" class="btn btn-light" data-bs-dismiss="modal">
                     Cancel
                   </button>
-                  <button
-                    data-bs-dismiss="modal"
-                    type="submit"
-                    class="btn btn-primary"
-                    [disabled]="f.invalid"
-                  >
+                  <button data-bs-dismiss="modal" type="submit" class="btn btn-primary" [disabled]="f.invalid">
                     Save
                   </button>
                 </div>
@@ -409,18 +335,14 @@
 
     <div class="card mb-10">
       <div class="card-header">
-        <h5 class="mb-0 leftmargin">🔧 Equipment On Site</h5>
+        <h5 class="mb-0 leftmargin">Equipment On Site</h5>
       </div>
 
       <div class="card-body">
-        <button
-          class="btn btn-primary w-100"
-          (click)="editEquipment(jobs, jobDetails, jobDate, task?.id)"
-        >
-          🔧 Edit Equipment
+        <button class="btn btn-primary w-100" (click)="editEquipment(jobs, jobDetails, jobDate, task?.id)">
+          Edit Equipment
         </button>
       </div>
     </div>
-    <!-- <button class="btn btn-warning w-100 mt-2">🔧 Edit Equipment</button> -->
   </div>
 </div>

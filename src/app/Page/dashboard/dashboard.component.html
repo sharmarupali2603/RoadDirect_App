@@ -107,7 +107,7 @@
               {{ getClientNamebyID(jobs.clientId) }}
             </p>
             <button class="expand-btn btn btn-primary btn-sm rd-bg-blue" (click)="expandJobs(jobs, job, date)">
-              <mat-icon style="font-size: 8px; height: unset; width: unset;" aria-hidden="false">expand_more</mat-icon>
+              <mat-icon class="md-18" aria-hidden="false">expand_more</mat-icon>
               Expand Job
             </button>
           </div>
@@ -176,22 +176,16 @@
               </div>
               <div class="row-margin row-extra border py-2">
                 NP
-                <div class="NP-green" *ngIf="
-                date.removeParks?.removeParksTypes !=
-                null
-              ">
+                <div class="NP-green" *ngIf="date.removeParks?.removeParksTypes != null">
                   Y
                 </div>
-                <div style="color: red" *ngIf="
-                date.removeParks?.removeParksTypes ==
-                null
-              ">
+                <div style="color: red" *ngIf="date.removeParks?.removeParksTypes == null">
                   NA
                 </div>
               </div>
               <div *ngIf="job.siteAudits != null || job.siteSafetyBriefings != '' || job.siteInspections != ''"
                 class="row-margin row-extra border py-2">
-                <span class="audit-check" *ngIf="job.siteSafetyBriefings != '' ">
+                <span class="audit-check" *ngIf="job.siteSafetyBriefings != ''">
                   ✔
                 </span>
                 <span *ngIf="job.siteInspections != ''">

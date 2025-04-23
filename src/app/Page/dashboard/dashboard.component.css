@@ -225,6 +225,12 @@ select {
   margin-right: 0.5rem;
 }
 
+.expand-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
 .job-footer {
   display: flex;
   justify-content: flex-end;
@@ -512,7 +518,7 @@ button {
   }
 
   .expand-btn {
-    height: 30%
+    height: 30%;
   }
 
   .tick-icon {

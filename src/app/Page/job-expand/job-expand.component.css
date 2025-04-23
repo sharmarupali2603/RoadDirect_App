@@ -1,14 +1,14 @@
 /* // Header Bar Styling */
 .header-bar {
-  background: #a7dfc3;
+  background: var(--rd-teal);
   color: #000;
   font-weight: bold;
+  padding: 0.5rem 1rem;
 }
 
 .job-card {
   border: 1px solid #c6c2c2;
   border-radius: 2%;
-
 }
 
 /* // Color circles in header */
@@ -81,9 +81,10 @@ button {
   font-size: 50%;
 }
 
-.border-bottom {
-  padding-bottom: 2%;
-  border-bottom: 1px solid #09abfc !important;
+hr {
+  opacity: 1;
+  margin: 0 5px;
+  color: var(--rd-teal);
 }
 
 .row-margin {
@@ -119,13 +120,32 @@ button {
   padding-right: 5%;
 }
 
-.card-hea {
-  font-weight: bold;
-  padding-top: 1.5%;
-  padding-right: 2%;
-  padding-bottom: 0%;
-  margin-bottom: 0%;
-  background-color: #d5d5d5 !important;
+.btn-group-job-actions {
+  padding: 0.4em;
+}
+
+.btn-job-action {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-group-task-timer button.btn {
+  font-size: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  text-transform: uppercase;
+}
+
+.btn-group-task-timer a.btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  text-transform: uppercase;
 }
 
 @media (max-width: 576px) {
@@ -133,7 +153,6 @@ button {
   /* Styles for small devices (phones) */
   .header-bar {
     margin-top: 5%;
-    margin-bottom: 5%;
   }
 
   p {
@@ -146,10 +165,6 @@ button {
 
   .row-margin {
     font-size: .75em
-  }
-
-  .gap {
-    gap: 5%
   }
 
   .job-card {
@@ -158,20 +173,6 @@ button {
     margin: 0%;
     padding-left: 1%;
     padding-right: 1%;
-  }
-
-  p {
-    font-size: .75em;
-    padding-left: 1%;
-  }
-
-  button {
-    font-size: .75em;
-
-  }
-
-  .row-margin {
-    font-size: .75em
   }
 
   .manager {
@@ -193,6 +194,8 @@ button {
   }
 
   .padding-p {
+    margin-bottom: 0;
+    padding-bottom: 1%;
     padding-top: 1%;
     padding-left: 2%;
   }
@@ -220,17 +223,11 @@ button {
 
 /* // Card Custom Styling */
 .card-hea {
+  align-items: center;
   font-weight: bold;
-  padding-top: 1.5%;
-  padding-right: 2%;
-  padding-bottom: 0%;
-  margin-bottom: 0%;
-  background-color: #d5d5d5 !important;
-}
-
-/* // FontAwesome Icon Styling */
-.fas {
-  margin-right: 5px;
+  padding: 0.2rem;
+  margin: 0;
+  background-color: #E5E5E5;
 }
 
 /* // Badges and Spacing */
@@ -296,10 +293,6 @@ button {
 
 .task-bootstrap-card {
   border-radius: 10px;
-}
-
-.btn {
-  text-align: left;
 }
 
 .text-truncate {
@@ -381,11 +374,7 @@ button {
 }
 
 @media (min-width: 768px) {
-
   /* Styles for medium devices (tablets) */
-  .gap {
-    gap: 20%
-  }
 }
 
 @media (min-width: 992px) {
