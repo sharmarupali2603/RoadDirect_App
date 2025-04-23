@@ -7,7 +7,7 @@ import { JobsService } from 'src/app/Services/Jobs/jobs.service';
   styleUrls: ['./tasks.component.css']
 })
 export class TasksComponent {
-  taskList:any[]=[];
+  taskList: any[] = [];
   yourTasks = [
     {
       company: "Unison Contracting Services Limited",
@@ -35,20 +35,20 @@ export class TasksComponent {
     }
   ];
 
-constructor(public jobsService: JobsService){
-this.fetchMyTasks();
-}
+  constructor(public jobsService: JobsService) {
+    this.fetchMyTasks();
+  }
 
-fetchMyTasks(){
-  this.jobsService.getMyTasks().subscribe(
-    (data) => {
-      this.taskList = data;
-      // localStorage.setItem ('User', JSON.stringify(this.User));
-      console.log('Task List:', this.taskList);
-    },
-    (error) => {
-      console.error('Error fetching posts:', error);
-    }
-  );
-}
+  fetchMyTasks() {
+    this.jobsService.getMyTasks().subscribe(
+      (data) => {
+        this.taskList = data;
+        // localStorage.setItem ('User', JSON.stringify(this.User));
+        console.log('Task List:', this.taskList);
+      },
+      (error) => {
+        console.error('Error fetching posts:', error);
+      }
+    );
+  }
 }

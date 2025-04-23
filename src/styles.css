@@ -1,9 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../node_modules/angular-calendar/css/angular-calendar.css";
 
-html, body { height: 100%; }
-body { margin: 0; 
-    font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 html,
 body {
@@ -14,6 +20,7 @@ body {
   margin: 0;
   font-family: 'Poppins', sans-serif !important;
 }
+
 footer {
   height: 60px;
 }
@@ -40,16 +47,25 @@ footer nav {
 }
 
 .active-tab {
-  color: yellow !important; /* Highlight active tab */
+  color: yellow !important;
+  /* Highlight active tab */
   font-weight: bold;
 }
 
 .active-tab i {
-  transform: scale(1.2); /* Slight zoom effect */
+  transform: scale(1.2);
+  /* Slight zoom effect */
   transition: transform 0.3s ease-in-out;
 }
+
 bs-datepicker-container {
   position: absolute !important;
   z-index: 1050 !important;
   width: auto !important;
+}
+
+mat-icon.md-18 {
+  font-size: 18px;
+  height: 18px;
+  width: 18px;
 }

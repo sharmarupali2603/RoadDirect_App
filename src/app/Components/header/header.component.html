@@ -1,27 +1,16 @@
-<!-- <header class="navbar navbar-expand-lg navbar-dark bg-gradient fixed-top px-3 d-flex align-items-center" >
-    <img src="assets\icon.png" alt="Logo" width="40" height="40">
-    <div class="ms-3 flex-grow-1">
-      <button class="btn btn-outline-light">
-        <i class="bi bi-clock"></i>  <app-stopwatch></app-stopwatch>
-      </button>
-     
-    </div>
-    <div class="d-flex align-items-center">
-      <span class="text-white me-2">Jimmy Jackson</span>
-      <i class="bi bi-person-circle text-white" style="font-size: 1.5rem;"></i>
-    </div>
-  </header> -->
-
 <header>
-  <img src="assets\icon.png" alt="Logo" width="40" height="40">
+  <img src="assets\icon.png" alt="Logo" width="40" height="40" style="margin-left: 0.5rem">
 
   <div class="timer-container">
-    <i class="bi bi-clock"></i>
+    <mat-icon aria-hidden="false">schedule</mat-icon>
     <span class="timer-text"><app-stopwatch></app-stopwatch></span>
   </div>
 
   <div class="user-info">
-    <span>{{FirstName}} {{LastName}}</span>
-    <i class="bi bi-person-circle"></i>
+    <div>
+      <div>{{FirstName}} {{LastName}}</div>
+      <div>{{PageTitle}}</div>
+    </div>
+    <mat-icon aria-hidden="false">account_circle</mat-icon>
   </div>
 </header>

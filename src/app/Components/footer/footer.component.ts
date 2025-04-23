@@ -7,14 +7,14 @@ import { NavigationEnd, Router } from '@angular/router';
   styleUrls: ['./footer.component.css']
 })
 export class FooterComponent {
-activeRoute: any= '/dashboard';;
+  activeRoute: any = '/dashboard';;
 
-constructor(private router: Router) {
-  // this.activeRoute = "/dashboard";
-  this.router.events.subscribe(event => {
-    if (event instanceof NavigationEnd) {
-      this.activeRoute = event.url;
-    }
-  });
-}
+  constructor(private router: Router) {
+    // this.activeRoute = "/dashboard";
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.activeRoute = event.url;
+      }
+    });
+  }
 }

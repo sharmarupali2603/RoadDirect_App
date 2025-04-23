@@ -1,12 +1,12 @@
 @media (min-width: 10px) {
+
   /* Styles for small devices (phones) */
   header {
-    background: linear-gradient(
-      to right,
-      #7dccba,
-      #f68a33
-    ) !important; /* Smooth gradient */
-    color: white;
+    background: linear-gradient(to right,
+        #7dccba,
+        #f68a33) !important;
+    /* Smooth gradient */
+    color: black;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -18,12 +18,12 @@
     width: 100%;
     z-index: 1000;
   }
-  
+
   .header-logo {
     width: 40px;
     height: 40px;
   }
-  
+
   /* .timer-container {
       display: flex;
       align-items: center;
@@ -38,39 +38,49 @@
     .timer-container i {
       margin-right: 5px;
     } */
-  
+
   .user-info {
+    font-size: 1rem;
     display: flex;
     align-items: center;
+    text-align: right;
   }
-  
+
   .user-info i {
-    font-size: 1.5rem;
-    margin-left: 5px;
+    font-size: 1rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
   }
+
   .timer-container {
     display: flex;
-    align-items: center; /* Ensures vertical alignment */
-    justify-content: center; /* Centers content */
-    background: rgba(255, 255, 255, 0.15); /* Transparent box */
+    align-items: center;
+    /* Ensures vertical alignment */
+    justify-content: center;
+    /* Centers content */
+    background: rgba(255, 255, 255, 0.15);
+    /* Transparent box */
     /* padding: 5px 15px; */
     border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.5);
     font-weight: bold;
-    color: white;
-    min-width: 120px; /* Ensures proper width */
-    height: 40px; /* Adjust height to fit */
-    white-space: nowrap; /* Prevents line breaks */
+    color: black;
+    min-width: 120px;
+    /* Ensures proper width */
+    height: 40px;
+    /* Adjust height to fit */
+    white-space: nowrap;
+    /* Prevents line breaks */
   }
-  
+
   .timer-container i {
     margin-right: 8px;
-    font-size: 1.2rem; /* Adjust icon size */
+    font-size: 1rem;
+    /* Adjust icon size */
   }
-  
+
   .timer-text {
-    font-size: 1.2rem; /* Ensures same size as icon */
-    font-weight: bold;
+    font-size: 1rem;
   }
 
 }

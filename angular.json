@@ -30,7 +30,6 @@
                 "input": "./node_modules/pdfmake/build",
                 "output": "/assets/pdfmake"
               }
-            
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",

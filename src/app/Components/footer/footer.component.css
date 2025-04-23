@@ -1,37 +1,38 @@
 .bg-orange {
-    background: #F68A33;
-  }
-  
-  footer {
-    height: 60px;
-  }
-  
-  footer nav a {
-    text-decoration: none;
-    color: white;
-    font-size: 14px;
-  }
-  
-  footer .btn {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  }
-  @media (max-width: 576px ){
-    fixed-bottom{
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1030;
+  background: #F68A33;
 }
 
-footer{
-  /* width: 75%; */
+footer {
   height: 60px;
 }
+
+footer nav a {
+  text-decoration: none;
+  color: white;
+  font-size: 14px;
+}
+
+footer .btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 576px) {
+  fixed-bottom {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1030;
   }
+
+  footer {
+    /* width: 75%; */
+    height: 60px;
+  }
+}
 
 footer {
   height: 60px;
@@ -59,11 +60,13 @@ footer nav {
 }
 
 .active-tab {
-  color: yellow !important; /* Highlight active tab */
+  color: yellow !important;
+  /* Highlight active tab */
   font-weight: bold;
 }
 
 .active-tab i {
-  transform: scale(1.2); /* Slight zoom effect */
+  transform: scale(1.2);
+  /* Slight zoom effect */
   transition: transform 0.3s ease-in-out;
 }
