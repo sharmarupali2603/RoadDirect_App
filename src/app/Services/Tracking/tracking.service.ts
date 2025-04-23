@@ -1,24 +1,16 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { DatabaseService } from '../Database/database.service';
-import { Observable, from } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TrackingService {
-  private mainUrl = 'https://pwa-alpha-aws.roaddirect.co.nz/api/';
-  private token = '76fda9e0-486a-4efc-b4ee-3ea32d774c8c'; // Replace with your actual token
+  private mainUrl = environment.apiBase;
 
-  constructor(private http: HttpClient) {}
-  // Function to get headers with Bearer token
-  private getHeaders(): HttpHeaders {
-    return new HttpHeaders({
-      Authorization: `Bearer ${this.token}`,
-      'Content-Type': 'application/json',
-    });
-  }
+  constructor(private http: HttpClient) { }
 
   getAllProducts(paramsObj: any): Observable<any> {
     let params = new HttpParams();
@@ -65,7 +57,7 @@ export class TrackingService {
     return this.http.get(this.mainUrl + 'Tracking/GetTrackingTaskById', {
       params,
     }).pipe(
-   
+
     );
   }
   updateTrackingRecord(postData: any): Observable<any> {
@@ -132,7 +124,7 @@ export class TrackingService {
     return this.http.get(this.mainUrl + 'Tracking/GetLatestJobItemCounts', {
       params,
     }).pipe(
-   
+
     );
   }
 }
