@@ -17,12 +17,10 @@
 
   <div class="search-filter-container">
     <div class="search-box">
-      <label><strong>Search for <span>jobs...</span></strong></label>
-
-      <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search jobs..." />
-
-      <br />
-
+      <label>
+        <strong>Search for <span>jobs...</span></strong>
+        <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search jobs..." />
+      </label>
       <select class="form-select" [(ngModel)]="selectedJobType">
         <option value="">All Types</option>
         <option *ngFor="let type of jobType" [value]="type.fullName">
@@ -30,16 +28,17 @@
         </option>
       </select>
     </div>
-    <div class="filter-box">
-      <label><strong>Filter by <span>user...</span></strong></label>
 
-      <select class="form-select" [(ngModel)]="selectedUser">
-        <option value="">All Users</option>
-        <option *ngFor="let user of userList" [value]="user.id">
-          {{ user.firstName }} {{ user.lastName }}
-        </option>
-      </select>
-      <br />
+    <div class="filter-box">
+      <label>
+        <strong>Filter by <span>user...</span></strong>
+        <select class="form-select" [(ngModel)]="selectedUser">
+          <option value="">All Users</option>
+          <option *ngFor="let user of userList" [value]="user.id">
+            {{ user.firstName }} {{ user.lastName }}
+          </option>
+        </select>
+      </label>
       <div class="form-check">
         <input type="checkbox" class="form-check-input" id="showMyJobs" [(ngModel)]="showOnlyUserTasks"
           (change)="toggleMyJobs()" />
@@ -78,17 +77,17 @@
           {{ notes.note }}
         </p>
         <p class="me-2 manager" *ngIf="notes.primaryDutyManager">
-          <mat-icon class="md-18" aria-hidden="false">call</mat-icon>
+          <mat-icon class="md-18 rd-blue" aria-hidden="false">call</mat-icon>
           <strong>Manager #1:</strong>
           {{ getNameByID(notes.primaryDutyManager) }}
         </p>
         <p class="me-2 manager" *ngIf="notes.secondaryDutyManager">
-          <mat-icon class="md-18" aria-hidden="false">call</mat-icon>
+          <mat-icon class="md-18 rd-blue" aria-hidden="false">call</mat-icon>
           <strong>Manager #2:</strong>
           {{ getNameByID(notes.secondaryDutyManager) }}
         </p>
         <p class="me-2 manager" *ngIf="notes.callOutDutyStaff">
-          <mat-icon class="md-18" aria-hidden="false">call</mat-icon>
+          <mat-icon class="md-18 rd-blue" aria-hidden="false">call</mat-icon>
           <strong>Call-Out Staff:</strong>
           {{ getNameByID(notes.callOutDutyStaff) }}
         </p>
@@ -107,7 +106,7 @@
               <mat-icon class="md-18" aria-hidden="false">store</mat-icon>
               {{ getClientNamebyID(jobs.clientId) }}
             </p>
-            <button class="expand-btn btn btn-primary btn-sm" (click)="expandJobs(jobs, job, date)">
+            <button class="expand-btn btn btn-primary btn-sm rd-bg-blue" (click)="expandJobs(jobs, job, date)">
               <mat-icon style="font-size: 8px; height: unset; width: unset;" aria-hidden="false">expand_more</mat-icon>
               Expand Job
             </button>

@@ -3,8 +3,8 @@
   /* Styles for small devices (phones) */
   header {
     background: linear-gradient(to right,
-        #7dccba,
-        #f68a33) !important;
+        var(--rd-teal),
+        var(--rd-orange)) !important;
     /* Smooth gradient */
     color: black;
     display: flex;

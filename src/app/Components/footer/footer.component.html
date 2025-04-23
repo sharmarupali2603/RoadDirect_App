@@ -1,26 +1,29 @@
-<footer class="fixed-bottom bg-orange border-top">
+<footer class="fixed-bottom rd-bg-orange border-top">
   <nav class="d-flex justify-content-around align-items-center py-2">
     <a routerLink="/home" class="tab-link text-white text-center" aria-label="go to home page">
       <mat-icon aria-hidden="false" aria-label="home icon">home</mat-icon>
       <p class="mb-0">Home</p>
     </a>
-    <a routerLink="/dashboard" [ngClass]="{'active-tab': activeRoute === '/dashboard'}"
+
+    <a routerLink="/dashboard" [ngClass]="{'active-tab': activeRoute === '/dashboard' || activeRoute === '/'}"
       class="tab-link text-white text-center" aria-label="go to calendar">
       <mat-icon aria-hidden="false" aria-label="calendar icon">calendar_month</mat-icon>
       <p class="mb-0">Calendar</p>
     </a>
-    <div aria-label="spacer">&nbsp;</div>
-    <button class="btn btn-light rounded-circle position-absolute top-0 start-50 translate-middle"
-      style="width: 50px; height: 50px;">
-      <mat-icon class="md-dark" aria-hidden="false" aria-label="add icon"
-        style="font-weight: bold; font-size: 2rem; display: flex; justify-content: center; align-items: center;">
+
+    <div class="footer-spacer" aria-label="spacer">&nbsp;</div>
+
+    <button class="btn btn-light rounded-circle position-absolute top-0 start-50">
+      <mat-icon class="icon-add" aria-hidden="false" aria-label="add icon">
         add
       </mat-icon>
     </button>
+
     <a routerLink="/tasks" [ngClass]="{'active-tab': activeRoute === '/tasks'}" class="tab-link text-white text-center">
       <mat-icon aria-hidden="false" aria-label="add icon">event_available</mat-icon>
       <p class="mb-0">Tasks</p>
     </a>
+
     <a routerLink="/timesheets" class="tab-link text-white text-center">
       <mat-icon aria-hidden="false" aria-label="add icon">work_history</mat-icon>
       <p class="mb-0">Timesheets</p>

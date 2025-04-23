@@ -1,14 +1,34 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../node_modules/angular-calendar/css/angular-calendar.css";
 
-html,
-body {
-  height: 100%;
-}
+:root {
+  --rd-blue: #2196F3;
+  --rd-orange: #F68A33;
+  --rd-teal: #7DCCBA;
 
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  .rd-blue {
+    color: var(--rd-blue);
+  }
+
+  .rd-bg-blue {
+    background-color: var(--rd-blue);
+  }
+
+  .rd-orange {
+    color: var(--rd-orange);
+  }
+
+  .rd-bg-orange {
+    background-color: var(--rd-orange);
+  }
+
+  .rd-teal {
+    color: var(--rd-teal);
+  }
+
+  .rd-bg-teal {
+    background-color: var(--rd-teal);
+  }
 }
 
 html,
@@ -19,43 +39,6 @@ body {
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif !important;
-}
-
-footer {
-  height: 60px;
-}
-
-footer nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
-
-.tab-link {
-  text-decoration: none;
-  color: white;
-  font-size: 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 5px;
-  transition: color 0.3s ease-in-out;
-}
-
-.tab-link i {
-  font-size: 1.5rem;
-}
-
-.active-tab {
-  color: yellow !important;
-  /* Highlight active tab */
-  font-weight: bold;
-}
-
-.active-tab i {
-  transform: scale(1.2);
-  /* Slight zoom effect */
-  transition: transform 0.3s ease-in-out;
 }
 
 bs-datepicker-container {

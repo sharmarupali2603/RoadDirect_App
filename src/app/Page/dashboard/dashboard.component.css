@@ -28,7 +28,7 @@
   align-items: center;
   color: black;
   border-radius: 30px;
-  border: 2px solid #e48745;
+  border: 2px solid var(--rd-orange);
 }
 
 .calendar-header button {
@@ -43,7 +43,7 @@
 .week-days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  background-color: #78c2ad;
+  background-color: var(--rd-teal);
   color: white;
   font-weight: bold;
 }
@@ -88,7 +88,7 @@
 }
 
 .today {
-  background-color: #ea781d;
+  background-color: var(--rd-orange);
   /* Green */
   color: white;
   font-weight: bold;
@@ -97,71 +97,37 @@
 
 .search-filter-container {
   display: flex;
-  justify-content: space-between;
-  /* Ensures even spacing */
   align-items: center;
-  /* Aligns items vertically */
+  justify-content: center;
   gap: 20px;
+  margin-top: 0.5rem;
 }
 
 .search-box,
 .filter-box {
   flex: 1;
-  /* Ensures both elements take equal space */
-}
-
-.search-filter-container {
   display: flex;
-  justify-content: space-between;
-  /* Ensures even spacing */
-  align-items: center;
-  /* Aligns items vertically */
-
-}
-
-.search-box,
-.filter-box {
-  flex: 1;
-  /* Ensures both elements take equal space */
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .search-box label span,
 .filter-box label span {
-  color: #e48745;
-  /* Orange text */
+  color: var(--rd-orange);
 }
 
 input,
-select {
-  border: 2px solid #e48745;
+select,
+.form-check {
+  border: 2px solid var(--rd-orange);
   border-radius: 10px;
   font-size: 16px;
-}
-
-/* Search Box & Filter */
-.search-box,
-.filter-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .search-box label,
 .filter-box label {
   font-weight: bold;
   font-size: 16px;
-}
-
-.search-box label span,
-.filter-box label span {
-  color: #e48745;
-  /* Orange text */
-}
-
-/* Search & Filter Container */
-.search-filter-container {
-  display: flex;
-  justify-content: center;
 }
 
 /* Search Input Icon */
@@ -174,18 +140,17 @@ select {
   appearance: none;
 }
 
-.second-div {
-  background: linear-gradient(to right, #78c2ad, #ff8809);
-  /* Gradient from left to right */
+.form-check {
+  text-align: left;
+  padding: 0.5rem;
 }
 
-.header-container {
-  justify-content: center;
-  align-items: center;
-  border-radius: 25px;
-  background: linear-gradient(to right, #78c2ad, #ea8d4e);
-  /* Green to Orange Gradient */
-  width: 100%;
+.form-check>.form-check-input {
+  margin-left: 0;
+}
+
+.form-check>.form-check-label {
+  margin-left: 0.5rem;
 }
 
 .day-card {
@@ -264,15 +229,6 @@ select {
   display: flex;
   justify-content: flex-end;
   margin-top: 10px;
-}
-
-.job-button {
-  background: #338af3;
-  color: white;
-  padding: 8px 12px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: bold;
 }
 
 .info-bar {
@@ -367,7 +323,7 @@ select {
 
 /* Header Bar Styling */
 .header-bar {
-  background: #a7dfc3;
+  background: var(--rd-teal);
   color: #000;
   font-weight: bold;
   padding: 0.5rem 1rem;
@@ -417,13 +373,6 @@ select {
 
 @media (min-width: 768px) {
   /* Styles for medium devices (tablets) */
-}
-
-/* // Header Bar Styling */
-.header-bar {
-  background: #a7dfc3;
-  color: #000;
-  font-weight: bold;
 }
 
 /* // Color circles in header */
@@ -531,8 +480,11 @@ button {
   }
 
   .manager {
+    display: flex;
+    align-items: center;
+    gap: 0.3em;
     font-size: 0.6em;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.4em;
   }
 
   .NP-green {
@@ -568,14 +520,6 @@ button {
     /* Adjust size as needed */
     color: green;
     /* Choose color */
-  }
-
-  .form-select {
-    padding: 0 !important;
-  }
-
-  .form-control {
-    padding: 0 !important;
   }
 }
 
