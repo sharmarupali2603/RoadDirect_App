@@ -86,7 +86,7 @@
       </div>
       <div class="paddingright text-center">
         <div class="row-margin row-extra border py-2 fw-bold" data-bs-toggle="modal" data-bs-target="#noteModal"
-          *ngIf="jobDate?.jobDailyNote.note">
+          *ngIf="jobDate?.jobDailyNote?.note">
           Extra Info
         </div>
         <div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
@@ -97,7 +97,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                {{ jobDate?.jobDailyNote.note }}
+                {{ jobDate?.jobDailyNote?.note }}
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
