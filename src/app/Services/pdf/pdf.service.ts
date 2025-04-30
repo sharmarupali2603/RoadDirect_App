@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
-declare var require: any;
+// declare var require: any;
 import { format, parseISO } from 'date-fns';
 @Injectable({
   providedIn: 'root'

@@ -135,4 +135,34 @@ export class TrackingService {
    
     );
   }
+
+  addClientSignOff(postData: any): Observable<any> {
+    return this.http
+      .post(this.mainUrl + 'Tracking/AddClientSignOff', postData)
+      .pipe(
+        tap((response) => {
+        }),
+        catchError(() => {
+          // If offline, return cached data
+          return '';
+        })
+      );
+  }
+
+  getClientSignOffsByJobId(paramsObj: any): Observable<any> {
+    let params = new HttpParams();
+
+    // Append query parameters dynamically
+    for (let key in paramsObj) {
+      if (paramsObj[key] !== null && paramsObj[key] !== undefined) {
+        params = params.set(key, paramsObj[key]);
+      }
+    }
+
+    return this.http.get(this.mainUrl + 'Tracking/GetClientSignOffsByJobId', {
+      params,
+    }).pipe(
+   
+    );
+  }
 }

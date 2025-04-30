@@ -49,14 +49,28 @@ export class JobExpandComponent implements OnInit {
   submitTime: any;
   userId:any;
   equipments:any[]=[];
-  editEquipmentData: any
+  editEquipmentData: any;
+  productList:any[]=[];
+  equipmentList:any[]=[];
+  clientSignOf:any[]=[];
+  base64Data: string | null = null;
+  imageUrl: string | null = null;
   constructor(
     private route: Router,
     public jobService: JobsService,
     public pdfService: PdfService,
     public trackingService: TrackingService // private modalService: NgbModal
   ) {
- 
+    if (localStorage.getItem ('User')) {
+      const userData = localStorage.getItem('User');
+      this.User = userData ? JSON.parse(userData) : null;
+      console.log('User:', this.User);
+      this.FirstName= this.User.firstName;
+      this.LastName= this.User.lastName;
+      console.log('FirstName:', this.FirstName);
+      console.log('LastName:', this.LastName);
+      
+  }
     const navigation = this.route.getCurrentNavigation();
     this.jobs = navigation?.extras.state?.['data'] || {};
     console.log('Job>>>>>>>>>>>', this.jobs);
@@ -67,13 +81,15 @@ export class JobExpandComponent implements OnInit {
     this.jobDate = navigation?.extras.state?.['jobDate'] || {};
     console.log('job details>>>>>>>>>', this.jobDetails);
     console.log('job date>>>>>>>>>', this.jobDate);
-    this.fetchLatestJobItemCounts();
+    this.fetchAllProducts();
+    this.fetchClientSignof();
     this.getDefaultSettings();
     this.getEventsByDateRange();
     // Detect online/offline status
     // window.addEventListener('online', () => (this.isOnline = true));
     // window.addEventListener('offline', () => (this.isOnline = false));
     this.getNotesByDateRange();
+    
     if (localStorage.getItem('ClientList')) {
       const clientData = localStorage.getItem('ClientList');
       this.clientList = clientData ? JSON.parse(clientData) : null;
@@ -103,6 +119,7 @@ export class JobExpandComponent implements OnInit {
       console.log('FirstName:', this.FirstName);
       console.log('LastName:', this.LastName);
     }
+    
   }
 
   ngOnInit(): void {
@@ -131,6 +148,7 @@ export class JobExpandComponent implements OnInit {
       console.log('submitTime:', this.submitTime);
       // this.fetchTrackingTaskById(this.taskId);
     }
+   
   }
   getDefaultSettings() {
     this.jobService.getDefaultSettings().subscribe(
@@ -163,7 +181,25 @@ export class JobExpandComponent implements OnInit {
       }
     );
   }
+  fetchAllProducts() {
+    const queryParams = {
+      includeIcons: true,
+    };
 
+    this.trackingService.getAllProducts(queryParams).subscribe(
+      (response) => {
+        this.productList = response;
+        this.productList = response.map((item: any) => ({ ...item, quantity: 0 }));
+
+        // localStorage.setItem('VehicleList', JSON.stringify(this.vehicles));
+        console.log('productList:', this.productList);
+        this.fetchLatestJobItemCounts();
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+      }
+    );
+  }
   getNotesByDateRange() {
     debugger;
     let current = this.currentDate.toISOString();
@@ -423,11 +459,17 @@ export class JobExpandComponent implements OnInit {
   }
 
   loadImages() {
-    // this.http.get<any[]>('/api/images').subscribe(data => {
-    this.images = this.jobDetails.photoLookups;
-    // });
+    this.getPhotosByJobDetailsId();
+    // this.images = this.jobDetails.photoLookups;
+
   }
 
+  openImage(photoBlob: Blob) {
+    if (this.imageUrl) {
+      URL.revokeObjectURL(this.imageUrl); // Revoke previous object URL
+    }
+    this.imageUrl = URL.createObjectURL(photoBlob);
+  }
   addRecordTask(jobs: any, jobDetails: any, jobDate: any) {
     console.log('clientID:', this.clientID);
     this.route.navigate(['/create-record-task'], {
@@ -562,9 +604,31 @@ export class JobExpandComponent implements OnInit {
     });
   }
   fileName = '';
-fileChanged(evt: Event) {
-  const f = (evt.target as HTMLInputElement).files;
-  if (f?.length) this.fileName = f[0].name;
+  file='';
+// fileChanged(evt: Event) {
+//   debugger
+//   const f = (evt.target as HTMLInputElement).files;
+//   if (f?.length) this.fileName = f[0].name;
+//   // if (f?.length) this.file = f.data;
+// }
+fileChanged(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  if (!input.files?.length) return;
+
+  const file = input.files[0];
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    // This will include the data URI prefix like "data:image/png;base64,..."
+    this.base64Data = reader.result as string;
+    console.log('Base64:', this.base64Data);
+  };
+
+  reader.onerror = (error) => {
+    console.error('FileReader error:', error);
+  };
+
+  reader.readAsDataURL(file); // reads file as base64
 }
 onSubmit(val: any) {
   console.log('Form data', val);
@@ -573,16 +637,22 @@ onSubmit(val: any) {
     this.userId = user ? JSON.parse(user) : null;
   }
   this.userId = this.userId.userId;
-  const postData = [{
-    jobId:this.jobDetails.jobId,
-    note: val.note,
-    noteType: 3,
-    userId:'c2562ddb-4225-45a3-8a94-d7f6015e6788'
-  }];
+  // if(this.base64Data)
+    const postData = [{
+      jobId:this.jobDetails.jobId,
+      note: val.note,
+      noteType: 3,
+      userId:'c2562ddb-4225-45a3-8a94-d7f6015e6788',
+      attachment: this.base64Data,
+      timestamp: this.currentDate,
+    }];
+ 
+  
+
   this.trackingService.addTrackingNotes(postData).subscribe({
     next: (res) => {
       alert('✅ Note added successfully!');
-      // this.taskForm.reset();
+      // val.reset();
 
     },
     error: (err) => {
@@ -616,8 +686,75 @@ fetchLatestJobItemCounts() {
   this.trackingService.getLatestJobItemCounts(queryParams).subscribe(
     (response) => {
       this.equipments = response;
+      const filtered = this.equipments.filter(item => item.quantity > 0);
+    
+      this.equipmentList = filtered.map(item => ({
+        title:this.getTitleByProductId(item.productId),
+        icon:this.getIconbyProductId(item.productId),
+        product: item.product,
+        productId: item.productId,        // or item.productId depending on your API response
+        quantity: item.quantity,
+        jobId:item.jobId,
+        price:item.price,
+        id:item.id
+      }));
       // localStorage.setItem('VehicleList', JSON.stringify(this.vehicles));
-      console.log('equipments:', this.equipments);
+      console.log('equipments:', this.equipmentList);
+    },
+    (error) => {
+      console.error('Error fetching data:', error);
+    }
+  );
+}
+getIconbyProductId(productId: any) {
+
+
+  const product = this.productList.find((c) => c.id == productId); // Find vehicle by ID
+  return product ? product.icon : String(productId); // Return ShortName if found, otherwise return the vehicleId as a string
+}
+
+getTitleByProductId(productId: any) {
+  const product = this.productList.find((c) => c.id == productId); // Find vehicle by ID
+  return product ? product.title : String(productId); // Return ShortName if found, otherwise return the vehicleId as a string
+}
+
+clientSignOff(jobs: any, jobDetails: any, jobDate: any,taskId:any) {
+  console.log('clientID:', this.clientID);
+  this.route.navigate(['/client-signof'], {
+    state: {
+      title: 'Client Sign Off',
+      data: jobs,
+      jobDetails: jobDetails,
+      jobDate: jobDate,
+      clientID: this.clientID,
+      date: this.currentDate,
+      lastdate: this.lastDate,
+      taskId:taskId
+    },
+  });
+}
+fetchClientSignof() {
+  const queryParams = {
+    id: this.jobDetails.jobId
+  };
+
+  this.trackingService.getClientSignOffsByJobId(queryParams).subscribe(
+    (response) => {
+      this.clientSignOf = response;
+      // const filtered = this.equipments.filter(item => item.quantity > 0);
+    
+      // this.equipmentList = filtered.map(item => ({
+      //   title:this.getTitleByProductId(item.productId),
+      //   icon:this.getIconbyProductId(item.productId),
+      //   product: item.product,
+      //   productId: item.productId,        // or item.productId depending on your API response
+      //   quantity: item.quantity,
+      //   jobId:item.jobId,
+      //   price:item.price,
+      //   id:item.id
+      // }));
+      // localStorage.setItem('VehicleList', JSON.stringify(this.vehicles));
+      console.log('clientSignOf:', this.clientSignOf);
     },
     (error) => {
       console.error('Error fetching data:', error);
@@ -625,25 +762,23 @@ fetchLatestJobItemCounts() {
   );
 }
 
+getPhotosByJobDetailsId() {
+  const queryParams = {
+    id: this.jobDetails.jobDetailsId
+  };
 
+  this.jobService.getPhotosByJobDetailsId(queryParams).subscribe(
+    (response) => {
+      this.images = response;
+      console.log("images>>>>>",this.images);
+    },
+    (error) => {
+      console.error('Error fetching data:', error);
+    }
+  );
 }
 
-// recordTask(jobs:any,jobDetails:any,jobDate:any) {
-//   const modalRef = this.modalService.open(CreateRecordTaskComponent, {
-//     centered: true,
-//     backdrop: 'static'
-//   });
-
-//   modalRef.componentInstance.data =jobs; // 👈 pass data
-//   modalRef.componentInstance.jobDetails =jobDetails;
-//   modalRef.componentInstance.jobDate =jobDate;
-//   modalRef.componentInstance.clientID = this.clientID;
-
-//   modalRef.result.then((result) => {
-//     // 👈 returned value from modal
-//     console.log('Modal returned:', result);
-//     alert(result.message);
-//   }).catch((reason) => {
-//     console.log('Modal dismissed:', reason);
-//   });
-// }
+viewClientSignOf(){
+  
+}
+}

@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { CalendarEvent } from 'angular-calendar';
-import { format, startOfWeek, addDays, isToday } from 'date-fns';
-import { JobsService } from '../../Services/Jobs/jobs.service';
-import { SwUpdate } from '@angular/service-worker';
-import { DatabaseService } from '../../Services/Database/database.service';
 import { Router } from '@angular/router';
-import { ClientService } from 'src/app/Services/Client/client.service';
-import { VehicleService } from 'src/app/Services/Vehicle/vehicle.service';
-import { UserService } from 'src/app/Services/Users/user.service';
+import { SwUpdate } from '@angular/service-worker';
+import { isToday } from 'date-fns';
 import moment from 'moment';
+import { ClientService } from 'src/app/Services/Client/client.service';
+import { UserService } from 'src/app/Services/Users/user.service';
+import { VehicleService } from 'src/app/Services/Vehicle/vehicle.service';
+import { DatabaseService } from '../../Services/Database/database.service';
+import { JobsService } from '../../Services/Jobs/jobs.service';
 
 interface JobDate {
   allocStaff?: {
@@ -40,6 +39,7 @@ export class DashboardComponent implements OnInit {
   lastDate: any;
   cachedjobData: any[] = [];
   currentMonth: string = '';
+  monthName: string = '';
   currentYear: number = 0;
   users = ['User 1', 'User 2', 'User 3'];
   jobs = ['User 1', 'User 2', 'User 3'];
@@ -180,10 +180,10 @@ export class DashboardComponent implements OnInit {
     this.jobService.getFormFields().subscribe(
       (response) => {
         console.log('jobType:', response);
-        for(let i=0; i<response.length; i++){
-          if(response[i].formFieldName == "roadCategory"){
-            if(response[i].items != null){
-              this.jobType= response[i].items;
+        for (let i = 0; i < response.length; i++) {
+          if (response[i].formFieldName == "roadCategory") {
+            if (response[i].items != null) {
+              this.jobType = response[i].items;
             }
           }
         }
@@ -220,26 +220,31 @@ export class DashboardComponent implements OnInit {
     for (let i = 0; i < 5; i++) {
       let newDate = new Date(startOfWeek);
       newDate.setDate(startOfWeek.getDate() + i);
+      const monthName = newDate.toLocaleDateString('en-NZ', { month: 'long' });
       this.weekDates.push({
         dates: newDate.toLocaleDateString('en-US', {}),
-        dayName: newDate.toLocaleDateString('en-US', { weekday: 'short' }),
-        monthName: newDate.toLocaleDateString('en-US', { month: 'long' }),
+        dateTitle: newDate.toLocaleDateString('en-NZ', { dateStyle: 'full' }),
+        dayName: newDate.toLocaleDateString('en-NZ', { weekday: 'narrow' }),
+        monthName: monthName,
         dayNumber: newDate.getDate(),
         selected: isToday(newDate),
         lastDate: newDate,
         // selected: this.isSameDate(newDate, this.currentDate)
       });
+      if (i == 0) {
+        this.monthName = monthName;
+      }
     }
     console.log('weekDates', this.weekDates);
     this.lastDate = this.weekDates[4].lastDate.toISOString();
     // this.lastDate.toISOString(); // Returns ISO format
 
     console.log('Dates', this.currentDate, this.lastDate);
-    this.currentMonth = this.currentDate.toLocaleString('en-US', {
+    this.currentMonth = this.currentDate.toLocaleString('en-NZ', {
       month: 'long',
     });
     console.log("Current month", this.currentMonth);
-    
+
     this.currentYear = this.currentDate.getFullYear();
     this.getJobsByDateRange();
     this.getNotesByDateRange();
@@ -256,11 +261,11 @@ export class DashboardComponent implements OnInit {
     this.updateWeek(this.currentDate);
   }
 
-  selectDate(day: any, month:any) {
+  selectDate(day: any, month: any) {
     // this.currentDate.setDate(day.dayNumber);
     // this.currentDate.setMonth(day., day.dayNumber)
     this.updateWeek(day.lastDate);
-  
+
   }
 
   isSameDate(d1: Date, d2: Date): boolean {
@@ -281,8 +286,8 @@ export class DashboardComponent implements OnInit {
       StartDate: currentDate,
       EndDate: lastDate,
     };
-    this.jobService.getetNotesByDateRange(dateRange).subscribe((data) => {
-      this.noteDetails=data;
+    this.jobService.getetNotesByDateRange(dateRange).subscribe((data: any) => {
+      this.noteDetails = data;
       console.log('Notes Details', data);
       this.noteDetails = data;
     });
@@ -294,14 +299,13 @@ export class DashboardComponent implements OnInit {
       StartDate: currentDate,
       EndDate: lastDate,
     };
-    this.jobService.getEventsByDateRange(dateRange).subscribe((data) => {
-      this.eventDetails=data;
+    this.jobService.getEventsByDateRange(dateRange).subscribe((data: any) => {
+      this.eventDetails = data;
       console.log('Event Details', data);
       this.eventDetails = data;
     });
   }
   getVehicleNameById(vehicleId: any[]) {
-    // debugger;
     // return this.getVehicleNamebyID(vehicleId);
     var arr = [];
     if (vehicleId != null && vehicleId != undefined) {
@@ -343,8 +347,8 @@ export class DashboardComponent implements OnInit {
       for (let i = 0; i < rowData1.length; i++) {
         if (typeof rowData1[i] === 'object') {
           let m = rowData1[i];
-          if (m && m.option) {
-            arr.push(m.option);
+          if (m && m.fullName) {
+            arr.push(m.fullName);
           }
         } else {
           arr.push(rowData1[i]);
@@ -370,49 +374,20 @@ export class DashboardComponent implements OnInit {
     return user ? `${user.firstName} ${user.lastName}` : String(userId); // Return ShortName if found, otherwise return the vehicleId as a string
   }
   getClientNamebyID(clientId: any) {
-    // debugger;
-    // const result = clientId.map((item, index) => {
     const client = this.clientList.find((c) => c.clientId == clientId); // Find vehicle by ID
     return client ? client.clientName : String(clientId); // Return ShortName if found, otherwise return the vehicleId as a string
-    // });
-    // return result;
   }
 
 
   getElements(allocTrucks: any[]) {
-    // return allocTrucks.map(item => String(item)).join(', ');
-    // debugger;
     const nameOnly = allocTrucks.find((item) => typeof item === 'string');
     console.log(nameOnly);
 
     return nameOnly;
   }
   getNameByID(userId: any[]) {
-    debugger;
     const user = this.userList.find((c) => c.id === userId); // Find vehicle by ID
     return user ? `${user.firstName} ${user.lastName}` : String(userId); // Return ShortName if found, otherwise return the vehicleId as a string
-
-    // const queryParams = {
-    //   userId: userId
-    // };
-
-    // this.userService.getUserByID(queryParams).subscribe(
-    //   (response) => {
-    //     debugger;
-    //     const data = response;
-    //     // console.log('User:::::::::::::::::', data.firstName + ' ' + data.lastName);
-    //     if(data.firstName){
-    //       return data.firstName;
-    //     }else{
-    //       return userId;
-    //     }
-
-    //     // console.log('User:', data);
-    //   },
-    //   (error) => {
-    //     console.error('Error fetching data:', error);
-    //   }
-    // );
   }
 
   sendData(job: any, day: any) {
@@ -429,7 +404,6 @@ export class DashboardComponent implements OnInit {
     // return dateOnly1;
   }
   sendEventData(day: any, event: any[]) {
-    // debugger;
     const dateOnly1 = day.dates;
     for (let i = 0; i < event.length; i++) {
       let dateOnly = moment(event, 'YYYY-MM-DD HH:mm:ss').format('M/D/YYYY');
@@ -442,7 +416,6 @@ export class DashboardComponent implements OnInit {
   }
 
   sendNoteData(day: any, notes: any) {
-    // debugger;
     const dateOnly = moment(notes.date, 'YYYY-MM-DD').format('M/D/YYYY');
     const dateOnly1 = day.dates;
     if (dateOnly == dateOnly1) {
@@ -456,7 +429,6 @@ export class DashboardComponent implements OnInit {
   }
 
   getTaskStatus(jobs: any, _userId: any[]) {
-    // debugger;
     const task = this.taskList.find((c) => c.jobId === jobs.id); // Find vehicle by ID
     const taskStatus = task ? task.status : String(jobs.id);
     if (taskStatus == '2') {
@@ -481,8 +453,8 @@ export class DashboardComponent implements OnInit {
       const searchMatch =
         !this.searchText ||
         job.jobDetails.some((detail: JobDetail) =>
-          (detail.location?.toLowerCase().includes(this.searchText.toLowerCase()) ||
-           detail.contact?.toLowerCase().includes(this.searchText.toLowerCase()))
+        (detail.location?.toLowerCase().includes(this.searchText.toLowerCase()) ||
+          detail.contact?.toLowerCase().includes(this.searchText.toLowerCase()))
         );
 
       // User match across all jobDetails and their dates

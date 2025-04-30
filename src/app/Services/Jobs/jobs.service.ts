@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, from, map, Observable, tap } from 'rxjs';
 import { DatabaseService } from '../Database/database.service';
 
@@ -97,4 +97,21 @@ export class JobsService {
   getFormFields(): Observable<any> {
     return this.http.get(this.mainUrl + 'Support/GetFormFields');
   }
+
+  getPhotosByJobDetailsId(paramsObj: any): Observable<any> {
+      let params = new HttpParams();
+  
+      // Append query parameters dynamically
+      for (let key in paramsObj) {
+        if (paramsObj[key] !== null && paramsObj[key] !== undefined) {
+          params = params.set(key, paramsObj[key]);
+        }
+      }
+  
+      return this.http.get(this.mainUrl + 'Job/GetPhotosByJobDetailsId', {
+        params,
+      }).pipe(
+     
+      );
+    }
 }

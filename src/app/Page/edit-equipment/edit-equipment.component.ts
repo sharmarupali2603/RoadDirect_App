@@ -63,12 +63,6 @@ export class EditEquipmentComponent implements OnInit{
         this.productList = response;
         this.productList = response.map((item: any) => ({ ...item, quantity: 0 }));
 
-        // Push a new custom item
-        this.productList.push({
-          name: 'Stop Go Paddle',
-          image: 'assets/icons/paddle.png',
-          quantity: 0
-        });
         // localStorage.setItem('VehicleList', JSON.stringify(this.vehicles));
         console.log('productList:', this.productList);
       },

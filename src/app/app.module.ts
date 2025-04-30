@@ -12,7 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-
+import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
 import { SiteInspectionComponent } from './Page/site-inspection/site-inspection.component';
 import { TSLComponent } from './Page/tsl/tsl.component';
@@ -34,6 +34,8 @@ import { AddNoteComponent } from './Page/add-note/add-note.component';
 // import { Storage } from '@ionic/storage';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { EditEquipmentComponent } from './Page/edit-equipment/edit-equipment.component';
+import { ClientSignofComponent } from './Page/client-signof/client-signof.component';
+// import { SignaturePadModule } from 'ngx-signaturepad';
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,7 +54,8 @@ import { EditEquipmentComponent } from './Page/edit-equipment/edit-equipment.com
     CreateRecordTaskComponent,
     EditTimeComponent,
     AddNoteComponent,
-    EditEquipmentComponent
+    EditEquipmentComponent,
+    ClientSignofComponent
   ],
   imports: [
     BrowserModule,
@@ -72,9 +75,16 @@ import { EditEquipmentComponent } from './Page/edit-equipment/edit-equipment.com
     BrowserAnimationsModule, 
     BsDatepickerModule.forRoot(),
     ModalModule.forRoot(),
+    MatIconModule,
+    // SignaturePadModule
   ],
   providers: [],
   bootstrap: [AppComponent],
   schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
-export class AppModule { }
+export class AppModule  {
+   constructor(private iconRegistry: MatIconRegistry) {
+  const defaultFontSetClasses = iconRegistry.getDefaultFontSetClass();
+  iconRegistry.setDefaultFontSetClass(...defaultFontSetClasses.concat('material-icons-outlined'));
+}
+}
