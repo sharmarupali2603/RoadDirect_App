@@ -6,15 +6,16 @@ import { EditEquipmentComponent } from './Page/edit-equipment/edit-equipment.com
 import { EditTimeComponent } from './Page/edit-time/edit-time.component';
 import { JobExpandComponent } from './Page/job-expand/job-expand.component';
 import { LocationComponent } from './Page/location/location.component';
+import { TasksComponent } from './Page/tasks/tasks.component';
 const routes: Routes = [
   { path: '', component: DashboardComponent },
   { path: 'dashboard', redirectTo: '' },
   { path: 'job-expand', component: JobExpandComponent },
+  { path: 'tasks', component: TasksComponent },
   { path: 'location', component: LocationComponent },
-  {path: 'create-record-task', component: CreateRecordTaskComponent},
-  {path: 'edit-time', component: EditTimeComponent},
-  {path: 'edit-equipment', component: EditEquipmentComponent},
-  // { path: '',   redirectTo: '/dashboard', pathMatch: 'full' }, // redirect to `first-component`
+  { path: 'create-record-task', component: CreateRecordTaskComponent },
+  { path: 'edit-time', component: EditTimeComponent },
+  { path: 'edit-equipment', component: EditEquipmentComponent },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
