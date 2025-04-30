@@ -6,7 +6,10 @@ export const environment = {
   appVersion: require('../../package.json').version,
   environment: 'local',
   rollbarEnabled: false,
-  production: false
+  production: false,
+  ignoresSsl: false,
+  apiBase: 'https://pwa-alpha-aws.roaddirect.co.nz/api/'
+  //apiBase: 'https://fabricate.mockaroo.com/api/v1/databases/eboard/api/'
 };
 
 /*

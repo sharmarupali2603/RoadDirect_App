@@ -1,41 +1,37 @@
-import { NgModule, isDevMode,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, isDevMode } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { DashboardComponent } from './Page/dashboard/dashboard.component';
-import { CalendarModule, DateAdapter } from 'angular-calendar';
-import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
-import { HttpClientModule } from '@angular/common/http';
-import { SiteInspectionComponent } from './Page/site-inspection/site-inspection.component';
-import { TSLComponent } from './Page/tsl/tsl.component';
-import { CalenderComponent } from './Components/calender/calender.component';
-import { HeaderComponent } from './Components/header/header.component';
-import { FooterComponent } from './Components/footer/footer.component';
-import { StopwatchComponent } from './Components/stopwatch/stopwatch.component';
-
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { JobCardComponent } from './Components/job-card/job-card.component';
-import { JobExpandComponent } from './Page/job-expand/job-expand.component';
-import { TasksComponent } from './Page/tasks/tasks.component';
-import { LocationComponent } from './Page/location/location.component';
-import { SafeUrlPipe } from './safe-url.pipe';
-import { CreateRecordTaskComponent } from './Page/create-record-task/create-record-task.component';
-import { EditTimeComponent } from './Page/edit-time/edit-time.component';
-import { AddNoteComponent } from './Page/add-note/add-note.component';
-// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-// import { Storage } from '@ionic/storage';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+
+import { CalenderComponent } from './Components/calender/calender.component';
+import { FooterComponent } from './Components/footer/footer.component';
+import { HeaderComponent } from './Components/header/header.component';
+import { StopwatchComponent } from './Components/stopwatch/stopwatch.component';
+import { CreateRecordTaskComponent } from './Page/create-record-task/create-record-task.component';
+import { DashboardComponent } from './Page/dashboard/dashboard.component';
 import { EditEquipmentComponent } from './Page/edit-equipment/edit-equipment.component';
+import { EditTimeComponent } from './Page/edit-time/edit-time.component';
+import { JobExpandComponent } from './Page/job-expand/job-expand.component';
+import { LocationComponent } from './Page/location/location.component';
+import { SiteInspectionComponent } from './Page/site-inspection/site-inspection.component';
+import { TasksComponent } from './Page/tasks/tasks.component';
+import { TSLComponent } from './Page/tsl/tsl.component';
+import { SafeUrlPipe } from './safe-url.pipe';
 import { ClientSignofComponent } from './Page/client-signof/client-signof.component';
 // import { SignaturePadModule } from 'ngx-signaturepad';
+// import{addNoteComponent} from './Page/add-note/add-note.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,20 +42,19 @@ import { ClientSignofComponent } from './Page/client-signof/client-signof.compon
     HeaderComponent,
     FooterComponent,
     StopwatchComponent,
-    JobCardComponent,
     JobExpandComponent,
     TasksComponent,
     LocationComponent,
     SafeUrlPipe,
     CreateRecordTaskComponent,
     EditTimeComponent,
-    AddNoteComponent,
+    // AddNoteComponent,
     EditEquipmentComponent,
     ClientSignofComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule,ReactiveFormsModule,
+    FormsModule, ReactiveFormsModule,
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
@@ -69,10 +64,9 @@ import { ClientSignofComponent } from './Page/client-signof/client-signof.compon
     }),
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
     BrowserAnimationsModule,
-    MatToolbarModule,
-    MatNativeDateModule,MatDatepickerModule,
+    MatIconModule, MatDatepickerModule, MatNativeDateModule, MatToolbarModule,
     HttpClientModule,
-    BrowserAnimationsModule, 
+    BrowserAnimationsModule,
     BsDatepickerModule.forRoot(),
     ModalModule.forRoot(),
     MatIconModule,
@@ -80,7 +74,7 @@ import { ClientSignofComponent } from './Page/client-signof/client-signof.compon
   ],
   providers: [],
   bootstrap: [AppComponent],
-  schemas:[CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule  {
    constructor(private iconRegistry: MatIconRegistry) {

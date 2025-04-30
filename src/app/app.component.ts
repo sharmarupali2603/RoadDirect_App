@@ -1,22 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { JobsService } from './Services/Jobs/jobs.service';
-import { ClientService } from './Services/Client/client.service';
 import { SwUpdate } from '@angular/service-worker';
+import { ClientService } from './Services/Client/client.service';
 import { DatabaseService, clientItem } from './Services/Database/database.service';
-import { VehicleService } from './Services/Vehicle/vehicle.service';
+import { JobsService } from './Services/Jobs/jobs.service';
 import { UserService } from './Services/Users/user.service';
-// import { Storage } from '@ionic/storage';
-// import { Storage } from '@ionic/storage';
+import { VehicleService } from './Services/Vehicle/vehicle.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'MyProject';
   User: any;
   data: any;
-  tasks:any;
+  tasks: any;
   isOnline = navigator.onLine;
   apiData: any[] = [];
   cachedData: clientItem[] = [];
@@ -24,19 +22,19 @@ export class AppComponent implements OnInit{
   vehicles: any;
   users: any;
   constructor(public jobsService: JobsService,
-              public clientService: ClientService,
-              private swUpdate: SwUpdate,
-              private dbService: DatabaseService,
-              private vehicleService: VehicleService,
-              public userService:UserService
-            ) { 
+    public clientService: ClientService,
+    private swUpdate: SwUpdate,
+    private dbService: DatabaseService,
+    private vehicleService: VehicleService,
+    public userService: UserService
+  ) {
     this.fetchCurrentUser();
     this.fetchAllClient();
     this.fetchAllVehicle();
     this.fetchAllTask();
     this.fetchAllUser();
   }
-  
+
   ngOnInit() {
     // Detect online/offline status
     window.addEventListener('online', () => this.isOnline = true);
@@ -55,8 +53,7 @@ export class AppComponent implements OnInit{
     this.jobsService.getCurrentUser().subscribe(
       (data) => {
         this.User = data;
-        localStorage.setItem ('User', JSON.stringify(this.User));
-        // localStorage.setItem ('User', JSON.stringify(this.User));
+        localStorage.setItem('User', JSON.stringify(this.User));
         console.log('User:', this.User);
       },
       (error) => {
@@ -66,7 +63,7 @@ export class AppComponent implements OnInit{
   }
 
 
-  
+
 
 
 
@@ -78,13 +75,13 @@ export class AppComponent implements OnInit{
   }
 
 
-  
+
   fetchAllClient() {
     this.clientService.getAllClients().subscribe(
       (response) => {
         this.clients = response;
         localStorage.setItem('ClientList', JSON.stringify(this.clients));
-       
+
       },
       (error) => {
         console.error('Error fetching data:', error);
@@ -102,7 +99,7 @@ export class AppComponent implements OnInit{
         this.vehicles = response;
         localStorage.setItem('VehicleList', JSON.stringify(this.vehicles));
         console.log('Vehicle:', this.vehicles);
-        
+
       },
       (error) => {
         console.error('Error fetching data:', error);

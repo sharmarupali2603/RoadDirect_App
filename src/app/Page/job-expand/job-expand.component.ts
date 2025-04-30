@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { JobsService } from 'src/app/Services/Jobs/jobs.service';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import moment from 'moment';
+import { JobsService } from 'src/app/Services/Jobs/jobs.service';
 import { PdfService } from 'src/app/Services/pdf/pdf.service';
 // import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreateRecordTaskComponent } from '../create-record-task/create-record-task.component';
@@ -201,7 +201,6 @@ export class JobExpandComponent implements OnInit {
     );
   }
   getNotesByDateRange() {
-    debugger;
     let current = this.currentDate.toISOString();
     let currentDate = current;
     let lastDate = this.lastDate;
@@ -229,7 +228,6 @@ export class JobExpandComponent implements OnInit {
     });
   }
   getVehicleNameById(vehicleId: any[]) {
-    // debugger;
     // return this.getVehicleNamebyID(vehicleId);
     var arr = [];
     if (vehicleId != null && vehicleId != undefined) {
@@ -266,7 +264,6 @@ export class JobExpandComponent implements OnInit {
   }
 
   getClosureOptions(rowData1: any[]): any[] {
-    debugger;
     var arr = [];
     if (rowData1 != null && rowData1 != undefined) {
       for (let i = 0; i < rowData1.length; i++) {
@@ -299,7 +296,6 @@ export class JobExpandComponent implements OnInit {
     return user ? `${user.firstName} ${user.lastName}` : String(userId); // Return ShortName if found, otherwise return the vehicleId as a string
   }
   getClientNamebyID(clientId: any) {
-    // debugger;
     // const result = clientId.map((item, index) => {
     const clientID = this.clientList.find((c) => c.clientId == clientId); // Find vehicle by ID
     this.clientID = clientID ? this.clientID.clientName : String(clientId);
@@ -310,7 +306,6 @@ export class JobExpandComponent implements OnInit {
     // return result;
   }
   getTypeOfWork(rowData1: any) {
-    // debugger;
     if (rowData1 != null || rowData1 != undefined) {
       if (typeof rowData1 === 'string') {
         // let result = rowData1.slice(1, -1).split(','); // Remove the brackets and split by commas
@@ -324,38 +319,14 @@ export class JobExpandComponent implements OnInit {
 
   getElements(allocTrucks: any[]) {
     // return allocTrucks.map(item => String(item)).join(', ');
-    // debugger;
     const nameOnly = allocTrucks.find((item) => typeof item === 'string');
     console.log(nameOnly);
 
     return nameOnly;
   }
   getNameByID(userId: any[]) {
-    // debugger;
     const user = this.userList.find((c) => c.id === userId); // Find vehicle by ID
     return user ? `${user.firstName} ${user.lastName}` : String(userId); // Return ShortName if found, otherwise return the vehicleId as a string
-
-    // const queryParams = {
-    //   userId: userId
-    // };
-
-    // this.userService.getUserByID(queryParams).subscribe(
-    //   (response) => {
-    //     debugger;
-    //     const data = response;
-    //     // console.log('User:::::::::::::::::', data.firstName + ' ' + data.lastName);
-    //     if(data.firstName){
-    //       return data.firstName;
-    //     }else{
-    //       return userId;
-    //     }
-
-    //     // console.log('User:', data);
-    //   },
-    //   (error) => {
-    //     console.error('Error fetching data:', error);
-    //   }
-    // );
   }
 
   collapseJobs() {
@@ -363,7 +334,6 @@ export class JobExpandComponent implements OnInit {
   }
 
   getClosure(rowData1: any[]): any[] {
-    debugger;
     var arr = [];
     if (rowData1 != null && rowData1 != undefined) {
       for (let i = 0; i < rowData1.length; i++) {
@@ -380,7 +350,6 @@ export class JobExpandComponent implements OnInit {
     return arr; // Ensure a value is always returned
   }
   getTaskStatus(jobs: any, _userId: any[]) {
-    // debugger;
     const task = this.taskList.find((c) => c.jobId == jobs.id); // Find vehicle by ID
     const taskStatus = task ? task.status : String(jobs.id);
     if (taskStatus == '2') {
@@ -397,7 +366,6 @@ export class JobExpandComponent implements OnInit {
   }
 
   sendEventData(day: any, event: any[]) {
-    // debugger;
     const dateOnly1 = moment(day, 'YYYY-MM-DD HH:mm:ss').format('M/D/YYYY');
     for (let i = 0; i < event.length; i++) {
       let dateOnly = moment(event, 'YYYY-MM-DD HH:mm:ss').format('M/D/YYYY');
@@ -415,7 +383,6 @@ export class JobExpandComponent implements OnInit {
   // }
 
   openMap(location: string) {
-    debugger;
     const query = encodeURIComponent(location);
     const geoUrl = `geo:0,0?q=${query}`;
     const webUrl = `https://www.google.com/maps/search/?api=1&query=${query}`;
@@ -447,12 +414,11 @@ export class JobExpandComponent implements OnInit {
     this.dropdownOpen = !this.dropdownOpen;
   }
   downloadPdf(jobs: any, jobDetails: any, jobDate: any) {
-    debugger;
     const details = {
       jobs: jobs,
       jobDetails: jobDetails,
       jobDate: jobDate,
-      clientID: this.clientID,
+      clientID: this.clientID
     };
     console.log('clientID:', this.clientID);
     this.pdfService.generatePdf(details);

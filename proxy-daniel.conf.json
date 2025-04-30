@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "https://pwa-alpha-aws.roaddirect.co.nz/",
+    "target": "https://pwa.roaddrectdaniel/",
     "secure": true,
     "changeOrigin": true,
     "logLevel": "debug"

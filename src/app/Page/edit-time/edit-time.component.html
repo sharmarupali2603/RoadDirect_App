@@ -1,11 +1,12 @@
 <div class="container p-3">
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h5 class="mb-0">Job {{jobDetails.jobId}}</h5>
-      <div>
-        <a (click)="cancel()" class="text-decoration-none text-primary small me-2">Cancel</a>
-        <i class="bi bi-x-circle text-primary fs-4"></i>
-      </div>
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0">Job {{jobDetails.jobId}}</h5>
+    <div>
+      <a (click)="cancel()" class="text-decoration-none text-primary small me-2 rd-btn-close">
+        <mat-icon class="rd-blue" aria-hidden="false">close</mat-icon>
+        Cancel
+      </a>
     </div>
   
     <!-- Current recorded times -->
@@ -42,4 +43,52 @@
     <!-- Save button -->
     <button class="btn btn-secondary w-100" (click)="saveTime()" >SAVE</button>
   </div>
-  
+
+  <!-- Current recorded times -->
+  <div class="card p-3 mb-3">
+    <p class="mb-1 text-muted fw-bold">Current recorded times</p>
+    <div class="ms-2">
+      <p class="mb-1">
+        Started:
+        <strong>
+          {{submitTime | date : "shortTime"}} ({{submitTime | date : "shortDate"}})
+        </strong>
+      </p>
+      <p class="mb-0" *ngIf="finishTime != ''">
+        Finished:
+        <strong>
+          {{finishTime | date : "shortTime"}} ({{finishTime | date : "shortDate"}})
+        </strong>
+      </p>
+    </div>
+  </div>
+
+  <!-- Edit Started Section -->
+  <h6 class="fw-bold">Edit Started</h6>
+
+  <!-- Date picker -->
+  <div class="mb-3 input-group">
+    <span class="input-group-text">
+      <mat-icon class="md-18 rd-teal" aria-hidden="false">today</mat-icon>
+    </span>
+    <input type="date" class="form-control" [(ngModel)]="editDate">
+  </div>
+
+  <!-- Time input -->
+  <div class="mb-3 input-group">
+    <span class="input-group-text">
+      <mat-icon class="md-18 rd-teal" aria-hidden="false">schedule</mat-icon>
+    </span>
+    <input type="time" class="form-control" [(ngModel)]="editTime">
+  </div>
+
+  <!-- Quick Set Buttons -->
+  <div class="mb-3">
+    <label class="form-label fw-bold">Quick Set</label><br>
+    <button class="btn btn-primary me-2" (click)="setQuickTime('03:00')">3:00 am</button>
+    <button class="btn btn-primary" (click)="setQuickTime('03:15')">3:15 am</button>
+  </div>
+
+  <!-- Save button -->
+  <button class="btn btn-secondary w-100" (click)="saveTime()">SAVE</button>
+</div>

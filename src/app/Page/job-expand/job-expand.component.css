@@ -377,18 +377,5 @@ button {
   /* Styles for medium devices (tablets) */
 }
 
-@media (min-width: 992px) {
-  /* Styles for large devices (desktops) */
-}
-.leftmargin{    
-  margin-left: 2%;}
-  .mb-5{
-    margin-bottom: 5% !important;
-  }
-  .mb-10{
-    margin-bottom: 10%;
-  }
-  .card-img-top {
-    height: 100px;
-    object-fit: contain;
-  }
+@media (min-width: 992px) { /* Styles for large devices (desktops) */ }
+

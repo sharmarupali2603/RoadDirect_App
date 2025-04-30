@@ -1,23 +1,19 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { catchError, from, map, Observable, tap } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { DatabaseService } from '../Database/database.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class JobsService {
-  // private mainUrl =
-  //   'https://fabricate.mockaroo.com/api/v1/databases/eboard/api/';
-   private mainUrl =
-    'https://pwa-alpha-aws.roaddirect.co.nz/api/';
-  private token = '76fda9e0-486a-4efc-b4ee-3ea32d774c8c'; // Replace with your actual token
+  private mainUrl = environment.apiBase;
 
-  constructor(private http: HttpClient, private db: DatabaseService) {}
-  // Function to get headers with Bearer token
+  constructor(private http: HttpClient, private db: DatabaseService) { }
+
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
-      Authorization: `Bearer ${this.token}`,
       'Content-Type': 'application/json',
     });
   }
@@ -27,7 +23,6 @@ export class JobsService {
     return this.http.get(this.mainUrl + 'UserManagement/GetCurrentUser');
   }
 
-  // POST request with Bearer token
   getJobsByDateRange(postData: any): Observable<any> {
     return this.http
       .post(this.mainUrl + 'Job/GetJobsByDateRange', postData)
@@ -59,7 +54,6 @@ export class JobsService {
     return from(this.db.getAllJobData());
   }
 
-  // POST request with Bearer token
   getetNotesByDateRange(postData: any): Observable<any> {
     return this.http
       .post(this.mainUrl + 'Support/GetNotesByDateRange', postData)
