@@ -1,8 +1,9 @@
 {
-  "/api": {
-    "target": "https://pwa-alpha-aws.roaddirect.co.nz/",
-    "secure": true,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  }
+    "/api": {
+      "target": "https://fabricate.mockaroo.com/api/v1/databases/eboard/api/",
+      "secure": true,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    }
 }
+  

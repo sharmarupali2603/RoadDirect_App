@@ -1,57 +1,48 @@
-<div class="container mt-3">
-  <!-- Your Tasks Section -->
-  <div class="task-section">
-    <div class="section-header myTask text-white p-2 rounded-top">
-      <i class="fa fa-list-check"></i> Your Tasks
-    </div>
-
-    <div class="task-card" *ngFor="let task of yourTasks">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">
-            <i class="fa fa-building"></i> {{ task.company }}
-            <span class="float-end text-muted">Job# {{ task.jobId }}</span>
-          </h5>
-
-          <p class="card-text">
-            <i class="fa fa-geo-alt"></i> {{ task.address }}<br>
-            <i class="fa fa-calendar"></i> {{ task.dateTime }}<br>
-            <i class="fa fa-file-earmark-text"></i> {{ task.taskDetail }}
-          </p>
-
-          <a href="#" class="btn btn-primary d-flex align-items-center">
-            <i class="fa fa-box-arrow-up-right me-2"></i> Open Task
-          </a>
-        </div>
+<div class="container-fluid p-0">
+  <!-- Your Tasks -->
+  <div class="header-bar py-2 px-3">
+    <strong>Your Tasks</strong>
+  </div>
+  <div class="p-2">
+    <ng-container *ngFor="let task of tasksAssigned">
+    <div class="card shadow-sm mb-3">
+      <div class="card-header d-flex justify-content-between bg-light">
+        <strong>Unison Contracting Services Limited</strong>
+        <span class="text-muted">Job #{{task.jobId}}: :
+          {{task.job.clientId}}</span>
+      </div>
+      <div class="card-body py-2">
+        <p class="mb-1"><i class="bi bi-geo-alt me-2"></i>148 King Edward Street, South Dunedin, Dunedin</p>
+        <p class="mb-1"><i class="bi bi-calendar3 me-2"></i>Thursday 23rd January, 11:08AM</p>
+        <p><i class="bi bi-envelope-paper me-2"></i>Letter Drop - Oxley Cres - Unison</p>
+        <button class="btn btn-primary w-100">
+          <i class="bi bi-box-arrow-up-right me-1"></i>Open Task
+        </button>
       </div>
     </div>
+    </ng-container>
   </div>
 
-  <!-- Unassigned Tasks Section -->
-  <div class="task-section mt-4">
-    <div class="section-header unAssigned text-white p-2 rounded-top">
-      <i class="fa fa-list-task"></i> Unassigned Tasks
-    </div>
-
-    <div class="task-card" *ngFor="let task of unassignedTasks">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">
-            <i class="fa fa-building"></i> {{ task.company }}
-            <span class="float-end text-muted">Job# {{ task.jobId }}</span>
-          </h5>
-
-          <p class="card-text">
-            <i class="fa fa-geo-alt"></i> {{ task.address }}<br>
-            <i class="fa fa-calendar"></i> {{ task.dateTime }}<br>
-            <i class="fa fa-file-earmark-text"></i> {{ task.taskDetail }}
-          </p>
-
-          <a href="#" class="btn btn-primary d-flex align-items-center">
-            <i class="fa fa-box-arrow-up-right me-2"></i> Open Task
-          </a>
+  <!-- Unassigned Tasks -->
+  <div class="header-bar py-2 px-3 mt-3">
+    <strong>Unassigned Tasks</strong>
+  </div>
+  <div class="p-2">
+    <ng-container *ngFor="let task of tasksOpen">
+      <div class="card shadow-sm mb-3">
+        <div class="card-header d-flex justify-content-between bg-light">
+          <strong>Unison Contracting Services Limited</strong>
+          <span class="text-muted">Job#:{{task.jobId}}</span>
+        </div>
+        <div class="card-body py-2">
+          <p class="mb-1"><i class="bi bi-geo-alt me-2"></i>148 King Edward Street, South Dunedin, Dunedin</p>
+          <p class="mb-1"><i class="bi bi-calendar3 me-2"></i>Thursday 23rd January, 11:08AM</p>
+          <p><i class="bi bi-envelope-paper me-2"></i>Letter Drop - Oxley Cres - Unison</p>
+          <button class="btn btn-primary w-100">
+            <i class="bi bi-box-arrow-up-right me-1"></i>Open Task
+          </button>
         </div>
       </div>
-    </div>
+    </ng-container>
   </div>
 </div>

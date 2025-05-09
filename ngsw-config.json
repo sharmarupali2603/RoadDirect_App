@@ -8,6 +8,7 @@
       "resources": {
         "files": [
           "/favicon.ico",
+          "/index.html",
           "/manifest.webmanifest",
           "/*.css",
           "/*.js"
@@ -26,11 +27,11 @@
       }
     }
   ],
-  "dataGroups": [
+"dataGroups": [
     {
       "name": "api-cache",
       "urls": [
-        "/api"
+        "https://fabricate.mockaroo.com/api/v1/databases/eboard/api/**"
       ],
       "cacheConfig": {
         "strategy": "performance",

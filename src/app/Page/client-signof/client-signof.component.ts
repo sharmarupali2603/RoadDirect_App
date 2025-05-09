@@ -3,6 +3,7 @@ import { AfterViewInit, Component, ElementRef, HostListener, Inject, OnInit, Vie
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { log } from 'console';
 
 import SignaturePad from 'signature_pad';
 import { TrackingService } from 'src/app/Services/Tracking/tracking.service';
@@ -39,19 +40,21 @@ export class ClientSignofComponent {
   canvas!: HTMLCanvasElement;
   signaturePad!: SignaturePad;
   // @ViewChild('signaturePad') signaturePad!: SignaturePad;
-
+  updatedTime: any;
+  finishTime: any;
+  submitTime: any;
   signaturePadOptions: Object = {
     minWidth: 1,
     canvasWidth: 300,
     canvasHeight: 100
   };
-
-  equipmentList = [
-    { name: 'No Parking Cones', quantity: 1 },
-    { name: 'Directional Signs (MTC & Lane Closures)', quantity: 2 },
-    { name: 'Stop Go Paddle', quantity: 1 },
-    { name: 'Safety Fence 2m (PLASTIC)', quantity: 1 }
-  ];
+  equipmentList:any[]=[];
+  // equipmentList = [
+  //   { name: 'No Parking Cones', quantity: 1 },
+  //   { name: 'Directional Signs (MTC & Lane Closures)', quantity: 2 },
+  //   { name: 'Stop Go Paddle', quantity: 1 },
+  //   { name: 'Safety Fence 2m (PLASTIC)', quantity: 1 }
+  // ];
   timeLog = {
     started: '', // e.g., '2024-04-22 08:00 AM'
     finished: '', // e.g., '2024-04-22 12:00 PM'
@@ -66,6 +69,8 @@ export class ClientSignofComponent {
       backgroundColor: 'rgb(255, 255, 255)'
     });
   }
+  clientSignOf:any;
+  contact:any;
  constructor(
      private fb: FormBuilder,
      private http: HttpClient,
@@ -84,9 +89,25 @@ export class ClientSignofComponent {
      this.taskId = navigation?.extras.state?.['taskId'] || {};
      if( navigation?.extras.state?.['title']){
        this.title = navigation?.extras.state?.['title'] || {};
-      
      }
-    
+    //  equipmentList
+     this.equipmentList = navigation?.extras.state?.['equipmentList'] || {};
+     console.log('equipmentList>>>>>>>>>>>', this.equipmentList);
+     this.updatedTime= navigation?.extras.state?.['updatedTime'] || {};
+     this.submitTime= navigation?.extras.state?.['submitTime'] || {};
+     if( navigation?.extras.state?.['clientSignOf']){
+     this.clientSignOf= navigation?.extras.state?.['clientSignOf'] || {};
+     }
+     console.log("clientSignOf",this.clientSignOf);
+     if(this.title=="view"){
+     
+        this.contact = {
+           // company: 'Bergnaum, Stracke and Kuphal',
+           name: this.jobDetails.contact,
+           contactNumber: this.jobDetails.phone
+         };
+       
+     }
     this.signOffForm = this.fb.group({
       company: ['', Validators.required],
       name: ['', Validators.required],
@@ -103,7 +124,11 @@ export class ClientSignofComponent {
       // this.signaturePad is now available
       this.signaturePadOptions = { ...this.signaturePadOptions, minWidth: 5 }; // update options at runtime
       // this.signaturePad.clear(); // invoke functions from szimek/signature_pad API
-    
+      const contact = {
+        company: this.jobs.clientId,
+   
+      };
+      this.signOffForm.patchValue(contact)
   }
 
   drawComplete() {
@@ -130,6 +155,20 @@ export class ClientSignofComponent {
     });
   }
 
+  cancel() {
+    // this.signOffForm.reset();
+    // this.clearSignature();
+     
+    this.route.navigate(['/job-expand'], {
+      state: {
+        data: this.jobs,
+        date: this.currentDate,
+        lastdate: this.lastDate,
+        jobDetails: this.jobDetails,
+        jobDate: this.jobDate,
+      },
+    });
+  }
   signOff(){
     // const today = new Date();
       const postData = {
@@ -169,10 +208,10 @@ export class ClientSignofComponent {
   }
 
   loadContactFromJob(){ // Simulated job contact data
-    const contact = {
-      company: 'Bergnaum, Stracke and Kuphal',
-      name: 'Jane Doe',
-      contactNumber: '123-456-7890'
+   const contact = {
+      // company: 'Bergnaum, Stracke and Kuphal',
+      name: this.jobDetails.contact,
+      contactNumber: this.jobDetails.phone
     };
   
     this.signOffForm.patchValue(contact);

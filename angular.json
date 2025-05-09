@@ -17,23 +17,27 @@
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
-              "zone.js",
-              "src/polyfill.ts"
+              "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
               "src/assets",
               "src/manifest.webmanifest",
+              "src/manifest.webmanifest",
               {
                 "glob": "**/*",
                 "input": "./node_modules/pdfmake/build",
                 "output": "/assets/pdfmake"
               }
+            
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "src/styles.css"
+              
+
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
@@ -47,12 +51,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "2mb"
+                  "maximumError": "1mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
-                  "maximumError": "6kb"
+                  "maximumError": "4kb"
                 }
               ],
               "outputHashing": "all"
@@ -64,56 +68,21 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
-            },
-            "alpha": {
-              "buildOptimizer": false,
-              "optimization": false,
-              "vendorChunk": true,
-              "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.alpha.ts"
-                }
-              ]
-            },
-            "daniel": {
-              "buildOptimizer": false,
-              "optimization": false,
-              "vendorChunk": true,
-              "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.daniel.ts"
-                }
-              ]
             }
           },
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          },
+          "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "MyProject:build:production",
-              "proxyConfig": "proxy.conf.json"
+              "browserTarget": "MyProject:build:production"
             },
             "development": {
-              "browserTarget": "MyProject:build:development",
-              "proxyConfig": "proxy.conf.json"
-            },
-            "alpha": {
-              "browserTarget": "MyProject:build:alpha",
-              "proxyConfig": "proxy.conf.json"
-            },
-            "daniel": {
-              "browserTarget": "MyProject:build:daniel",
-              "proxyConfig": "proxy-daniel.conf.json"
+              "browserTarget": "MyProject:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -135,6 +104,7 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
+              "src/manifest.webmanifest",
               "src/manifest.webmanifest"
             ],
             "styles": [

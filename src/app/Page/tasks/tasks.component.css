@@ -18,10 +18,22 @@
 
 .card {
   margin-top: 5px;
-  border-left: 5px solid #007bff;
+  /* border-left: 5px solid #007bff; */
 }
 
 .btn {
   width: 100%;
   text-align: center;
+}.bg-gradient {
+  background: linear-gradient(90deg, #A4D4AE, #F58529);
+}
+
+.bg-success-subtle {
+  background-color: #d1e7dd !important;
+}
+.header-bar {
+  background: var(--rd-teal);
+  color: #000;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
 }

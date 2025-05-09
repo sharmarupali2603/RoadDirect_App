@@ -497,6 +497,7 @@ export class DashboardComponent implements OnInit {
   }
 
   toggleMyJobs() {
+    debugger
     this.searchMyJob = this.showOnlyUserTasks ? this.FirstName : false;
   }
   expandJobs(jobs: string, jobDetails: string, date: string) {

@@ -177,7 +177,7 @@
       </div>
     </div>
 
-    <div class="d-flex gap-3 btn-group-job-actions">
+    <div class="d-flex gap-2 btn-group-job-actions">
       <!--Document-->
       <div class="dropdown" [ngClass]="{ show: dropdownOpen }">
         <button
@@ -191,7 +191,8 @@
           <div class="borderUnder" *ngIf="jobDetails?.tmpLookups?.length">
             <h6 class="dropdown-header">TMPs</h6>
             <span *ngFor="let file of jobDetails.tmpLookups">
-              <a *ngIf="file.tmp.isUrl ==  false"
+              <a
+                *ngIf="file.tmp.isUrl == false"
                 class="dropdown-item d-flex align-items-center"
                 [href]="downloadTmp + file.tmp.tmpId"
                 download
@@ -201,9 +202,10 @@
                 >
                 {{ file.tmp.filename }}
               </a>
-              <a *ngIf="file.tmp.isUrl ==  true"
+              <a
+                *ngIf="file.tmp.isUrl == true"
                 class="dropdown-item d-flex align-items-center"
-                [href]="file.tmp.filename "
+                [href]="file.tmp.filename"
                 [attr.target]="file.tmp.filename ? '_blank' : null"
               >
                 <mat-icon class="md-18" aria-hidden="false"
@@ -245,6 +247,8 @@
       <button
         class="btn btn-outline-primary btn-job-action"
         (click)="loadImages()"
+        data-bs-toggle="modal"
+        data-bs-target="#noteModal2"
       >
         <mat-icon class="md-18" aria-hidden="false">photo_camera</mat-icon>
         Photos
@@ -252,13 +256,30 @@
 
       <!-- Display images only after button click -->
       <div *ngIf="images.length > 0">
-        <div class="col-6 col-md-4 col-lg-3" *ngFor="let image of images">
-          <div class="card" *ngIf="image.photo != null">
-            {{openImage(image.photoBlob)}}
-            <img *ngIf="imageUrl" [src]="imageUrl" alt="Photo" class="img-fluid mt-2" />
-            <!-- <img [src]="image.photoBlob" class="card-img-top" [alt]="image.photoBlob" /> -->
+        <div class="modal fade" id="noteModal2" tabindex="-1">
+          <div class="modal-dialog modal-md modal-dialog-centered">
+            <div class="modal-content card-header d-flex justify-content-between align-items-center" >
+              <div class="modal-header">
+                <h5 class="modal-title">Photos</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+
+              <div
+                *ngFor="let image of images"
+               
+              >
+                <!-- <div class="card" *ngIf="image.photo != null">
+            {{openImage(image.photoBlob)}} -->
+                <img
+                  id="myimage"
+                  [src]="'data:image/jpeg;base64,' + image.photoBlob"
+                />
+                <!-- </div> -->
+              </div>
+            </div>
           </div>
         </div>
+        <!-- <img id="myimage" [src]='thumbnail' /> -->
       </div>
 
       <!--Map Location-->
@@ -295,9 +316,9 @@
       </span>
     </div>
 
-    <div class="mt-3">
+    <!-- <div class="mt-3">
       <input type="text" class="form-control" placeholder="All Staff Notes" />
-    </div>
+    </div> -->
   </div>
 
   <div class="mt-3">
@@ -516,7 +537,9 @@
           class="btn"
           (click)="clientSignOff(jobs, jobDetails, jobDate, task?.id)"
         >
-          <i class="bi bi-plus-lg"></i>
+          <mat-icon class="icon-add" aria-hidden="false" aria-label="add icon">
+            add
+          </mat-icon>
         </button>
       </div>
       <div
@@ -540,11 +563,11 @@
           <mat-icon aria-hidden="false">edit_note</mat-icon> View
         </button> -->
         <button
-        class="btn btn-outline-dark btn-job-action"
-        (click)="viewClientSignOf()"
-      >
-      <mat-icon aria-hidden="false">edit_note</mat-icon> View
-      </button>
+          class="btn btn-outline-dark btn-job-action"
+          (click)="viewClientSignOf(jobs, jobDetails, jobDate, task?.id,clientSignOf)"
+        >
+          <mat-icon aria-hidden="false">edit_note</mat-icon> View
+        </button>
         <!-- <p ></p> -->
         <!-- <div class="row g-3">
           <div class="col-6" *ngFor="let item of equipmentList">
