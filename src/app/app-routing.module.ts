@@ -12,6 +12,7 @@ const routes: Routes = [
   { path: '', component: DashboardComponent },
   { path: 'dashboard', redirectTo: '' },
   { path: 'job-expand', component: JobExpandComponent },
+  { path: 'tasks', component: TasksComponent },
   { path: 'location', component: LocationComponent },
   {path: 'create-record-task', component: CreateRecordTaskComponent},
   {path: 'edit-time', component: EditTimeComponent},

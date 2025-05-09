@@ -9,12 +9,8 @@
       <span *ngFor="let event of eventDetails">
         <span *ngFor="let ev of event.eventDates">
           {{ sendEventData(jobDate.jobDetailsDate, ev.eventDateDate) }}
-          <span
-            *ngIf="matchedEvent"
-            class="circle"
-            [ngStyle]="{ 'background-color': '#' + event.eventColour }"
-            [title]="ev.eventName"
-          >
+          <span *ngIf="matchedEvent" class="circle" [ngStyle]="{ 'background-color': '#' + event.eventColour }"
+            [title]="ev.eventName">
           </span>
         </span>
       </span>
@@ -27,10 +23,7 @@
         <mat-icon class="md-18" aria-hidden="false">store</mat-icon>
         {{ getClientNamebyID(jobs.clientId) }}
       </p>
-      <button
-        class="expand-btn btn btn-primary btn-sm btn-job-action"
-        (click)="collapseJobs()"
-      >
+      <button class="expand-btn btn btn-primary btn-sm btn-job-action" (click)="collapseJobs()">
         <mat-icon class="md-18" aria-hidden="false">expand_less</mat-icon>
         Collapse Job
       </button>
@@ -62,10 +55,8 @@
         <p>
           <mat-icon class="md-18" aria-hidden="false">schedule</mat-icon>
           {{ jobDate?.duration?.durationType }}
-          {{ labelStartTime1 }}:
-          <strong>{{ jobDate?.startTime?.startTime1 | date : "hh:mm" }}</strong
-          >, {{ labelStartTime2 }}
-          <strong>{{ jobDate?.startTime?.startTime2 | date : "hh:mm" }}</strong>
+          {{ labelStartTime1 }}: <strong>{{ jobDate?.startTime?.startTime1 | date : "hh:mm" }}</strong>,
+          {{ labelStartTime2 }}: <strong>{{ jobDate?.startTime?.startTime2 | date : "hh:mm" }}</strong>
         </p>
         <p>
           <mat-icon class="md-18" aria-hidden="false">local_shipping</mat-icon>
@@ -87,50 +78,29 @@
           </span>
           <span *ngIf="task.closureType != 1">
             <p>
-              <mat-icon class="md-18" aria-hidden="false"
-                >follow_the_signs</mat-icon
-              >
+              <mat-icon class="md-18" aria-hidden="false">follow_the_signs</mat-icon>
               {{ getClosureOptions(task.closures) }}
             </p>
           </span>
         </span>
       </div>
       <div class="paddingright text-center">
-        <div
-          class="row-margin row-extra border py-2 fw-bold"
-          data-bs-toggle="modal"
-          data-bs-target="#noteModal"
-          *ngIf="jobDate?.jobDailyNote?.note"
-        >
+        <div class="row-margin row-extra border py-2 fw-bold" data-bs-toggle="modal" data-bs-target="#noteModal"
+          *ngIf="jobDate?.jobDailyNote?.note">
           Extra Info
         </div>
-        <div
-          class="modal fade"
-          id="noteModal"
-          tabindex="-1"
-          aria-labelledby="noteModalLabel"
-          aria-hidden="true"
-        >
+        <div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="noteModalLabel">Note</h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
                 {{ jobDate?.jobDailyNote?.note }}
               </div>
               <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                   Close
                 </button>
               </div>
@@ -139,31 +109,19 @@
         </div>
         <div class="row-margin row-extra border py-2">
           NP
-          <div
-            class="NP-green"
-            *ngIf="jobDate?.removeParks?.removeParksTypes != null"
-          >
+          <div class="NP-green" *ngIf="jobDate?.removeParks?.removeParksTypes != null">
             Y
           </div>
-          <div
-            style="color: red"
-            *ngIf="jobDate?.removeParks?.removeParksTypes == null"
-          >
+          <div style="color: red" *ngIf="jobDate?.removeParks?.removeParksTypes == null">
             NA
           </div>
         </div>
-        <div
-          *ngIf="
+        <div *ngIf="
             jobDetails.siteAudits != null ||
             jobDetails.siteSafetyBriefings != '' ||
             jobDetails.siteInspections != ''
-          "
-          class="row-margin row-extra border py-2"
-        >
-          <span
-            class="audit-check"
-            *ngIf="jobDetails.siteSafetyBriefings != []"
-          >
+          " class="row-margin row-extra border py-2">
+          <span class="audit-check" *ngIf="jobDetails.siteSafetyBriefings != []">
             ✔
           </span>
           <span *ngIf="jobDetails.siteInspections != []">
@@ -180,10 +138,7 @@
     <div class="d-flex gap-2 btn-group-job-actions">
       <!--Document-->
       <div class="dropdown" [ngClass]="{ show: dropdownOpen }">
-        <button
-          class="btn btn-outline-primary btn-job-action"
-          (click)="toggleDropdown()"
-        >
+        <button class="btn btn-outline-primary btn-job-action" (click)="toggleDropdown()">
           <mat-icon class="md-18" aria-hidden="false">attach_file</mat-icon>
           Documents
         </button>
@@ -199,7 +154,10 @@
               >
                 <mat-icon class="md-18" aria-hidden="false"
                   >cloud_download</mat-icon
-                >
+                ></a>
+              <a *ngIf="file.tmp.isUrl ==  false" class="dropdown-item d-flex align-items-center"
+                [href]="downloadTmp + file.tmp.tmpId" download>
+                <mat-icon class="md-18" aria-hidden="false">cloud_download</mat-icon>
                 {{ file.tmp.filename }}
               </a>
               <a
@@ -217,26 +175,15 @@
           </div>
           <div class="borderUnder" *ngIf="jobs?.documentLookups?.length">
             <h6 class="dropdown-header">Documents</h6>
-            <a
-              *ngFor="let file of jobs.documentLookups"
-              class="dropdown-item d-flex align-items-center"
-              [href]="downloadDoc + file.document.documentId"
-              download
-            >
-              <mat-icon class="md-18" aria-hidden="false"
-                >cloud_download</mat-icon
-              >
+            <a *ngFor="let file of jobs.documentLookups" class="dropdown-item d-flex align-items-center"
+              [href]="downloadDoc + file.document.documentId" download>
+              <mat-icon class="md-18" aria-hidden="false">cloud_download</mat-icon>
               {{ file.document.filename }}
             </a>
           </div>
           <div>
-            <a
-              (click)="downloadPdf(jobs, jobDetails, jobDate)"
-              class="dropdown-item d-flex align-items-center"
-            >
-              <mat-icon class="md-18" aria-hidden="false"
-                >cloud_download</mat-icon
-              >
+            <a (click)="downloadPdf(jobs, jobDetails, jobDate)" class="dropdown-item d-flex align-items-center">
+              <mat-icon class="md-18" aria-hidden="false">cloud_download</mat-icon>
               Download Job Details
             </a>
           </div>
@@ -250,6 +197,7 @@
         data-bs-toggle="modal"
         data-bs-target="#noteModal2"
       >
+      <!-- <button class="btn btn-outline-primary btn-job-action" (click)="loadImages()"> -->
         <mat-icon class="md-18" aria-hidden="false">photo_camera</mat-icon>
         Photos
       </button>
@@ -283,10 +231,7 @@
       </div>
 
       <!--Map Location-->
-      <button
-        class="btn btn-outline-primary btn-job-action"
-        (click)="openMap(jobDetails.location)"
-      >
+      <button class="btn btn-outline-primary btn-job-action" (click)="openMap(jobDetails.location)">
         <mat-icon class="md-18" aria-hidden="false">public</mat-icon>
         Location
       </button>
@@ -309,8 +254,7 @@
         </span>
         <span *ngIf="task.closureType != 1">
           <p>
-            <strong>TTM FootPath Set-Up -</strong
-            >{{ getClosure(task.closures) }}
+            <strong>TTM FootPath Set-Up -</strong>{{ getClosure(task.closures) }}
           </p>
         </span>
       </span>
@@ -330,30 +274,22 @@
 
       <div class="card-body btn-group-task-timer">
         <div *ngIf="task">
-          <a
-            class="btn btn-outline-primary mb-3"
-            (click)="editRecordTask(jobs, jobDetails, jobDate, task?.id)"
-          >
+          <a class="btn btn-outline-primary mb-3" (click)="editRecordTask(jobs, jobDetails, jobDate, task?.id)">
             <span class="text-truncate">
               {{ task.vehicleRate?.title }}
             </span>
             <mat-icon class="rd-blue" aria-hidden="false">note_alt</mat-icon>
           </a>
 
-          <a
-            *ngIf="updatedTime"
-            (click)="editTime(jobs, jobDetails, jobDate, updatedTime, task?.id)"
-            class="btn btn-outline-primary mb-3"
-          >
+          <a *ngIf="updatedTime" (click)="editTime(jobs, jobDetails, jobDate, updatedTime, task?.id)"
+            class="btn btn-outline-primary mb-3">
             <span class="text-truncate">
               STARTED AT {{ updatedTime | date : "shortTime" }}
             </span>
             <mat-icon class="rd-blue" aria-hidden="false">note_alt</mat-icon>
           </a>
 
-          <a
-            *ngIf="finishTime"
-            (click)="
+          <a *ngIf="finishTime" (click)="
               navigateToFinishTime(
                 jobs,
                 jobDetails,
@@ -362,67 +298,46 @@
                 finishTime,
                 task?.id
               )
-            "
-            class="btn btn-outline-primary mb-3"
-          >
+            " class="btn btn-outline-primary mb-3">
             <span class="text-truncate">
               FINISHED AT {{ finishTime | date : "shortTime" }}
             </span>
             <mat-icon class="rd-blue" aria-hidden="false">note_alt</mat-icon>
           </a>
 
-          <a
-            *ngIf="submitTime"
-            (click)="editTime(jobs, jobDetails, jobDate, submitTime, task?.id)"
-            class="btn btn-outline-primary mb-3"
-          >
+          <a *ngIf="submitTime" (click)="editTime(jobs, jobDetails, jobDate, submitTime, task?.id)"
+            class="btn btn-outline-primary mb-3">
             <span class="text-truncate">
               SUBMITTED (0.15 hrs) AT {{ submitTime | date : "shortTime" }}
             </span>
             <mat-icon class="rd-blue" aria-hidden="false">note_alt</mat-icon>
           </a>
 
-          <button
-            *ngIf="!updatedTime"
-            class="btn btn-primary"
-            (click)="updateTaskTime(jobs, jobDetails, jobDate, task?.id)"
-          >
+          <button *ngIf="!updatedTime" class="btn btn-primary"
+            (click)="updateTaskTime(jobs, jobDetails, jobDate, task?.id)">
             <mat-icon aria-hidden="false">schedule</mat-icon>
             START RECORDING TIME
           </button>
 
-          <button
-            *ngIf="updatedTime && !finishTime"
-            class="btn btn-primary"
-            (click)="FinishTaskTime(jobs, jobDetails, jobDate, task?.id)"
-          >
+          <button *ngIf="updatedTime && !finishTime" class="btn btn-primary"
+            (click)="FinishTaskTime(jobs, jobDetails, jobDate, task?.id)">
             <mat-icon aria-hidden="false">schedule</mat-icon>
             FINISH RECORDING TIME
           </button>
 
-          <button
-            *ngIf="finishTime && finishTime && !submitTime"
-            class="btn btn-success"
-            (click)="submitTaskTime(jobs, jobDetails, jobDate, task?.id)"
-          >
+          <button *ngIf="finishTime && finishTime && !submitTime" class="btn btn-success"
+            (click)="submitTaskTime(jobs, jobDetails, jobDate, task?.id)">
             <mat-icon aria-hidden="false">check</mat-icon>
             SUBMIT THIS TASK
           </button>
 
-          <button
-            *ngIf="finishTime && finishTime && submitTime"
-            class="btn btn-primary"
-            (click)="AddRecordTask(jobs, jobDetails, jobDate)"
-          >
+          <button *ngIf="finishTime && finishTime && submitTime" class="btn btn-primary"
+            (click)="AddRecordTask(jobs, jobDetails, jobDate)">
             RECORD TASK
           </button>
         </div>
 
-        <button
-          *ngIf="!task"
-          class="btn btn-primary"
-          (click)="addRecordTask(jobs, jobDetails, jobDate)"
-        >
+        <button *ngIf="!task" class="btn btn-primary" (click)="addRecordTask(jobs, jobDetails, jobDate)">
           RECORD TASK
         </button>
       </div>
@@ -434,11 +349,7 @@
       </div>
 
       <div class="card-body">
-        <button
-          class="btn btn-primary w-100"
-          data-bs-toggle="modal"
-          data-bs-target="#noteModal1"
-        >
+        <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#noteModal1">
           <!-- <mat-icon aria-hidden="false">add</mat-icon>  -->
           ADD JOB NOTE
         </button>
@@ -453,37 +364,22 @@
               <form #f="ngForm" (ngSubmit)="onSubmit(f.value)">
                 <div class="modal-body">
                   <div class="mb-3">
-                    <label class="form-label"
-                      >Note <span class="text-danger">*</span></label
-                    >
+                    <label class="form-label">Note <span class="text-danger">*</span></label>
                     <input name="note" ngModel required class="form-control" />
                   </div>
                   <div class="mb-3">
                     <label class="form-label">Select attachment</label>
-                    <input
-                      type="file"
-                      (change)="fileChanged($event)"
-                      class="form-control"
-                    />
+                    <input type="file" (change)="fileChanged($event)" class="form-control" />
                     <small class="text-muted">{{
                       fileName || "No file chosen"
-                    }}</small>
+                      }}</small>
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button
-                    type="button"
-                    class="btn btn-light"
-                    data-bs-dismiss="modal"
-                  >
+                  <button type="button" class="btn btn-light" data-bs-dismiss="modal">
                     Cancel
                   </button>
-                  <button
-                    data-bs-dismiss="modal"
-                    type="submit"
-                    class="btn btn-primary"
-                    [disabled]="f.invalid"
-                  >
+                  <button data-bs-dismiss="modal" type="submit" class="btn btn-primary" [disabled]="f.invalid">
                     Save
                   </button>
                 </div>
@@ -502,16 +398,10 @@
         <div class="row g-3">
           <div class="col-6" *ngFor="let item of equipmentList">
             <div class="card text-center h-100 shadow-sm">
-              <img
-                [src]="item.icon"
-                class="card-img-top p-2"
-                alt="..."
-                style="max-height: 100px; object-fit: contain"
-              />
-              <div
-                class="card-body p-2 d-flex justify-content-between align-items-center"
-                style="background-color: #f5f4f4"
-              >
+              <img [src]="item.icon" class="card-img-top p-2" alt="..."
+                style="max-height: 100px; object-fit: contain" />
+              <div class="card-body p-2 d-flex justify-content-between align-items-center"
+                style="background-color: #f5f4f4">
                 <h6 class="card-title small">{{ item.title }}</h6>
                 <span class="badge fs-6">{{ item.quantity }}</span>
               </div>
@@ -519,19 +409,14 @@
           </div>
         </div>
 
-        <button
-          class="btn btn-primary w-100 mt-2"
-          (click)="editEquipment(jobs, jobDetails, jobDate, task?.id)"
-        >
+        <button class="btn btn-primary w-100 mt-2" (click)="editEquipment(jobs, jobDetails, jobDate, task?.id)">
           🔧 Edit Equipment
         </button>
       </div>
     </div>
     <!-- Client Signof Section-->
     <div class="card mb-10">
-      <div
-        class="card-header d-flex justify-content-between align-items-center"
-      >
+      <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0 leftmargin">Client Sign-Off</h5>
         <button
           class="btn"
@@ -542,11 +427,8 @@
           </mat-icon>
         </button>
       </div>
-      <div
-        style="border-bottom: 1px solid #000"
-        class="card-body d-flex justify-content-between align-items-center"
-        *ngFor="let clientSignOf of clientSignOf"
-      >
+      <div style="border-bottom: 1px solid #000" class="card-body d-flex justify-content-between align-items-center"
+        *ngFor="let clientSignOf of clientSignOf">
         <p *ngIf="!clientSignOf">No Client sign-offs have been submitted.</p>
         <!-- <p *ngIf="clientSignOf">
          

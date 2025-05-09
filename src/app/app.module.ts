@@ -19,6 +19,7 @@ import { CalenderComponent } from './Components/calender/calender.component';
 import { FooterComponent } from './Components/footer/footer.component';
 import { HeaderComponent } from './Components/header/header.component';
 import { StopwatchComponent } from './Components/stopwatch/stopwatch.component';
+import { ClientSignofComponent } from './Page/client-signof/client-signof.component';
 import { CreateRecordTaskComponent } from './Page/create-record-task/create-record-task.component';
 import { DashboardComponent } from './Page/dashboard/dashboard.component';
 import { EditEquipmentComponent } from './Page/edit-equipment/edit-equipment.component';
@@ -29,9 +30,6 @@ import { SiteInspectionComponent } from './Page/site-inspection/site-inspection.
 import { TasksComponent } from './Page/tasks/tasks.component';
 import { TSLComponent } from './Page/tsl/tsl.component';
 import { SafeUrlPipe } from './safe-url.pipe';
-import { ClientSignofComponent } from './Page/client-signof/client-signof.component';
-// import { SignaturePadModule } from 'ngx-signaturepad';
-// import{addNoteComponent} from './Page/add-note/add-note.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,7 +46,6 @@ import { ClientSignofComponent } from './Page/client-signof/client-signof.compon
     SafeUrlPipe,
     CreateRecordTaskComponent,
     EditTimeComponent,
-    // AddNoteComponent,
     EditEquipmentComponent,
     ClientSignofComponent
   ],
@@ -76,9 +73,9 @@ import { ClientSignofComponent } from './Page/client-signof/client-signof.compon
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class AppModule  {
-   constructor(private iconRegistry: MatIconRegistry) {
-  const defaultFontSetClasses = iconRegistry.getDefaultFontSetClass();
-  iconRegistry.setDefaultFontSetClass(...defaultFontSetClasses.concat('material-icons-outlined'));
-}
+export class AppModule {
+  constructor(private iconRegistry: MatIconRegistry) {
+    const defaultFontSetClasses = iconRegistry.getDefaultFontSetClass();
+    iconRegistry.setDefaultFontSetClass(...defaultFontSetClasses.concat('material-icons-outlined'));
+  }
 }
