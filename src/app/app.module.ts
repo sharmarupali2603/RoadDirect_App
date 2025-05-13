@@ -31,6 +31,7 @@ import { TasksComponent } from './Page/tasks/tasks.component';
 import { TSLComponent } from './Page/tsl/tsl.component';
 import { SafeUrlPipe } from './safe-url.pipe';
 import { NoteListComponent } from './Page/note-list/note-list.component';
+import { JobStatusComponent } from './Page/job-status/job-status.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,7 +50,8 @@ import { NoteListComponent } from './Page/note-list/note-list.component';
     EditTimeComponent,
     EditEquipmentComponent,
     ClientSignofComponent,
-    NoteListComponent
+    NoteListComponent,
+    JobStatusComponent
   ],
   imports: [
     BrowserModule,
