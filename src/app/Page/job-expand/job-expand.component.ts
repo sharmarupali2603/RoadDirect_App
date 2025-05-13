@@ -626,7 +626,7 @@ onSubmit(val: any) {
       jobId:this.jobDetails.jobId,
       note: val.note,
       noteType: 3,
-      userId:'c2562ddb-4225-45a3-8a94-d7f6015e6788',
+      userId:this.userId,
       attachment: this.base64Data,
       timestamp: this.currentDate,
     }];

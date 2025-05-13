@@ -3,11 +3,10 @@
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center bg-light p-2 rounded shadow-sm mb-3">
       <div>
-        <h5 class="mb-0 fw-bold">Job #<span class="text-primary">117662</span></h5>
+        <h5 class="mb-0 fw-bold">Job #<span class="text-primary">{{jobDetails.jobId}}</span></h5>
       </div>
       <div>
-        <button class="btn btn-sm btn-outline-secondary">Cancel</button>
-        <button class="btn-close ms-2"></button>
+        <button class="btn btn-sm btn-outline-secondary" (click)="cancel()">Cancel</button>
       </div>
     </div>
     <form [formGroup]="jobForm">
@@ -16,13 +15,6 @@
         <div class="mb-3">
           <textarea class="form-control" rows="3" formControlName="notes" placeholder="TTM Closure/What You Did"></textarea>
         </div>
-      
-    <!-- Notes Textarea -->
-    <!-- <div class="mb-3">
-      <textarea class="form-control" rows="3" placeholder="TTM Closure/What You Did"></textarea>
-    </div> -->
-  
-    <!-- Equipment Section -->
     <div>
       <h6 class="fw-bold mb-2">Equipment on site</h6>
       <div class="table-responsive">
@@ -50,6 +42,14 @@
           </tbody>
         </table>
       </div>
+      <div class="mb-3">
+        <label >Your notes for invoicing team</label>
+          <textarea class="form-control" rows="5" formControlName="notes1"  placeholder="For example:
+- lost or damaged equipment
+- towing fees
+- equipment or plant not listed above
+- notes explaining unusual/unexpected equipment quantities above"></textarea>
+        </div>
     </div>
     <button (click)="onSubmit()" type="submit" class="btn btn-success w-100 mt-3">
         Save

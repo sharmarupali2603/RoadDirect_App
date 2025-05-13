@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit {
   currentYear: number = 0;
   users = ['User 1', 'User 2', 'User 3'];
   jobs = ['User 1', 'User 2', 'User 3'];
-  jobDetails: Job[] = []; // Add type annotation for the class property
+  jobDetails: any[] = []; // Add type annotation for the class property
   isOnline = navigator.onLine;
   openCalendar1: boolean = false;
   userList: any[] = [];
@@ -443,7 +443,8 @@ export class DashboardComponent implements OnInit {
       return '';
     }
   }
-  filteredData(): Job[] {
+
+   filteredData(): Job[] {
     // First filter the jobs based on existing criteria
     const filteredJobs = this.jobDetails.filter((job: Job) => {
       // Check if job has any jobDetails
@@ -453,8 +454,8 @@ export class DashboardComponent implements OnInit {
       const searchMatch =
         !this.searchText ||
         job.jobDetails.some((detail: JobDetail) =>
-        (detail.location?.toLowerCase().includes(this.searchText.toLowerCase()) ||
-          detail.contact?.toLowerCase().includes(this.searchText.toLowerCase()))
+          (detail.location?.toLowerCase().includes(this.searchText.toLowerCase()) ||
+           detail.contact?.toLowerCase().includes(this.searchText.toLowerCase()))
         );
 
       // User match across all jobDetails and their dates
@@ -495,6 +496,7 @@ export class DashboardComponent implements OnInit {
       return dateA.getTime() - dateB.getTime();
     });
   }
+  
 
   toggleMyJobs() {
     debugger

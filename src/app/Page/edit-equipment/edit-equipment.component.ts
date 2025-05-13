@@ -1,17 +1,16 @@
-import { Component,OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TrackingService } from 'src/app/Services/Tracking/tracking.service';
 @Component({
   selector: 'app-edit-equipment',
   templateUrl: './edit-equipment.component.html',
-  styleUrls: ['./edit-equipment.component.css']
+  styleUrls: ['./edit-equipment.component.css'],
 })
-export class EditEquipmentComponent implements OnInit{
+export class EditEquipmentComponent implements OnInit {
   jobForm!: FormGroup;
-  productList:any[]=[];
-  
- 
+  productList: any[] = [];
+
   jobs: any;
   jobDetails: any;
   jobDate: any;
@@ -23,9 +22,9 @@ export class EditEquipmentComponent implements OnInit{
   currentDate: Date = new Date();
   lastDate: any;
   today: Date = new Date();
-  taskId:any;
+  taskId: any;
   title: string = 'Create Record Task';
-  task:any;
+  task: any;
   // equipmentList = [
   //   { name: 'Advance Warning', quantity: 0, image: 'assets/icons/warning.png' },
   //   { name: 'Directional Signs (MTC & Lane Closures)', quantity: 0, image: 'assets/icons/directional.png' },
@@ -34,7 +33,11 @@ export class EditEquipmentComponent implements OnInit{
   //   { name: 'Stop Go Paddle', quantity: 0, image: 'assets/icons/paddle.png' }
   // ];
 
-  constructor(private fb: FormBuilder, public trackingService: TrackingService, public route: Router,) {
+  constructor(
+    private fb: FormBuilder,
+    public trackingService: TrackingService,
+    public route: Router
+  ) {
     this.fetchAllProducts();
     const navigation = this.route.getCurrentNavigation();
     this.jobs = navigation?.extras.state?.['data'] || {};
@@ -49,8 +52,9 @@ export class EditEquipmentComponent implements OnInit{
   ngOnInit(): void {
     this.jobForm = this.fb.group({
       notes: [''],
-      quantity:['0'],
-      equipment: [this.productList]
+      notes1: [''],
+      quantity: ['0'],
+      equipment: [this.productList],
     });
   }
   fetchAllProducts() {
@@ -61,7 +65,10 @@ export class EditEquipmentComponent implements OnInit{
     this.trackingService.getAllProducts(queryParams).subscribe(
       (response) => {
         this.productList = response;
-        this.productList = response.map((item: any) => ({ ...item, quantity: 0 }));
+        this.productList = response.map((item: any) => ({
+          ...item,
+          quantity: 0,
+        }));
 
         // localStorage.setItem('VehicleList', JSON.stringify(this.vehicles));
         console.log('productList:', this.productList);
@@ -72,7 +79,6 @@ export class EditEquipmentComponent implements OnInit{
     );
   }
 
-  
   increment(item: any) {
     item.quantity++;
   }
@@ -81,90 +87,126 @@ export class EditEquipmentComponent implements OnInit{
     if (item.quantity > 0) item.quantity--;
   }
 
-
   onSubmit() {
     const notes = this.jobForm.value.notes;
 
     // Filter only items with quantity > 0
-    const filteredEquipment = this.productList.filter(item => item.quantity > 0);
-  
+    const filteredEquipment = this.productList.filter(
+      (item) => item.quantity > 0
+    );
+
     const formData = {
       notes: notes,
-      equipment: filteredEquipment
+      equipment: filteredEquipment,
     };
     console.log('Form Submitted:', formData);
     if (this.jobForm.valid) {
-      console.log('Form Submitted!', this.jobForm.value); 
-      const taskId = this.taskId ; // or get from elsewhere
-      const jobId = this.jobDetails.jobId;  // probably same as TaskId or another selected value
-    
+      console.log('Form Submitted!', this.jobForm.value);
+      const taskId = this.taskId; // or get from elsewhere
+      const jobId = this.jobDetails.jobId; // probably same as TaskId or another selected value
       // Assume equipmentList has quantity + original API data
-      const filtered = this.productList.filter(item => item.quantity > 0);
-    
-      const jobItems = filtered.map(item => ({
+      const filtered = this.productList.filter((item) => item.quantity > 0);
+      const jobItems = filtered.map((item) => ({
         JobId: jobId,
-        ProductId: item.id,        // or item.productId depending on your API response
-        Quantity: item.quantity
+        ProductId: item.id, // or item.productId depending on your API response
+        Quantity: item.quantity,
       }));
-    
-      const postData = {
+      const equipmentPostData = {
         TaskId: taskId,
-        JobItems: jobItems
+        JobItems: jobItems,
       };
-    
-      console.log('POST data:', postData);
-    
-    //   const postData = {
-    //     "TaskId": 1,
-    //     "JobItems": [
-    //       filteredEquipment
-    //     ]
-    // }
-    this.trackingService.updateEquipment(postData).subscribe({
-      next: (res) => {
-        alert('✅ Equipment Updated successfully!' + res);
-        this.jobForm.reset();
+      console.log('POST data:', equipmentPostData);
 
-        const result = {
-          success: true,
-          message: 'Task saved successfully',
-        };
-        // localStorage.setItem('TaskId', res);
-        this.route.navigate(['/job-expand'], {
-          state: {
-            data: this.jobs,
-            date: this.currentDate,
-            lastdate: this.lastDate,
-            jobDetails: this.jobDetails,
-            jobDate: this.jobDate,
-            editEquipment:true
-          },
-        });
-      },
-      error: (err) => {
-        alert('❌ Task submission failed!');
-        console.error(err);
+      if (localStorage.getItem('User')) {
+        const user = localStorage.getItem('User');
+        this.userId = user ? JSON.parse(user) : null;
+      }
+      this.userId = this.userId.userId;
+      // if(this.base64Data)
+      // const postData1 = [
+      //   {
+      //     jobId: this.jobDetails.jobId,
+      //     note: this.jobForm.value.notes1,
+      //     noteType: 3,
+      //     userId: this.userId,
+      //     timestamp: this.currentDate,
+      //   },
+      // ];
+       let newJobNotes:any[]=[];
+      const closureNote = this.jobForm.value.notes;
+    if (closureNote) {
+      let newClosureNote = {
+        jobId: jobId,
+        note: closureNote,
+        noteType: 2,
+        taskId: this.taskId,
+        timestamp: new Date(),
+        userId: this.userId,
+      };
+      newJobNotes.push(newClosureNote);
+    }
+
+    // Construct invoicing note
+    const invoicingNote = this.jobForm.value.notes1;
+    if (invoicingNote) {
+      let newInvoicingNote = {
+        jobId: jobId,
+        note: invoicingNote,
+        noteType: 1,
+        taskId: this.taskId,
+        timestamp: new Date(),
+        userId: this.userId,
+      };
+      newJobNotes.push(newInvoicingNote);
+    }
+      this.trackingService.updateEquipment(equipmentPostData).subscribe({
+        next: (res) => {
+          alert('✅ Equipment Updated successfully!' + res);
+          this.jobForm.reset();
+          this.trackingService.addTrackingNotes(newJobNotes).subscribe({
+            next: (res) => {
+              alert('✅ Note added successfully!');
+              // val.reset();
+            },
+            error: (err) => {
+              alert('❌ Task submission failed!');
+              console.error(err);
+            },
+          });
+          const result = {
+            success: true,
+            message: 'Task saved successfully',
+          };
+          // localStorage.setItem('TaskId', res);
+          this.route.navigate(['/job-expand'], {
+            state: {
+              data: this.jobs,
+              date: this.currentDate,
+              lastdate: this.lastDate,
+              jobDetails: this.jobDetails,
+              jobDate: this.jobDate,
+              editEquipment: true,
+            },
+          });
+        },
+        error: (err) => {
+          alert('❌ Task submission failed!');
+          console.error(err);
+        },
+      });
+    }
+    // Example: You could send `formData` to an API here
+  }
+  cancel() {
+    
+    this.route.navigate(['/job-expand'], {
+      state: {
+        data: this.jobs,
+        date: this.currentDate,
+        lastdate: this.lastDate,
+        jobDetails: this.jobDetails,
+        jobDate: this.jobDate,
       },
     });
   }
-    // Example: You could send `formData` to an API here
-  }
-  // equipmentList = [
-  //   { name: 'No Parking Cones', quantity: 0, image: 'assets/icons/cone.png' },
-  //   { name: 'Advance Warning', quantity: 2, image: 'assets/icons/warning.png' },
-  //   { name: 'Directional Signs (MTC & Lane Closures)', quantity: 0, image: 'assets/icons/directional.png' },
-  //   { name: 'Speed & Temps signs', quantity: 0, image: 'assets/icons/speed.png' },
-  //   { name: 'Road Closure Signs', quantity: 2, image: 'assets/icons/closure.png' },
-  //   { name: 'Stop Go Paddle', quantity: 1, image: 'assets/icons/paddle.png' }
-  // ];
-
-  // increment(item: any) {
-  //   item.quantity++;
-  // }
-
-  // decrement(item: any) {
-  //   if (item.quantity > 0) {
-  //     item.quantity--;
-  //   }
-  // }
 }
