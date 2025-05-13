@@ -30,6 +30,7 @@ import { SiteInspectionComponent } from './Page/site-inspection/site-inspection.
 import { TasksComponent } from './Page/tasks/tasks.component';
 import { TSLComponent } from './Page/tsl/tsl.component';
 import { SafeUrlPipe } from './safe-url.pipe';
+import { NoteListComponent } from './Page/note-list/note-list.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +48,8 @@ import { SafeUrlPipe } from './safe-url.pipe';
     CreateRecordTaskComponent,
     EditTimeComponent,
     EditEquipmentComponent,
-    ClientSignofComponent
+    ClientSignofComponent,
+    NoteListComponent
   ],
   imports: [
     BrowserModule,

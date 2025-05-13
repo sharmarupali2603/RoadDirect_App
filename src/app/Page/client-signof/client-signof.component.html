@@ -76,8 +76,8 @@
       <p class="mb-1">
         I acknowledge that the time recorded as follows is accurate:
       </p>
-      <p class="mb-1">Started: {{ updatedTime || "(not started)" }}</p>
-      <p class="mb-1">Finished: {{ submitTime || "(not finished)" }}</p>
+      <p class="mb-1">Started: {{ updatedTime | date : "fullDate" || "(not started)" }}</p>
+      <p class="mb-1">Finished: {{ submitTime | date : "fullDate"  || "(not finished)" }}</p>
       <p>Total hours: {{ timeLog.totalHours }}</p>
     </div>
     <!-- Notes -->
@@ -120,7 +120,8 @@
   </form>
 </div>
 
-<div class="card shadow rounded mt-3" *ngIf="title == 'view'">
+<div *ngIf="title == 'view'">
+  <div class="card shadow rounded mt-3" id="print-section">
   <div class="card-header bg-white border-0">
     <h5 class="mb-0">Client sign-off for Job {{ clientSignOf.jobId }}</h5>
   </div>
@@ -131,12 +132,20 @@
     <p><strong>Client Name:</strong> {{contact.name}}</p>
     <p><strong>Client Phone:</strong> {{contact.contactNumber}}</p>
 
-    <p>I acknowledge that the equipment recorded as follows is accurate:</p>
+    <p *ngIf="clientSignOf.signingForEquipment == true">I acknowledge that the equipment recorded as follows is accurate:</p>
 
-    <ul>
+    <ul *ngIf="clientSignOf.signingForEquipment == true">
       <li *ngFor="let item of equipmentList">
         {{ item.title }} (Quantity: {{ item.quantity }})
       </li>
+    </ul>
+
+     <p *ngIf="clientSignOf.signingForTime == true">I acknowledge that the time recorded as follows is accurate:</p>
+
+    <ul *ngIf="clientSignOf.signingForTime == true">
+    <p>Started: {{timeLog.started |  date : "fullDate" }}</p>
+    <p>Finished: {{timeLog.finished |  date : "fullDate" }}</p>
+    <p>Total Hours: {{timeLog.totalHours }}</p>
     </ul>
 
     <p><strong>Notes:</strong> {{ clientSignOf.notes }}</p>
@@ -160,9 +169,11 @@
       {{ clientSignOf.timestamp | date : "dd/MM/YYYY" }}
     </p>
 
-    <div class="d-flex gap-2">
-      <button class="btn btn-secondary"  (click)="cancel()">Cancel</button>
-      <button class="btn btn-primary">Print</button>
-    </div>
+    
   </div>
 </div>
+<div class="d-flex gap-2">
+      <button class="btn btn-secondary"  (click)="cancel()">Cancel</button>
+      <button class="btn btn-primary" (click)="printPage()">Print</button>
+    </div>
+    </div>

@@ -1,39 +1,381 @@
-.task-section {
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  overflow: hidden;
-}
-
-.myTask {
-  background-color: #61af8f;
-}
-
-.unAssigned {
-  background-color: #61c279;
-}
-
-.section-header {
-  font-weight: bold;
-}
-
-.card {
-  margin-top: 5px;
-  /* border-left: 5px solid #007bff; */
-}
-
-.btn {
-  width: 100%;
-  text-align: center;
-}.bg-gradient {
-  background: linear-gradient(90deg, #A4D4AE, #F58529);
-}
-
-.bg-success-subtle {
-  background-color: #d1e7dd !important;
-}
+/* // Header Bar Styling */
 .header-bar {
   background: var(--rd-teal);
   color: #000;
   font-weight: bold;
   padding: 0.5rem 1rem;
 }
+
+.job-card {
+  border: 1px solid #c6c2c2;
+  border-radius: 2%;
+}
+
+/* // Color circles in header */
+.circle {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.blue {
+  background: blue;
+}
+
+.yellow {
+  background: yellow;
+}
+
+.green {
+  background: green;
+}
+
+/* // Search Icon */
+.search-icon {
+  font-size: 1.2rem;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+/* // Card Custom Styling */
+.card-header {
+  font-weight: bold;
+  padding-left: 0%;
+  /* padding-bottom: 2%; */
+  margin-bottom: 2%;
+
+  background-color: #d5d5d5 !important;
+}
+
+/* // FontAwesome Icon Styling */
+.fas {
+  margin-right: 5px;
+}
+
+/* // Badges and Spacing */
+.badge {
+  font-size: 14px;
+  padding: 5px 10px;
+  color: black
+}
+
+/* // Borders and Styling */
+.border {
+  background: #f8f9fa;
+  border: 1px solid #000;
+  border-radius: 5px;
+}
+
+.row-margin {
+  margin: 10px;
+  padding: 10px;
+}
+
+.card-body {
+  padding: 0
+}
+
+button {
+  font-size: 50%;
+}
+
+hr {
+  opacity: 1;
+  margin: 0 5px;
+  color: var(--rd-teal);
+}
+
+.row-margin {
+  margin: 10px;
+  padding: 10px;
+}
+
+.card-body {
+  padding: 2%;
+}
+
+button {
+  font-size: 50%;
+}
+
+.NP-green {
+  background: black;
+  color: white;
+  border-radius: 100%;
+  padding-right: calc(var(--bs-gutter-x)* 0.1) !important;
+  padding-left: calc(var(--bs-gutter-x)* 0.1) !important;
+}
+
+.audit-check {
+  background: rgb(35, 82, 124);
+  color: white;
+  border-radius: 100%;
+  padding-right: calc(var(--bs-gutter-x)* 0.1) !important;
+  padding-left: calc(var(--bs-gutter-x)* 0.1) !important;
+}
+
+.paddingright {
+  padding-right: 5%;
+}
+
+.btn-group-job-actions {
+  padding: 0.4em;
+}
+
+.btn-job-action {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-group-task-timer button.btn {
+  font-size: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  text-transform: uppercase;
+}
+
+.btn-group-task-timer a.btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  text-transform: uppercase;
+}
+
+@media (max-width: 576px) {
+
+  /* Styles for small devices (phones) */
+  .header-bar {
+    margin-top: 5%;
+  }
+
+  p {
+    font-size: .75em
+  }
+
+  button {
+    font-size: .75em
+  }
+
+  .row-margin {
+    font-size: .75em
+  }
+
+  .job-card {
+    border: 1px solid #c6c2c2;
+    border-radius: 2%;
+    margin: 0%;
+    padding-left: 1%;
+    padding-right: 1%;
+  }
+
+  .manager {
+    font-size: 0.6em;
+  }
+
+  .NP-green {
+    background: black;
+    color: white;
+    border-radius: 100%;
+    padding-right: calc(var(--bs-gutter-x)* 0.1) !important;
+    padding-left: calc(var(--bs-gutter-x)* 0.1) !important;
+  }
+
+  .row-extra {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .padding-p {
+    margin-bottom: 0;
+    padding-bottom: 1%;
+    padding-top: 1%;
+    padding-left: 2%;
+  }
+
+  .expand-btn {
+    height: 30%
+  }
+
+  .tick-icon {
+    font-size: 20px;
+    /* Adjust size as needed */
+    color: green;
+    /* Choose color */
+  }
+
+  .form-select {
+    padding: 0 !important;
+  }
+
+  .form-control {
+    padding: 0 !important;
+  }
+
+}
+
+/* // Card Custom Styling */
+.card-hea {
+  align-items: center;
+  font-weight: bold;
+  padding: 0.2rem;
+  margin: 0;
+  background-color: #E5E5E5;
+}
+
+/* // Badges and Spacing */
+.badge {
+  font-size: 14px;
+  padding: 5px 10px;
+  color: black
+}
+
+/* // Borders and Styling */
+.border {
+  background: #f8f9fa;
+  border: 1px solid #000;
+  border-radius: 5px;
+}
+
+.row-margin {
+  margin: 10px;
+  padding: 10px;
+}
+
+.card-body {
+  padding: 2%;
+}
+
+button {
+  font-size: 50%;
+}
+
+.NP-green {
+  background: black;
+  color: white;
+  border-radius: 100%;
+  padding-right: calc(var(--bs-gutter-x)* 0.1) !important;
+  padding-left: calc(var(--bs-gutter-x)* 0.1) !important;
+}
+
+.audit-check {
+  background: rgb(35, 82, 124);
+  color: white;
+  border-radius: 100%;
+  padding-right: calc(var(--bs-gutter-x)* 0.1) !important;
+  padding-left: calc(var(--bs-gutter-x)* 0.1) !important;
+}
+
+.paddingright {
+  padding-right: 5%;
+}
+
+.dropdown-menu {
+  min-width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.dropdown-item i {
+  color: #0d6efd;
+}
+
+.borderUnder {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.task-bootstrap-card {
+  border-radius: 10px;
+}
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-grow: 1;
+}
+
+.leftmargin {
+  margin-left: 2%;
+}
+
+.mb-5 {
+  margin-bottom: 5% !important;
+}
+
+.mb-10 {
+  margin-bottom: 10%;
+}
+
+p {
+  font-size: .75em;
+  padding-left: 1%;
+}
+
+button {
+  font-size: .75em;
+
+}
+
+.row-margin {
+  font-size: .75em
+}
+
+.manager {
+  font-size: 0.6em;
+}
+
+.NP-green {
+  background: black;
+  color: white;
+  border-radius: 100%;
+  padding-right: calc(var(--bs-gutter-x)* 0.1) !important;
+  padding-left: calc(var(--bs-gutter-x)* 0.1) !important;
+}
+
+.row-extra {
+  width: 100%;
+  /* height: 16%; */
+  display: flex;
+  padding-top: 2% !important;
+  padding-bottom: 5% !important;
+  justify-content: space-between;
+}
+
+.padding-p {
+  padding-top: 1%;
+  padding-left: 2%;
+}
+
+.expand-btn {
+  height: 30%
+}
+
+.tick-icon {
+  font-size: 20px;
+  /* Adjust size as needed */
+  color: green;
+  /* Choose color */
+}
+
+.form-select {
+  padding: 0 !important;
+}
+
+.form-control {
+  padding: 0 !important;
+}
+
+@media (min-width: 768px) {
+  /* Styles for medium devices (tablets) */
+}
+
+@media (min-width: 992px) { /* Styles for large devices (desktops) */ }
+

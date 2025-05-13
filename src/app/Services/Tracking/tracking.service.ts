@@ -157,4 +157,38 @@ export class TrackingService {
    
     );
   }
+
+   getTrackingNotesByJobId(paramsObj: any): Observable<any> {
+    let params = new HttpParams();
+
+    // Append query parameters dynamically
+    for (let key in paramsObj) {
+      if (paramsObj[key] !== null && paramsObj[key] !== undefined) {
+        params = params.set(key, paramsObj[key]);
+      }
+    }
+
+    return this.http.get(this.mainUrl + 'Tracking/GetTrackingNotesByJobId', {
+      params,
+    }).pipe(
+   
+    );
+  }
+
+  getTrackingNoteAttachmentById(paramsObj: any): Observable<any> {
+    let params = new HttpParams();
+
+    // Append query parameters dynamically
+    for (let key in paramsObj) {
+      if (paramsObj[key] !== null && paramsObj[key] !== undefined) {
+        params = params.set(key, paramsObj[key]);
+      }
+    }
+
+    return this.http.get(this.mainUrl + 'Tracking/GetTrackingNoteAttachmentById', {
+      params,
+    }).pipe(
+   
+    );
+  }
 }

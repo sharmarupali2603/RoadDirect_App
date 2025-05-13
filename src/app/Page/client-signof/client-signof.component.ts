@@ -58,7 +58,7 @@ export class ClientSignofComponent {
   timeLog = {
     started: '', // e.g., '2024-04-22 08:00 AM'
     finished: '', // e.g., '2024-04-22 12:00 PM'
-    totalHours: 0
+    totalHours: ''
   };
   private getSignatureCanvas() {
     //set up signature stuff
@@ -106,7 +106,14 @@ export class ClientSignofComponent {
            name: this.jobDetails.contact,
            contactNumber: this.jobDetails.phone
          };
-       
+        this.equipmentList = navigation?.extras.state?.['equipmentList'] || {};
+     console.log('equipmentList>>>>>>>>>>>', this.equipmentList);
+       const duration = this.calculateDuration(this.submitTime, this.updatedTime);
+       this.timeLog={
+          started: this.submitTime,
+          finished: this.updatedTime,
+          totalHours: duration
+       }
      }
     this.signOffForm = this.fb.group({
       company: ['', Validators.required],
@@ -169,13 +176,38 @@ export class ClientSignofComponent {
       },
     });
   }
+  calculateDuration(start: string, end: string): string {
+  const startTime = new Date(start);
+  const endTime = new Date(end);
+
+  const diffMs = endTime.getTime() - startTime.getTime();
+
+  if (diffMs < 0) return '0';
+
+  const totalMinutes = Math.floor(diffMs / 60000);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  return `${hours} hour(s) and ${minutes} minute(s)`;
+}
   signOff(){
     // const today = new Date();
+
+    const canvas = this.signatureCanvas.nativeElement;
+    const signatureData = canvas.toDataURL('image/png'); 
+    console.log('Signature Data:', signatureData);
+    const duration = this.calculateDuration(this.submitTime, this.updatedTime);
       const postData = {
+        Timestamp: this.currentDate,
+        Signature: signatureData,
         jobId: this.jobDetails.jobId,
         SigningForEquipment:this.signOffForm.value.signingEquipment,
         SigningForTime:this.signOffForm.value.signingTime,
-        Notes: this.signOffForm.value.notes
+        Notes: this.signOffForm.value.notes,
+        labourEnd:this.updatedTime,
+        labourStart:this.submitTime,
+        totalHours:duration,
+        taskId:this.taskId,
     }
     console.log("postData", postData);
     
@@ -217,4 +249,16 @@ export class ClientSignofComponent {
     this.signOffForm.patchValue(contact);
   
   }
+
+  printPage() {
+    const printContents = document.getElementById('print-section')?.innerHTML;
+  const originalContents = document.body.innerHTML;
+
+  if (printContents) {
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+    location.reload(); // reload to restore the original content
+  }
+}
 }

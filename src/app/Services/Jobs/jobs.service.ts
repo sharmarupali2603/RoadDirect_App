@@ -10,7 +10,7 @@ import { DatabaseService } from '../Database/database.service';
 export class JobsService {
   private mainUrl = environment.apiBase;
 
-  constructor(private http: HttpClient, private db: DatabaseService) { }
+  constructor(private http: HttpClient, private db: DatabaseService) {}
 
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
@@ -32,7 +32,7 @@ export class JobsService {
           from(this.db.saveJobData(response)).subscribe();
         }),
         catchError(() => {
-          // If offline, return cached data 
+          // If offline, return cached data
           return '';
           // return from(this.db.getAllJobData()).pipe(
           //   map((items) => items.map((item) => item.data))
@@ -72,20 +72,18 @@ export class JobsService {
   }
 
   getEventsByDateRange(postData: any): Observable<any> {
-    return this.http
-      .get(this.mainUrl + 'Support/GetEvents', postData)
-      .pipe(
-        tap((response) => {
-          // Store API response in IndexedDB
-          from(this.db.saveJobData(response)).subscribe();
-        }),
-        catchError(() => {
-          // If offline, return cached data
-          return from(this.db.getAllJobData()).pipe(
-            map((items) => items.map((item) => item.data))
-          );
-        })
-      );
+    return this.http.get(this.mainUrl + 'Support/GetEvents', postData).pipe(
+      tap((response) => {
+        // Store API response in IndexedDB
+        from(this.db.saveJobData(response)).subscribe();
+      }),
+      catchError(() => {
+        // If offline, return cached data
+        return from(this.db.getAllJobData()).pipe(
+          map((items) => items.map((item) => item.data))
+        );
+      })
+    );
   }
 
   getFormFields(): Observable<any> {
@@ -93,19 +91,37 @@ export class JobsService {
   }
 
   getPhotosByJobDetailsId(paramsObj: any): Observable<any> {
-      let params = new HttpParams();
-  
-      // Append query parameters dynamically
-      for (let key in paramsObj) {
-        if (paramsObj[key] !== null && paramsObj[key] !== undefined) {
-          params = params.set(key, paramsObj[key]);
-        }
+    let params = new HttpParams();
+
+    // Append query parameters dynamically
+    for (let key in paramsObj) {
+      if (paramsObj[key] !== null && paramsObj[key] !== undefined) {
+        params = params.set(key, paramsObj[key]);
       }
-  
-      return this.http.get(this.mainUrl + 'Job/GetPhotosByJobDetailsId', {
-        params,
-      }).pipe(
-     
-      );
     }
+
+    return this.http
+      .get(this.mainUrl + 'Job/GetPhotosByJobDetailsId', {
+        params,
+      })
+      .pipe();
+  }
+
+  getAuditLogsByJobId(postData: any): Observable<any> {
+    return this.http
+      .post(this.mainUrl + 'Job/GetAuditLogsByJobId', postData)
+      .pipe(
+        tap((response) => {
+          // Store API response in IndexedDB
+          from(this.db.saveJobData(response)).subscribe();
+        }),
+        catchError(() => {
+          // If offline, return cached data
+          return '';
+          // return from(this.db.getAllJobData()).pipe(
+          //   map((items) => items.map((item) => item.data))
+          // );
+        })
+      );
+  }
 }
