@@ -13,12 +13,88 @@
 
     <div class="footer-spacer" aria-label="spacer">&nbsp;</div>
 
-    <button class="btn btn-light rounded-circle position-absolute top-0 start-50">
+    <button data-bs-toggle="modal"
+    data-bs-target="#addModal" class="btn btn-light rounded-circle position-absolute top-0 start-50">
       <mat-icon class="icon-add" aria-hidden="false" aria-label="add icon">
         add
       </mat-icon>
     </button>
+<div
+  class="modal fade"
+  id="addModal"
+  tabindex="-1"
+  aria-labelledby="addModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-fullscreen-sm-down">
+    <div class="modal-content" style="border-radius: 20px;">
+      <div class="modal-header bg-gradient" style="background: linear-gradient(to right, #a8edea, #fed6e3);">
+        <h5 class="modal-title" id="addModalLabel">Quick Actions</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body
+       px-4">
+        <!-- General -->
+        <h6 class="fw-bold text-muted">General</h6>
+        <div class="list-group mb-3">
+          <button class="list-group-item list-group-item-action">🚚 Add Callout Job</button>
+          <button class="list-group-item list-group-item-action">🚗 Vehicle Checks</button>
+          <button class="list-group-item list-group-item-action">📝 Auditing</button>
+        </div>
 
+        <!-- On-Site Records -->
+        <h6 class="fw-bold text-muted">On-Site Records</h6>
+        <div class="list-group mb-3">
+          <button class="list-group-item list-group-item-action">📋 Site Inspections</button>
+          <button class="list-group-item list-group-item-action">🚧 Temporary Speed Limits</button>
+          <button class="list-group-item list-group-item-action">📑 Handovers and Delegations</button>
+
+          <!-- Toolbox Briefings dropdown -->
+          <div class="accordion" id="toolboxAccordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingToolbox">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseToolbox"
+                  aria-expanded="false"
+                  aria-controls="collapseToolbox"
+                >
+                  🗂️ Toolbox Briefings
+                </button>
+              </h2>
+              <div
+                id="collapseToolbox"
+                class="accordion-collapse collapse"
+                aria-labelledby="headingToolbox"
+                data-bs-parent="#toolboxAccordion"
+              >
+                <div class="accordion-body px-2">
+                  <button class="btn btn-outline-primary w-100 mb-2">➕ Add a Toolbox</button>
+                  <button class="btn btn-outline-secondary w-100">📂 View Toolboxes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resources -->
+        <h6 class="fw-bold text-muted">Resources</h6>
+        <div class="list-group">
+          <button class="list-group-item list-group-item-action">📢 Announcements</button>
+          <button class="list-group-item list-group-item-action">📚 Library</button>
+          <button class="list-group-item list-group-item-action">📖 Guides</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
     <a routerLink="/tasks" [ngClass]="{'active-tab': activeRoute === '/tasks'}" class="tab-link text-white text-center">
       <mat-icon aria-hidden="false" aria-label="add icon">event_available</mat-icon>
       <p class="mb-0">Tasks</p>

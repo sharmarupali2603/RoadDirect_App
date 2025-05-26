@@ -1,1 +1,64 @@
-<p>job-status works!</p>
+<div class="container mt-3">
+  <h5 class="card-title">Job Status For Job #{{jobs.id}}</h5>
+  <p class="card-title">Date: {{jobDate?.jobDetailsDate | date: 'fullDate'}}</p>
+  <p class="card-title">Client: {{jobs.clientId}}</p>
+
+  <p class="card-title">
+    Location:{{jobDetails.location}}
+  </p>
+  <div class="card mb-3">
+    <div class="body-card card-body">
+       <h5 class="card-title">Job Status</h5>
+      <div *ngFor="let status of jobStatusOptions">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="jobStatus"
+            [value]="status"
+            [(ngModel)]="selectedJobStatus"
+          />
+          <label class="form-check-label">{{ status }}</label>
+        </div>
+      </div>
+      <button class="btn-colo" (click)="resetJobStatus()">
+        Reset Job Status
+      </button>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="body-card card-body">
+      <h5 class="card-title">Cancellation Status</h5>
+      <div *ngFor="let status of cancellationStatusOptions">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="cancelStatus"
+            [value]="status"
+            [(ngModel)]="selectedCancelStatus"
+          />
+          <label class="form-check-label">{{ status }}</label>
+        </div>
+      </div>
+      <button class="btn-colo" (click)="resetCancelStatus()">
+        Reset Cancellation Status
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="body-card card-body">
+      <h5 class="card-title">Callout Status</h5>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          [(ngModel)]="wasCalloutJob"
+        />
+        <label class="form-check-label">Was this a Call Out Job?</label>
+      </div>
+    </div>
+  </div>
+</div>

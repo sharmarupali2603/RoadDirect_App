@@ -171,8 +171,8 @@ button {
     border: 1px solid #c6c2c2;
     border-radius: 2%;
     margin: 0%;
-    padding-left: 1%;
-    padding-right: 1%;
+    padding-left: 0%;
+    padding-right: 0%;
   }
 
   .manager {

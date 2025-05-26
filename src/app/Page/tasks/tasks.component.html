@@ -48,11 +48,11 @@
 
             <p class="d-flex align-items-center gap-1">
               <mat-icon class="md-18" aria-hidden="false"
-                >local_shipping</mat-icon
+                >description</mat-icon
               >
               {{ task.notes }}
             </p>
-            <button class="btn btn-primary w-100">
+            <button class="btn btn-primary w-100" (click)="openJobStatus(task)">
               <i class="bi bi-box-arrow-up-right me-1"></i>Open Task
             </button>
           </div>
@@ -92,21 +92,21 @@
             <span *ngIf="task.status == 1">
               <p class="d-flex align-items-center gap-1">
                 <mat-icon class="md-18" aria-hidden="false">schedule</mat-icon>
-                Created : {{task.created  | date : "fullDate"}}
+                Created : {{ task.created | date : "fullDate" }}
               </p>
-              </span>
-              <span *ngIf="task.status == 2">
-                <p class="d-flex align-items-center gap-1">
-                  <mat-icon class="md-18" aria-hidden="false">schedule</mat-icon>
-                  Started : {{task.created  | date : "fullDate"}}
-                </p>
-                </span>
-                <span *ngIf="task.status == 5">
-                  <p class="d-flex align-items-center gap-1">
-                    <mat-icon class="md-18" aria-hidden="false">schedule</mat-icon>
-                    Finished : {{task.created  | date : "fullDate"}}
-                  </p>
-                  </span>
+            </span>
+            <span *ngIf="task.status == 2">
+              <p class="d-flex align-items-center gap-1">
+                <mat-icon class="md-18" aria-hidden="false">schedule</mat-icon>
+                Started : {{ task.created | date : "fullDate" }}
+              </p>
+            </span>
+            <span *ngIf="task.status == 5">
+              <p class="d-flex align-items-center gap-1">
+                <mat-icon class="md-18" aria-hidden="false">schedule</mat-icon>
+                Finished : {{ task.created | date : "fullDate" }}
+              </p>
+            </span>
             <p class="d-flex align-items-center gap-1">
               <mat-icon class="md-18" aria-hidden="false"
                 >local_shipping</mat-icon

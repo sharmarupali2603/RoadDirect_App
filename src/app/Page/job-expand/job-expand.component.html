@@ -42,7 +42,7 @@
         Create OSR
       </button>
 
-      <button class="btn btn-primary rd-bg-blue btn-job-action">
+      <button class="btn btn-primary rd-bg-blue btn-job-action" (click)="openJobStatus(jobs, jobDetails, jobDate)">
         <mat-icon class="md-18" aria-hidden="false">sms</mat-icon>
         Job Status
       </button>
@@ -304,17 +304,16 @@
       </p>
       <hr />
       <span *ngFor="let task of jobDate?.closures">
-        <span *ngIf="task.closureType == 1">
+      
           <p>
-            <strong>TTM Road Set-Up-</strong>{{ getClosure(task.closures) }}
+            <strong>TTM Road Set-Up-</strong>  <span *ngIf="task.closureType == 1">{{ getClosure(task.closures) }}</span>
           </p>
-        </span>
-        <span *ngIf="task.closureType != 1">
+       
           <p>
             <strong>TTM FootPath Set-Up -</strong
-            >{{ getClosure(task.closures) }}
+            > <span *ngIf="task.closureType != 1">{{ getClosure(task.closures) }}</span>
           </p>
-        </span>
+      
       </span>
     </div>
 

@@ -317,9 +317,9 @@ export class JobExpandComponent implements OnInit {
   getClientNamebyID(clientId: any) {
     // const result = clientId.map((item, index) => {
     const clientID = this.clientList.find((c) => c.clientId == clientId); // Find vehicle by ID
-    this.clientID = clientID ? this.clientID.clientName : String(clientId);
+    this.clientID = clientID ? clientID.clientName : String(clientId);
     // console.log('clientID:',this.clientID);
-    return clientID ? this.clientID.clientName : String(clientId); // Return ShortName if found, otherwise return the vehicleId as a string
+    return clientID ? clientID.clientName : String(clientId); // Return ShortName if found, otherwise return the vehicleId as a string
     // });
     // console.log('clientID:',this.clientID);
     // return result;
@@ -824,5 +824,22 @@ getTrackingNotesByJobId() {
       console.error('Error fetching data:', error);
     }
   );
+}
+
+openJobStatus(jobs: any, jobDetails: any, jobDate: any){
+  this.route.navigate(['/job-status'], {
+    state: {
+      title: 'view',
+      data: jobs,
+      jobDetails: jobDetails,
+      jobDate: jobDate,
+      clientID: this.clientID,
+      date: this.currentDate,
+      lastdate: this.lastDate,
+      equipmentList:this.equipmentList,
+      updatedTime:this.updatedTime,
+      submitTime:this.submitTime,
+    },
+  });
 }
 }

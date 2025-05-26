@@ -8,6 +8,7 @@ import { JobExpandComponent } from './Page/job-expand/job-expand.component';
 import { LocationComponent } from './Page/location/location.component';
 import { ClientSignofComponent } from './Page/client-signof/client-signof.component';
 import { TasksComponent } from './Page/tasks/tasks.component';
+import { JobStatusComponent } from './Page/job-status/job-status.component';
 const routes: Routes = [
   { path: '', component: DashboardComponent },
   { path: 'dashboard', redirectTo: '' },
@@ -19,6 +20,7 @@ const routes: Routes = [
   {path: 'edit-equipment', component: EditEquipmentComponent},
   {path: 'client-signof', component: ClientSignofComponent},
   {path: 'tasks', component: TasksComponent},
+  {path: 'job-status', component: JobStatusComponent}
   // { path: '',   redirectTo: '/dashboard', pathMatch: 'full' }, // redirect to `first-component`
 ];
 @NgModule({
