@@ -1,0 +1,9 @@
+.labelSize{font-size: 0.75rem;}
+
+.bordered{
+        /* border-bottom: solid #bab8b8 1px; */
+    border-top: solid #bab8b8 1px;
+}
+.headr{
+    /* background-color: var(--rd-teal); */
+}

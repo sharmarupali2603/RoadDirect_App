@@ -1,0 +1,7 @@
+ <div style="position:fixed; top:20%">
+    <h2 >Choose an Option</h2>
+    <button (click)="takePhoto()">Take Picture</button>
+    <button (click)="uploadPhoto()">Choose from Gallery</button>
+    <input type="file" accept="image/*" hidden #fileInput (change)="onFileSelected($event)">
+ </div>
+ 

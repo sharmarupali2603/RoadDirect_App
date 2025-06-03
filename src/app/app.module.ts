@@ -32,6 +32,12 @@ import { TSLComponent } from './Page/tsl/tsl.component';
 import { SafeUrlPipe } from './safe-url.pipe';
 import { NoteListComponent } from './Page/note-list/note-list.component';
 import { JobStatusComponent } from './Page/job-status/job-status.component';
+import { MenuComponent } from './Components/menu/menu.component';
+import {WebcamModule} from 'ngx-webcam';
+// import { WebcamComponent } from './webcam/webcam.component';
+import { PhotoDialogComponent } from './Components/photo-dialog/photo-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,7 +57,9 @@ import { JobStatusComponent } from './Page/job-status/job-status.component';
     EditEquipmentComponent,
     ClientSignofComponent,
     NoteListComponent,
-    JobStatusComponent
+    JobStatusComponent,
+    MenuComponent,
+    PhotoDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -71,6 +79,8 @@ import { JobStatusComponent } from './Page/job-status/job-status.component';
     BsDatepickerModule.forRoot(),
     ModalModule.forRoot(),
     MatIconModule,
+    WebcamModule,
+    MatDialogModule
     // SignaturePadModule
   ],
   providers: [],

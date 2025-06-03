@@ -1,0 +1,53 @@
+.menu-wrapper {
+  /* background: linear-gradient(to bottom right, #77d9d6, #ff7733); */
+background: #7DCCBA;
+background: linear-gradient(113deg,rgba(125, 204, 186, 1) 0%, rgba(246, 138, 51, 1) 100%);
+  min-height: 100%;
+  color: #333;
+  margin: 1rem;
+}
+
+.section-title {
+  font-weight: bold;
+  /* color: #ffffff; */
+  margin-bottom: 10px;
+  /* font-size: 14px; */
+  /* text-transform: uppercase; */
+}
+
+.menu-btn {
+  background-color: white;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 15px;
+  color: #333;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.sub-menu {
+  padding-left: 12px;
+  padding-top: 4px;
+  padding-bottom: 10px;
+}
+
+.sub-btn {
+  border: none;
+  border-radius: 15px;
+  padding: 10px 16px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #fff;
+}
+
+.add-btn {
+  background-color: #4CAF50;
+}
+
+.view-btn {
+  background-color: #5a837f;
+}
+.icon-padding{
+  padding-right:20px;
+}

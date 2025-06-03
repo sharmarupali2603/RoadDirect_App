@@ -17,4 +17,12 @@ export class FooterComponent {
       }
     });
   }
+  menu(){
+    if(this.activeRoute === '/menu') {
+    this.router.navigate(['/dashboard']);
+    }
+    else {
+      this.router.navigate(['/menu']);
+    }
+  }
 }
