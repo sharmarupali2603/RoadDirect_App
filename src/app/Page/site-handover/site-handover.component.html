@@ -1,0 +1,99 @@
+<div *ngIf="mode == 'Add'">
+  <nav class="navbar navbar-expand bg-success text-white p-2">
+    <div class="container-fluid align-items-center">
+      <div class="d-flex align-items-center">
+        <img
+          src="assets/icon.png"
+          alt="Logo"
+          width="32"
+          height="32"
+          class="rounded-circle me-2"
+        />
+        <span class="navbar-brand mb-0 text-white">Add TSL</span>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <h4 class="text-success">Authority Delegation</h4>
+    <form [formGroup]="delegationForm">
+      <div class="mb-3">
+        <label for="handoverType" class="form-label">Handover Type</label>
+        <select
+          class="form-select"
+          id="handoverType"
+          formControlName="handoverType"
+        >
+          <option *ngFor="let type of handoverTypes" [value]="type">
+            {{ type }}
+          </option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label>Name</label>
+        <input type="text" class="form-control" formControlName="name" />
+      </div>
+
+      <div class="mb-3">
+        <label>Phone Number</label>
+        <input type="text" class="form-control" formControlName="phone" />
+      </div>
+
+      <div class="mb-3">
+        <label>ID/Qual Number</label>
+        <input type="text" class="form-control" formControlName="idNumber" />
+      </div>
+
+      <div class="mb-3">
+        <label>Warrant Expiry Date</label>
+        <input
+          type="date"
+          class="form-control"
+          formControlName="warrantExpiryDate"
+        />
+      </div>
+
+      <div class="form-check mb-3">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          formControlName="briefingConfirmed"
+          id="briefingConfirmed"
+        />
+        <label class="form-check-label" for="briefingConfirmed">
+          Confirm briefing completed
+        </label>
+      </div>
+
+      <!-- <div class="mb-4">
+      <label class="form-label">Signature</label>
+      <div class="border rounded p-2" style="height: 100px; position: relative;">
+        <p class="text-muted">[Signature box placeholder]</p>
+        <button type="button" class="btn btn-light btn-sm position-absolute bottom-0 end-0 me-2 mb-2">
+          <i class="bi bi-save"></i>
+        </button>
+      </div>
+    </div> -->
+
+      <div class="mb-3">
+        <label class="form-label text-danger">Sign here: *</label>
+        <canvas
+          #canvas
+          class="signature-canvas"
+          ngDefaultControl
+          style="touch-action: none; border: solid #e6d2d2 1px"
+        ></canvas>
+        <!-- <signature-pad [options]="signaturePadOptions" (onEnd)="drawComplete()" #signaturePad></signature-pad> -->
+        <!-- <signature-pad [options]="signaturePadOptions" (onBeginEvent)="drawStart()" (onEndEvent)="drawComplete()"></signature-pad> -->
+        <!-- <signature-pad [options]="signaturePadOptions" (onEnd)="drawComplete()" #signaturePad></signature-pad> -->
+      </div>
+
+      <div class="text-end">
+        <button type="submit" class="btn btn-success">
+          <i class="bi bi-save"></i> Save
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

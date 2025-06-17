@@ -1,1 +1,83 @@
-<p>tsl works!</p>
+<div *ngIf="mode== 'Add'">
+  <nav class="navbar navbar-expand bg-success text-white p-2">
+    <div class="container-fluid align-items-center">
+      <div class="d-flex align-items-center">
+        <img
+          src="assets/icon.png"
+          alt="Logo"
+          width="32"
+          height="32"
+          class="rounded-circle me-2"
+        />
+        <span class="navbar-brand mb-0 text-white">Add TSL</span>
+      </div>
+      </div>
+      </nav>
+
+<div class="container mt-4">
+  <form [formGroup]="tslForm">
+    <div class="row mb-3">
+      <div class="col">
+        <label>Installed Date</label>
+        <input type="date" class="form-control" formControlName="installedDate">
+      </div>
+      <div class="col">
+        <label>Installed Time</label>
+        <input type="time" class="form-control" formControlName="installedTime">
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label>TSL Speed (km/h)</label>
+      <input type="number" class="form-control" formControlName="speed">
+    </div>
+
+    <div class="mb-3">
+      <label>Road Name</label>
+      <input type="text" class="form-control" formControlName="roadName">
+    </div>
+
+    <div class="row mb-3">
+      <div class="col">
+        <label>From</label>
+        <input type="text" class="form-control" formControlName="from">
+      </div>
+      <div class="col">
+        <label>To</label>
+        <input type="text" class="form-control" formControlName="to">
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label>TSL Length (m)</label>
+      <input type="number" class="form-control" formControlName="length">
+    </div>
+
+    <div class="form-check mb-3">
+      <input class="form-check-input" type="checkbox" formControlName="isRemoved" id="removedCheck">
+      <label class="form-check-label" for="removedCheck">
+        Removed?
+      </label>
+    </div>
+
+    <div *ngIf="tslForm.get('isRemoved')?.value">
+      <div class="row mb-3">
+        <div class="col">
+          <label>Removed Date</label>
+          <input type="date" class="form-control" formControlName="removedDate">
+        </div>
+        <div class="col">
+          <label>Removed Time</label>
+          <input type="time" class="form-control" formControlName="removedTime">
+        </div>
+      </div>
+    </div>
+
+    <div class="text-end">
+      <button type="submit" class="btn btn-success">
+        <i class="bi bi-save"></i> Save
+      </button>
+    </div>
+  </form>
+</div>
+</div>

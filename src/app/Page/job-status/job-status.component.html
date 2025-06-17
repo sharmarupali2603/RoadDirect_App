@@ -1,4 +1,4 @@
-<div class="container mt-3">
+<!-- <div class="container mt-3">
   <h5 class="card-title">Job Status For Job #{{jobs.id}}</h5>
   <p class="card-title">Date: {{jobDate?.jobDetailsDate | date: 'fullDate'}}</p>
   <p class="card-title">Client: {{jobs.clientId}}</p>
@@ -59,6 +59,357 @@
         />
         <label class="form-check-label">Was this a Call Out Job?</label>
       </div>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          [(ngModel)]="actionedJob"
+        />
+        <label class="form-check-label">Actioned</label>
+      </div>
     </div>
   </div>
+</div> -->
+<!-- <div class="mobile-page-header">
+  <div style="display: flex; flex-flow:column; gap: 5px;">
+    <h2 style="align-self: unset;">
+      Job Status for Job {{jobs?.id}}
+    </h2>
+    <h5>
+      Date: {{jobDate?.jobDetailsDate | date: 'fullDate'}},
+      Client: {{jobs.clientId}},
+      Location: {{jobDetails.location}}
+    </h5>
+  </div>
+  <span class="spacer"></span>
+  <button mat-button color="accent" (click)="cancel()">
+    <i class="fas fa-times"></i>
+    <span class="btn-text">Cancel</span>
+  </button>
+</div> -->
+<!-- Job Status Section -->
+<div class="card p-3">
+  <h5>Job Status</h5>
+
+  <div *ngFor="let status of jobStatusOptions">
+    <label class="d-flex align-items-center">
+      <input
+        type="radio"
+        [value]="status"
+        formControlName="jobStatus"
+        name="jobStatus"
+        class="me-2"
+      />
+      {{ status }}
+    </label>
+  </div>
+
+  <!-- Conditionally show confirmed invoice checkbox -->
+ <div
+  class="d-flex align-items-center mt-2"
+  *ngIf="jobStatusForm.get('jobStatus')?.value === 'Job Ongoing - Dates Confirmed with Client (RSA)'"
+>
+  <input
+    type="checkbox"
+    formControlName="confirmedInvoice"
+    class="me-2"
+  />
+  <label>Confirmed (dates booked on eBoard)</label>
 </div>
+
+  <button class="btn btn-warning btn-sm mt-2" (click)="resetJobStatus()">Reset Job Status</button>
+</div>
+
+<!-- Cancellation Status Section -->
+<div class="card p-3 mt-3">
+  <h5>Cancellation Status</h5>
+
+  <div *ngFor="let status of cancellationStatusOptions">
+    <label class="d-flex align-items-center">
+      <input
+        type="radio"
+        [value]="status"
+        formControlName="cancellationStatus"
+        name="cancellationStatus"
+        class="me-2"
+      />
+      {{ status }}
+    </label>
+  </div>
+
+  <label class="d-flex align-items-center mt-2">
+    <input type="checkbox" formControlName="cancellationActioned" class="me-2" />
+    Actioned
+  </label>
+
+  <button class="btn btn-warning btn-sm mt-2" (click)="resetCancellationStatus()">Reset Cancellation Status</button>
+</div>
+
+<!-- Callout Status Section -->
+<div class="card p-3 mt-3">
+  <h5>Callout Status</h5>
+
+  <div *ngFor="let status of calloutStatusOptions">
+    <label class="d-flex align-items-center">
+      <input
+        type="radio"
+        [value]="status"
+        formControlName="calloutStatus"
+        name="calloutStatus"
+        class="me-2"
+      />
+      {{ status }}
+    </label>
+  </div>
+
+  <label class="d-flex align-items-center mt-2">
+    <input type="checkbox" formControlName="calloutActioned" class="me-2" />
+    Actioned
+  </label>
+
+  <button class="btn btn-warning btn-sm mt-2" (click)="resetCalloutStatus()">Reset Callout Status</button>
+</div>
+
+
+
+<!-- <form class="mobile-page-body"
+      [formGroup]="jobStatusForm"
+      (ngSubmit)="onSubmit()"
+      *ngIf="jobs">
+
+  <mat-card>
+    <mat-card-title>
+      Job Status
+    </mat-card-title>
+    <mat-card-content>
+      <mat-radio-group [formControl]="JobStatusControl" class="grid-job-status">
+        <mat-radio-button [value]="JobStatusType.JobComplete"
+                          [class.job-ready]="JobStatusHighlight[JobStatusType.JobComplete]">
+          <span class="rd-radio-wrap">
+            Job Completely Finished
+            <span [hidden]="JobStatusControl.value !== JobStatusType.JobComplete">
+              ({{users[jobStatusSignOff.userIdJobStatus]?.initials}})
+            </span>
+          </span>
+        </mat-radio-button>
+        <div [class.job-ready]="JobStatusHighlight[JobStatusType.JobComplete]">
+          <mat-checkbox [checked]="JobStatusActioned[JobStatusType.JobComplete]"
+                        (change)="updateJobStatusActioned(JobStatusType.JobComplete, $event.checked)"
+                        *ngIf="JobStatusControl.value == JobStatusType.JobComplete"
+                        [disabled]="!currentUser.canEditJob">
+            <span class="rd-radio-wrap">
+              <i class="fas fa-info-circle" #tooltip="matTooltip" matTooltipPosition="above" (click)="tooltip.toggle()"
+                 matTooltip="Checking this box and saving will cause the job to appear on the &quot;Ready to Invoice&quot; tab on the Jobs list page in the Tracking System">
+              </i>
+              Confirmed - Ready to Invoice
+              <span [hidden]="!JobStatusActioned[JobStatusType.JobComplete]">
+                ({{users[jobStatusSignOff.userIdJobStatusActioned]?.initials}})
+              </span>
+            </span>
+          </mat-checkbox>
+        </div>
+
+        <mat-radio-button [value]="JobStatusType.OngoingDatesConfirmed"
+                          [class.job-ongoing]="JobStatusHighlight[JobStatusType.OngoingDatesConfirmed]">
+          <span class="rd-radio-wrap">
+            Job Ongoing - Dates Confirmed with Client
+            <span [hidden]="JobStatusControl.value !== JobStatusType.OngoingDatesConfirmed">
+              ({{users[jobStatusSignOff.userIdJobStatus]?.initials}})
+            </span>
+          </span>
+        </mat-radio-button>
+        <div [class.job-ongoing]="JobStatusHighlight[JobStatusType.OngoingDatesConfirmed]">
+          <mat-checkbox [checked]="JobStatusActioned[JobStatusType.OngoingDatesConfirmed]"
+                        (change)="updateJobStatusActioned(JobStatusType.OngoingDatesConfirmed, $event.checked)"
+                        *ngIf="JobStatusControl.value == JobStatusType.OngoingDatesConfirmed"
+                        [disabled]="!currentUser.canEditJob">
+            <span class="rd-radio-wrap">
+              Confirmed (dates booked on eBoard)
+              <span [hidden]="!JobStatusActioned[JobStatusType.OngoingDatesConfirmed]">
+                ({{users[jobStatusSignOff.userIdJobStatusActioned]?.initials}})
+              </span>
+            </span>
+          </mat-checkbox>
+        </div>
+
+        <mat-radio-button [value]="JobStatusType.DryHire"
+                          [class.job-dry-hire]="JobStatusHighlight[JobStatusType.DryHire]">
+          <span class="rd-radio-wrap">
+            Dry Job Becoming Dry Hire (handover completed)
+            <span [hidden]="JobStatusControl.value !== JobStatusType.DryHire">
+              ({{users[jobStatusSignOff.userIdJobStatus]?.initials}})
+            </span>
+          </span>
+        </mat-radio-button>
+        <div [class.job-dry-hire]="JobStatusHighlight[JobStatusType.DryHire]">
+          <mat-checkbox [checked]="JobStatusActioned[JobStatusType.DryHire]"
+                        (change)="updateJobStatusActioned(JobStatusType.DryHire, $event.checked)"
+                        *ngIf="JobStatusControl.value == JobStatusType.DryHire"
+                        [disabled]="!currentUser.canEditJob">
+            <span class="rd-radio-wrap">
+              Confirmed - Site has been handed over to client, gear hire only
+              <span [hidden]="!JobStatusActioned[JobStatusType.DryHire]">
+                ({{users[jobStatusSignOff.userIdJobStatusActioned]?.initials}})
+              </span>
+            </span>
+          </mat-checkbox>
+        </div>
+
+        <mat-radio-button [value]="JobStatusType.OngoingDatesTBC"
+                          [class.job-attention]="JobStatusControl.value === JobStatusType.OngoingDatesTBC && !JobStatusActioned[JobStatusType.OngoingDatesTBC]">
+          <span class="rd-radio-wrap">
+            Job Ongoing - Dates TBC
+            <span [hidden]="JobStatusControl.value !== JobStatusType.OngoingDatesTBC">
+              ({{users[jobStatusSignOff.userIdJobStatus]?.initials}})
+            </span>
+          </span>
+        </mat-radio-button>
+        <div [class.job-attention]="JobStatusControl.value === JobStatusType.OngoingDatesTBC && !JobStatusActioned[JobStatusType.OngoingDatesTBC]">
+          <span *ngIf="JobStatusControl.value == JobStatusType.OngoingDatesTBC" class="warn bold-text">
+            Confirm status with client and choose from one of above 3 options
+          </span>
+        </div>
+      </mat-radio-group>
+
+      <button type="button" mat-flat-button class="rd-orange-flat-button" (click)="resetJobStatus()"
+              [disabled]="!currentUser.canEditJob">
+        Reset Job Status
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-title>
+      Cancellation Status
+    </mat-card-title>
+    <mat-card-content>
+      <mat-radio-group [formControl]="CancellationStatusControl" class="grid-job-status">
+        <mat-radio-button [value]="CancellationStatusType.CancelledAtBase"
+                          [class.job-cancelled]="CancellationStatusHighlight[CancellationStatusType.CancelledAtBase]">
+          <span class="rd-radio-wrap">
+            Job Cancelled While You Were At Base
+            <span [hidden]="CancellationStatusControl.value !== CancellationStatusType.CancelledAtBase">
+              ({{users[jobStatusSignOff.userIdCancellationStatus]?.initials}})
+            </span>
+          </span>
+        </mat-radio-button>
+        <div [class.job-cancelled]="CancellationStatusHighlight[CancellationStatusType.CancelledAtBase]">
+          <mat-checkbox [checked]="CancellationStatusActioned[CancellationStatusType.CancelledAtBase]"
+                        (change)="updateCancellationStatusActioned(CancellationStatusType.CancelledAtBase, $event.checked)"
+                        *ngIf="CancellationStatusControl.value == CancellationStatusType.CancelledAtBase"
+                        [disabled]="!currentUser.canEditJob">
+            Actioned
+            <span [hidden]="!CancellationStatusActioned[CancellationStatusType.CancelledAtBase]">
+              ({{users[jobStatusSignOff.userIdCancellationStatusActioned]?.initials}})
+            </span>
+          </mat-checkbox>
+        </div>
+
+        <mat-radio-button [value]="CancellationStatusType.CancelledLeftBase"
+                          [class.job-postponed]="CancellationStatusHighlight[CancellationStatusType.CancelledLeftBase]">
+          <span class="rd-radio-wrap">
+            Job Cancelled After Left Base
+            <span [hidden]="CancellationStatusControl.value !== CancellationStatusType.CancelledLeftBase">
+              ({{users[jobStatusSignOff.userIdCancellationStatus]?.initials}})
+            </span>
+          </span>
+        </mat-radio-button>
+        <div [class.job-postponed]="CancellationStatusHighlight[CancellationStatusType.CancelledLeftBase]">
+          <mat-checkbox [checked]="CancellationStatusActioned[CancellationStatusType.CancelledLeftBase]"
+                        (change)="updateCancellationStatusActioned(CancellationStatusType.CancelledLeftBase, $event.checked)"
+                        *ngIf="CancellationStatusControl.value == CancellationStatusType.CancelledLeftBase"
+                        [disabled]="!currentUser.canEditJob">
+            Actioned
+            <span [hidden]="!CancellationStatusActioned[CancellationStatusType.CancelledLeftBase]">
+              ({{users[jobStatusSignOff.userIdCancellationStatusActioned]?.initials}})
+            </span>
+          </mat-checkbox>
+        </div>
+      </mat-radio-group>
+
+      <button type="button" mat-flat-button class="rd-orange-flat-button" (click)="resetCancellationStatus()"
+              [disabled]="!currentUser.canEditJob">
+        Reset Cancellation Status
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-title>
+      Callout Status
+    </mat-card-title>
+    <mat-card-content>
+      <mat-radio-group [formControl]="CalloutStatusControl" class="grid-job-status">
+        <mat-radio-button [value]="CalloutStatusType.Callout"
+                          [class.job-callout]="CalloutStatusHighlight[CalloutStatusType.Callout]">
+          <span class="rd-radio-wrap">
+            Was this a Call Out Job?
+            <span [hidden]="CalloutStatusControl.value !== CalloutStatusType.Callout">
+              ({{users[jobStatusSignOff.userIdCallOut]?.initials}})
+            </span>
+          </span>
+        </mat-radio-button>
+        <div [class.job-callout]="CalloutStatusHighlight[CalloutStatusType.Callout]">
+          <mat-checkbox [checked]="CalloutStatusActioned[CalloutStatusType.Callout]"
+                        (change)="updateCalloutStatusActioned(CalloutStatusType.Callout, $event.checked)"
+                        *ngIf="CalloutStatusControl.value == CalloutStatusType.Callout"
+                        [disabled]="!currentUser.canEditJob">
+            Actioned
+            <span [hidden]="!CalloutStatusActioned[CalloutStatusType.Callout]">
+              ({{users[jobStatusSignOff.userIdCallOutActioned]?.initials}})
+            </span>
+          </mat-checkbox>
+        </div>
+
+        <mat-radio-button [value]="CalloutStatusType.LateBooking"
+                          [class.job-late-booking]="CalloutStatusHighlight[CalloutStatusType.LateBooking]">
+          <span class="rd-radio-wrap">
+            Late Booking
+            <span [hidden]="CalloutStatusControl.value !== CalloutStatusType.LateBooking">
+              ({{users[jobStatusSignOff.userIdCallOut]?.initials}})
+            </span>
+          </span>
+        </mat-radio-button>
+        <div [class.job-late-booking]="CalloutStatusHighlight[CalloutStatusType.LateBooking]">
+          <mat-checkbox [checked]="CalloutStatusActioned[CalloutStatusType.LateBooking]"
+                        (change)="updateCalloutStatusActioned(CalloutStatusType.LateBooking, $event.checked)"
+                        *ngIf="CalloutStatusControl.value == CalloutStatusType.LateBooking"
+                        [disabled]="!currentUser.canEditJob">
+            Actioned
+            <span [hidden]="!CalloutStatusActioned[CalloutStatusType.LateBooking]">
+              ({{users[jobStatusSignOff.userIdCallOutActioned]?.initials}})
+            </span>
+          </mat-checkbox>
+        </div>
+      </mat-radio-group>
+
+      <button type="button" mat-flat-button class="rd-orange-flat-button" (click)="resetCalloutStatus()"
+              [disabled]="!currentUser.canEditJob">
+        Reset Callout Status
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-title>
+      Notes
+    </mat-card-title>
+    <mat-card-content>
+      <mat-form-field style="width: 90%">
+        <textarea matInput aria-label="Job status notes"
+                  [formControl]="NotesControl"
+                  cdkTextareaAutosize
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5">
+          </textarea>
+      </mat-form-field>
+    </mat-card-content>
+  </mat-card>
+
+  <button type="submit" mat-flat-button class="btn-task btn-action"
+          style="margin: 15px 0"
+          [disabled]="jobStatusForm?.pristine || !jobStatusForm?.valid">
+    Save
+  </button>
+</form> -->
+

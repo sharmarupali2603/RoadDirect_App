@@ -37,6 +37,8 @@ import {WebcamModule} from 'ngx-webcam';
 // import { WebcamComponent } from './webcam/webcam.component';
 import { PhotoDialogComponent } from './Components/photo-dialog/photo-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { SiteHandoverComponent } from './Page/site-handover/site-handover.component';
+import { JobstatusComponent } from './Page/jobstatus/jobstatus.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +61,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     NoteListComponent,
     JobStatusComponent,
     MenuComponent,
-    PhotoDialogComponent
+    PhotoDialogComponent,
+    SiteHandoverComponent,
+    JobstatusComponent
   ],
   imports: [
     BrowserModule,

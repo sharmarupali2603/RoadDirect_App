@@ -827,7 +827,7 @@ getTrackingNotesByJobId() {
 }
 
 openJobStatus(jobs: any, jobDetails: any, jobDate: any){
-  this.route.navigate(['/job-status'], {
+  this.route.navigate(['/jobstatus'], {
     state: {
       title: 'view',
       data: jobs,

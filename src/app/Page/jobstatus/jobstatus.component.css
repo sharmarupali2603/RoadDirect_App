@@ -1,0 +1,14 @@
+.body-card{
+    width: 50%;
+}
+
+.cardborder{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 20px auto;
+}
+
+.borderbottom{
+    border-bottom: 1px solid #ccc;
+}

@@ -11,6 +11,9 @@ import { TasksComponent } from './Page/tasks/tasks.component';
 import { JobStatusComponent } from './Page/job-status/job-status.component';
 import { MenuComponent } from './Components/menu/menu.component';
 import { SiteInspectionComponent } from './Page/site-inspection/site-inspection.component';
+import { TSLComponent } from './Page/tsl/tsl.component';
+import { SiteHandoverComponent } from './Page/site-handover/site-handover.component';
+import { JobstatusComponent } from './Page/jobstatus/jobstatus.component';
 const routes: Routes = [
   { path: '', component: DashboardComponent },
   { path: 'dashboard', redirectTo: '' },
@@ -24,7 +27,10 @@ const routes: Routes = [
   {path: 'tasks', component: TasksComponent},
   {path: 'job-status', component: JobStatusComponent},
   {path: 'menu', component: MenuComponent},
-  {path: 'site-inspection', component: SiteInspectionComponent}
+  {path: 'site-inspection', component: SiteInspectionComponent},
+  {path: 'tsl', component: TSLComponent},
+  {path: 'site-handover', component: SiteHandoverComponent},
+    {path: 'jobstatus', component: JobstatusComponent}
   // { path: '',   redirectTo: '/dashboard', pathMatch: 'full' }, // redirect to `first-component`
 ];
 @NgModule({

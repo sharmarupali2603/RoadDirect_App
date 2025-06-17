@@ -154,11 +154,11 @@ export class TrackingService {
     return this.http.get(this.mainUrl + 'Tracking/GetClientSignOffsByJobId', {
       params,
     }).pipe(
-   
+
     );
   }
 
-   getTrackingNotesByJobId(paramsObj: any): Observable<any> {
+  getTrackingNotesByJobId(paramsObj: any): Observable<any> {
     let params = new HttpParams();
 
     // Append query parameters dynamically
@@ -171,7 +171,7 @@ export class TrackingService {
     return this.http.get(this.mainUrl + 'Tracking/GetTrackingNotesByJobId', {
       params,
     }).pipe(
-   
+
     );
   }
 
@@ -188,7 +188,7 @@ export class TrackingService {
     return this.http.get(this.mainUrl + 'Tracking/GetTrackingNoteAttachmentById', {
       params,
     }).pipe(
-   
+
     );
   }
 }

@@ -1,151 +1,327 @@
 <!-- Top Toolbar -->
-<nav class="navbar navbar-expand bg-success text-white p-2">
-  <div class="container-fluid align-items-center">
-    <div class="d-flex align-items-center">
-      <img
-        src="assets/icon.png"
-        alt="Logo"
-        width="32"
-        height="32"
-        class="rounded-circle me-2"
-      />
-      <span class="navbar-brand mb-0 text-white">Site Inspection</span>
-    </div>
+<div *ngIf="mode== 'Add'">
+  <nav class="navbar navbar-expand bg-success text-white p-2">
+    <div class="container-fluid align-items-center">
+      <div class="d-flex align-items-center">
+        <img
+          src="assets/icon.png"
+          alt="Logo"
+          width="32"
+          height="32"
+          class="rounded-circle me-2"
+        />
+        <span class="navbar-brand mb-0 text-white">Site Inspection</span>
+      </div>
 
-    <div class="d-flex ms-auto">
-      <button
-        class="btn btn-success text-white me-2"
-        data-bs-toggle="modal"
-        data-bs-target="#noteModal2"
-        (click)="openCamera()"
-      >
-        <!-- <mat-icon class="icon-padding md-18" aria-hidden="false">camera_alt</mat-icon> -->
-        <mat-icon class="icon-padding md-18" aria-hidden="false"
-          >add_a_photo</mat-icon
+      <div class="d-flex ms-auto">
+        <button
+          class="btn btn-success text-white me-2"
+          data-bs-toggle="modal"
+          data-bs-target="#noteModal2"
+          (click)="openCamera()"
         >
-      </button>
-
-      <div class="modal fade" id="noteModal2" tabindex="-1">
-        <div class="modal-dialog modal-md modal-dialog-centered">
-          <div
-            class="modal-content card-header d-flex justify-content-between align-items-center"
+          <!-- <mat-icon class="icon-padding md-18" aria-hidden="false">camera_alt</mat-icon> -->
+          <mat-icon class="icon-padding md-18" aria-hidden="false"
+            >add_a_photo</mat-icon
           >
-            <div *ngIf="!cameraOpen" style="background-color: white;">
-              <h2 style="color:black">Choose an Option</h2>
-              <button (click)="takePhoto()">Take Picture</button>
-              <button (click)="uploadPhoto()">Choose from Gallery</button>
-              <input
-                type="file"
-                accept="image/*"
-                hidden
-                #fileInput
-                (change)="onFileSelected($event)"
-              />
-            </div>
+        </button>
 
-            <span *ngIf="cameraOpen && stream" class="d-flex flex-column">
-              <div class="modal-header" style="background-color: white;">
-                <h5 class="modal-title" style="color:black">Camera</h5>
-                <button class="btn-close" (click)="closeCamera()" style="color:black" data-bs-dismiss="modal"></button>
+        <div class="modal fade" id="noteModal2" tabindex="-1">
+          <div class="modal-dialog modal-md modal-dialog-centered">
+            <div
+              class="modal-content card-header d-flex justify-content-between align-items-center"
+            >
+              <div *ngIf="!cameraOpen" style="background-color: white">
+                <h2 style="color: black">Choose an Option</h2>
+                <button (click)="takePhoto()">Take Picture</button>
+                <button (click)="uploadPhoto()">Choose from Gallery</button>
+                <input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  #fileInput
+                  (change)="onFileSelected($event)"
+                />
               </div>
 
-              <!-- <div>
+              <span *ngIf="cameraOpen && stream" class="d-flex flex-column">
+                <div class="modal-header" style="background-color: white">
+                  <h5 class="modal-title" style="color: black">Camera</h5>
+                  <button
+                    class="btn-close"
+                    (click)="closeCamera()"
+                    style="color: black"
+                    data-bs-dismiss="modal"
+                  ></button>
+                </div>
+
+                <!-- <div>
                 <button (click)="checkPermission()">
                   Check the cam permission
                 </button>
                 <p *ngIf="status">Status: {{ status }}</p>
               </div> -->
-              <div *ngIf="stream">
-                <!-- web cam imae will be shown here-->
-                <webcam 
-                  [trigger]="$trigger"
-                  (imageCapture)="snapshot($event)"
-                ></webcam>
-                <button (click)="captureImage()">{{ buttonLabel }}</button>
-              </div>
-            </span>
+                <div *ngIf="stream">
+                  <!-- web cam imae will be shown here-->
+                  <webcam
+                    [trigger]="$trigger"
+                    (imageCapture)="snapshot($event)"
+                  ></webcam>
+                  <button (click)="captureImage()">{{ buttonLabel }}</button>
+                </div>
+              </span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <button class="btn btn-success text-white">
-        <mat-icon class="icon-padding md-18" aria-hidden="false"
-          >photo_library</mat-icon
-        >
+        <button class="btn btn-success text-white">
+          <mat-icon class="icon-padding md-18" aria-hidden="false"
+            >photo_library</mat-icon
+          >
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Form -->
+  <div class="container mt-3">
+    <span class="d-flex justify-content-between align-items-center">
+      <label class="form-label fw-bold"
+        >Add Check
+        <i class="bi bi-info-circle me-1"></i>
+      </label>
+      <span class="text-success fw-semibold">GPS Acquired</span>
+    </span>
+
+    <!-- Role Selection -->
+    <div class="mb-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="role"
+            value="false"
+            [(ngModel)]="formData.role"
+          />
+          <label class="labelSize form-check-label">STMS (in charge)</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="role"
+            value="true"
+            [(ngModel)]="formData.role"
+          />
+          <label class="labelSize form-check-label">TC/TMO (delegated)</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Checklist Items -->
+    <div
+      *ngFor="let item of checklist; let i = index"
+      class="bordered mb-2 d-flex justify-content-between align-items-center p-2 rounded"
+    >
+      <label class="mb-0">{{ item.criterion }}</label>
+      <button class="btn btn-outline-secondary btn-sm" (click)="toggleCheck(i)">
+        {{ item.description }}
       </button>
     </div>
-  </div>
-</nav>
 
-<!-- Main Form -->
-<div class="container mt-3">
-  <span class="d-flex justify-content-between align-items-center">
-    <label class="form-label fw-bold"
-      >Add Check
-      <i class="bi bi-info-circle me-1"></i>
-    </label>
-    <span class="text-success fw-semibold">GPS Acquired</span>
-  </span>
-
-  <!-- Role Selection -->
-  <div class="mb-3">
-    <div class="d-flex justify-content-between align-items-center">
-      <div class="form-check form-check-inline">
-        <input
-          class="form-check-input"
-          type="radio"
-          name="role"
-          value="STMS"
-          [(ngModel)]="formData.role"
-        />
-        <label class="labelSize form-check-label">STMS (in charge)</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input
-          class="form-check-input"
-          type="radio"
-          name="role"
-          value="TC/TMO"
-          [(ngModel)]="formData.role"
-        />
-        <label class="labelSize form-check-label">TC/TMO (delegated)</label>
-      </div>
+    <!-- Comment -->
+    <div class="mb-3 mt-3">
+      <label for="comment" class="form-label fw-semibold">Comment</label>
+      <textarea
+        id="comment"
+        class="form-control"
+        rows="3"
+        [(ngModel)]="formData.comment"
+      ></textarea>
     </div>
-  </div>
 
-  <!-- Checklist Items -->
-  <div
-    *ngFor="let item of checklist; let i = index"
-    class="bordered mb-2 d-flex justify-content-between align-items-center p-2 rounded"
-  >
-    <label class="mb-0">{{ item.label }}</label>
-    <button class="btn btn-outline-secondary btn-sm" (click)="toggleCheck(i)">
-      {{ item.checked ? "YES" : "NO" }}
+    <!-- Hazards Section -->
+    <!-- <div class="mb-5 border-top pt-2 fw-semibold"> -->
+
+    <div class="mb-3 mt-3">
+      <label for="comment" class="form-label fw-semibold">
+        Hazards Identified & Actions Taken</label
+      >
+      <textarea
+        id="hazards"
+        class="form-control"
+        rows="3"
+        [(ngModel)]="formData.hazards"
+      ></textarea>
+    </div>
+
+    <!-- Floating Save Button -->
+    <button
+      class="btn btn-success rounded-circle bottom-0 end-0 m-4 shadow"
+      (click)="submitForm()"
+      style="width: 56px; height: 56px"
+    >
+      <i class="bi bi-save fs-4 text-white"></i>
     </button>
-  </div>
-
-  <!-- Comment -->
-  <div class="mb-3 mt-3">
-    <label for="comment" class="form-label fw-semibold">Comment</label>
-    <textarea
-      id="comment"
-      class="form-control"
-      rows="3"
-      [(ngModel)]="formData.comment"
-    ></textarea>
-  </div>
-
-  <!-- Hazards Section -->
-  <div class="mb-5 border-top pt-2 fw-semibold">
-    Hazards Identified & Actions Taken
   </div>
 </div>
 
-<!-- Floating Save Button -->
-<button
-  class="btn btn-success rounded-circle bottom-0 end-0 m-4 shadow"
-  (click)="submitForm()"
-  style="width: 56px; height: 56px"
->
-  <i class="bi bi-save fs-4 text-white"></i>
-</button>
+<div *ngIf="mode== 'View'">
+  <nav class="navbar navbar-expand bg-success text-white p-2">
+    <div class="container-fluid align-items-center">
+      <div class="d-flex align-items-center">
+        <img
+          src="assets/icon.png"
+          alt="Logo"
+          width="32"
+          height="32"
+          class="rounded-circle me-2"
+        />
+        <span class="navbar-brand mb-0 text-white">Site Inspection</span>
+      </div>
+
+      <div class="d-flex ms-auto">
+        <button
+          class="btn btn-success text-white me-2"
+          data-bs-toggle="modal"
+          data-bs-target="#noteModal2"
+          (click)="openCamera()"
+        >
+          <!-- <mat-icon class="icon-padding md-18" aria-hidden="false">camera_alt</mat-icon> -->
+          <mat-icon class="icon-padding md-18" aria-hidden="false"
+            >add_a_photo</mat-icon
+          >
+        </button>
+
+        <div class="modal fade" id="noteModal2" tabindex="-1">
+          <div class="modal-dialog modal-md modal-dialog-centered">
+            <div
+              class="modal-content card-header d-flex justify-content-between align-items-center"
+            >
+              <div *ngIf="!cameraOpen" style="background-color: white">
+                <h2 style="color: black">Choose an Option</h2>
+                <button (click)="takePhoto()">Take Picture</button>
+                <button (click)="uploadPhoto()">Choose from Gallery</button>
+                <input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  #fileInput
+                  (change)="onFileSelected($event)"
+                />
+              </div>
+
+              <span *ngIf="cameraOpen && stream" class="d-flex flex-column">
+                <div class="modal-header" style="background-color: white">
+                  <h5 class="modal-title" style="color: black">Camera</h5>
+                  <button
+                    class="btn-close"
+                    (click)="closeCamera()"
+                    style="color: black"
+                    data-bs-dismiss="modal"
+                  ></button>
+                </div>
+
+                <!-- <div>
+                <button (click)="checkPermission()">
+                  Check the cam permission
+                </button>
+                <p *ngIf="status">Status: {{ status }}</p>
+              </div> -->
+                <div *ngIf="stream">
+                  <!-- web cam imae will be shown here-->
+                  <webcam
+                    [trigger]="$trigger"
+                    (imageCapture)="snapshot($event)"
+                  ></webcam>
+                  <button (click)="captureImage()">{{ buttonLabel }}</button>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-success text-white">
+          <mat-icon class="icon-padding md-18" aria-hidden="false"
+            >photo_library</mat-icon
+          >
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Form -->
+  <div class="container mt-3">
+    <span class="d-flex justify-content-between align-items-center">
+      <label class="form-label fw-bold"
+        >Add Check
+        <i class="bi bi-info-circle me-1"></i>
+      </label>
+      <span class="text-success fw-semibold">GPS Acquired</span>
+    </span>
+
+    <!-- Role Selection -->
+    <div class="mb-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="role"
+            value="STMS"
+            [(ngModel)]="formData.role"
+          />
+          <label class="labelSize form-check-label">STMS (in charge)</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="role"
+            value="TC/TMO"
+            [(ngModel)]="formData.role"
+          />
+          <label class="labelSize form-check-label">TC/TMO (delegated)</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Checklist Items -->
+    <div
+      *ngFor="let item of siteInspection.checks; let i = index"
+      class="bordered mb-2 d-flex justify-content-between align-items-center p-2 rounded"
+    >
+      <label class="mb-0">{{ item.criterion }}</label>
+      <button class="btn btn-outline-secondary btn-sm" (click)="toggleCheck(i)">
+        {{ item.description }}
+      </button>
+    </div>
+
+    <!-- Comment -->
+    <div class="mb-3 mt-3">
+      <label for="comment" class="form-label fw-semibold">Comment</label>
+      <textarea
+        id="comment"
+        class="form-control"
+        rows="3"
+        [(ngModel)]="siteInspection.comment"
+      ></textarea>
+    </div>
+
+    <!-- Hazards Section -->
+    <!-- <div class="mb-5 border-top pt-2 fw-semibold"> -->
+
+    <div class="mb-3 mt-3">
+      <label for="comment" class="form-label fw-semibold">
+        Hazards Identified & Actions Taken</label
+      >
+      <textarea
+        id="hazards"
+        class="form-control"
+        rows="3"
+        [(ngModel)]="siteInspection.hazards"
+      ></textarea>
+    </div>
+  </div>
+</div>

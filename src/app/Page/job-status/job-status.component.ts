@@ -1,58 +1,87 @@
-import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TrackingService } from 'src/app/Services/Tracking/tracking.service';
 
 @Component({
   selector: 'app-job-status',
   templateUrl: './job-status.component.html',
-    styleUrls: ['./job-status.component.css'],
+  styleUrls: ['./job-status.component.css']
 })
-export class JobStatusComponent {
-  jobStatusOptions: string[] = [
+export class JobStatusComponent implements OnInit {
+  jobStatusForm!: FormGroup;
+
+  jobStatusOptions = [
     'Job Completely Finished',
-    'Job Ongoing - Dates Confirmed with Client',
-    'Dry Job Becoming Dry Hire (handover completed)',
+    'Job Ongoing - Dates Confirmed with Client (RSA)',
+    'Dry Job',
+    'Becoming Dry Hire (handover completed)',
     'Job Ongoing - Dates TBC'
   ];
 
-  cancellationStatusOptions: string[] = [
-    'Job Cancelled While You Were At Base',
+  cancellationStatusOptions = [
+    'Job Cancelled While You Were At Base (RSA)',
     'Job Cancelled After Left Base'
   ];
 
-  selectedJobStatus: string = '';
-  selectedCancelStatus: string = '';
-  wasCalloutJob: boolean = false;
+  calloutStatusOptions = [
+    'Was this a Call Out Job? (RSA)'
+  ];
 
   jobs: any;
   jobDetails: any;
   jobDate: any;
-constructor(
-     private fb: FormBuilder,
-     private http: HttpClient,
-     public route: Router,
-     public trackingService: TrackingService
-   ) {
-   
-     const navigation = this.route.getCurrentNavigation();
-     this.jobs = navigation?.extras.state?.['data'] || {};
-     console.log('Job>>>>>>>>>>>', this.jobs);
-    //  this.currentDate = navigation?.extras.state?.['date'] || {};
-    //  this.lastDate = navigation?.extras.state?.['lastdate'] || {};
-     this.jobDetails = navigation?.extras.state?.['jobDetails'] || {};
-      console.log('jobDetails>>>>>>>>>>>', this.jobDetails);
-     this.jobDate = navigation?.extras.state?.['jobDate'] || {};
-     console.log('jobDate>>>>>>>>>>>', this.jobDate);
-   }
-  resetJobStatus() {
-    this.selectedJobStatus = '';
+  currentUser: any;
+
+  constructor(
+    private fb: FormBuilder,
+    public route: Router,
+    public trackingService: TrackingService
+  ) {
+    const navigation = this.route.getCurrentNavigation();
+    this.jobs = navigation?.extras.state?.['data'] || {};
+    this.jobDetails = navigation?.extras.state?.['jobDetails'] || {};
+    this.jobDate = navigation?.extras.state?.['jobDate'] || {};
   }
 
-  resetCancelStatus() {
-    this.selectedCancelStatus = '';
+  ngOnInit(): void {
+ this.jobStatusForm = this.fb.group({
+  jobStatus: new FormControl<string | null>(null),
+  confirmedInvoice: new FormControl<boolean>(false),
+  cancellationStatus: new FormControl<string | null>(null),
+  cancellationActioned: new FormControl<boolean>(false),
+  calloutStatus: new FormControl<string | null>(null),
+  calloutActioned: new FormControl<boolean>(false),
+});
+
+    // Reset confirmedInvoice if jobStatus changes
+    this.jobStatusForm.get('jobStatus')?.valueChanges.subscribe(val => {
+      if (val !== 'Job Ongoing - Dates Confirmed with Client (RSA)') {
+        this.jobStatusForm.patchValue({
+          confirmedInvoice: false
+        });
+      }
+    });
   }
-onSubmit(){}
-  cancel(){}
+
+  resetJobStatus() {
+    this.jobStatusForm.patchValue({
+      jobStatus: '',
+      confirmedInvoice: false
+    });
+  }
+
+  resetCancellationStatus() {
+    this.jobStatusForm.patchValue({
+      cancellationStatus: '',
+      cancellationActioned: false
+    });
+  }
+
+  resetCalloutStatus() {
+    this.jobStatusForm.patchValue({
+      calloutStatus: '',
+      calloutActioned: false
+    });
+  }
 }

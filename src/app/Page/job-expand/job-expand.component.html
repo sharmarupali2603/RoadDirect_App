@@ -166,7 +166,7 @@
           >
             ✔
           </span>
-          <span *ngIf="jobDetails.siteInspections != []">
+          <span *ngIf="jobDetails.siteInspections != null">
             ({{ jobDetails.siteInspections.length }})
           </span>
           <span *ngIf="jobDetails.siteAudits != []"> A </span>

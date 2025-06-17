@@ -15,7 +15,8 @@ export class TasksComponent implements OnInit {
   tasksAssigned: any[] = [];
   tasksOpen: any[] = [];
   // timeTrackingOptions = TasksService.TimeTrackingOptions;
-  loaded: boolean = false;
+  loaded: boolean = false; 
+  currentDate: Date = new Date();
   // VID_BASIC_USER: string;
   yourTasks = [
     {
@@ -108,11 +109,12 @@ export class TasksComponent implements OnInit {
     }
     return '';
   }
-  openJobStatus(task: any) {
+  openTask(task: any) {
     console.log('Task:', task);
     let jobs = task.job;
-    let currentDate = '';
-    let lastDate = '';
+    let currentDate = this.currentDate;
+    const lastDate = new Date(currentDate);
+    lastDate.setDate(currentDate.getDate() + 5);
     for (let i = 0; i < jobs.jobDetails.length; i++) {
       if (jobs.jobDetails[i].jobDetailsId === task.date.jobDetailsId) {
        var jobDetails = jobs.jobDetails[i];

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { BsModalRef } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 })
 export class MenuComponent {
  showToolbox = false;
-
+showSubmenu = false;
   generalItems = [
     { label: 'Add Callout Job', icon: 'delivery_truck_speed' },
     { label: 'Vehicle Checks', icon: 'bi bi-truck' },
@@ -28,7 +28,8 @@ export class MenuComponent {
     { label: 'Guides', icon: 'bi bi-book' }
   ];
 
-  constructor(public route : Router){
+  constructor(public route : Router,
+    public bsModalRef: BsModalRef){
 
   }
 
@@ -36,5 +37,15 @@ export class MenuComponent {
     // Logic for site inspection
     console.log('Site Inspection clicked');
     this.route.navigate(['/site-inspection']);
+  }
+
+    toggleSubMenu() {
+    this.showSubmenu = !this.showSubmenu;
+  }
+   navigateTo(path: string) {
+    console.log("enter in navigate to function");
+    
+    this.bsModalRef.hide();           // Close the modal
+    this.route.navigate([path]);     // Navigate to route
   }
 }

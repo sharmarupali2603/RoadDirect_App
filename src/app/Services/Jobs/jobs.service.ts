@@ -10,7 +10,7 @@ import { DatabaseService } from '../Database/database.service';
 export class JobsService {
   private mainUrl = environment.apiBase;
 
-  constructor(private http: HttpClient, private db: DatabaseService) {}
+  constructor(private http: HttpClient, private db: DatabaseService) { }
 
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
@@ -110,6 +110,24 @@ export class JobsService {
   getAuditLogsByJobId(postData: any): Observable<any> {
     return this.http
       .post(this.mainUrl + 'Job/GetAuditLogsByJobId', postData)
+      .pipe(
+        tap((response) => {
+          // Store API response in IndexedDB
+          from(this.db.saveJobData(response)).subscribe();
+        }),
+        catchError(() => {
+          // If offline, return cached data
+          return '';
+          // return from(this.db.getAllJobData()).pipe(
+          //   map((items) => items.map((item) => item.data))
+          // );
+        })
+      );
+  }
+
+  updateJobStatusSignOff(postData: any): Observable<any> {
+    return this.http
+      .post(this.mainUrl + 'Job/UpdateJobStatusSignOff', postData)
       .pipe(
         tap((response) => {
           // Store API response in IndexedDB

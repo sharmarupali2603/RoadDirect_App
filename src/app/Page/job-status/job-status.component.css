@@ -8,3 +8,62 @@
 .body-card{
     width: 50%;
 }
+.card {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fff;
+}
+/* Optional: Add this to styles.css or component-specific CSS */
+.bg-warning {
+  background-color: #fff3cd !important;
+}
+
+.grid-job-status {
+  display: grid;
+  grid-template-columns: 50% 50%;
+
+  .rd-radio-wrap {
+    white-space: normal;
+  }
+
+  > mat-radio-button, > div {
+    padding: 5px;
+  }
+}
+
+.rd-orange-flat-button {
+  margin-top: 5px;
+}
+
+.form-error {
+  margin-bottom: 10px;
+}
+
+::ng-deep .cdk-overlay-container {
+  z-index: 500 !important;
+}
+
+.job-ready {
+  background-color: rgb(180, 180, 180);
+  background-color: rgba(180, 180, 180, 0.9);
+}
+
+.job-ongoing {
+  background-color: rgb(240, 255, 240);
+  background-color: rgba(240, 255, 240, 0.9);
+}
+
+.job-ongoing-tbc {
+  background-color: rgb(240, 240, 240);
+  background-color: rgba(240, 240, 240, 0.9);
+}
+
+.job-dry-hire {
+  background-color: rgb(34, 139, 34);
+  background-color: rgba(34, 139, 34, 0.4);
+}
+
+.job-attention {
+  background-color: rgb(255, 69, 69);
+  background-color: rgba(255, 69, 69, 0.2);
+}
