@@ -74,7 +74,7 @@ footer nav {
 }
 
 .active-tab::before {
-  content: '.';
+  content: ".";
   display: inline-block;
   position: absolute;
   bottom: -0.25em;
@@ -117,10 +117,15 @@ footer nav {
   display: flex;
   align-items: center;
   font-size: 0.9rem;
-}.menu-wrapper {
+}
+.menu-wrapper {
   /* background: linear-gradient(to bottom right, #77d9d6, #ff7733); */
-background: #7DCCBA;
-background: linear-gradient(113deg,rgba(125, 204, 186, 1) 0%, rgba(246, 138, 51, 1) 100%);
+  background: #7dccba;
+  background: linear-gradient(
+    113deg,
+    rgba(125, 204, 186, 1) 0%,
+    rgba(246, 138, 51, 1) 100%
+  );
   min-height: 100%;
   color: #333;
   margin: 1rem;
@@ -142,7 +147,7 @@ background: linear-gradient(113deg,rgba(125, 204, 186, 1) 0%, rgba(246, 138, 51,
   font-weight: 500;
   font-size: 15px;
   color: #333;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .sub-menu {
@@ -161,12 +166,12 @@ background: linear-gradient(113deg,rgba(125, 204, 186, 1) 0%, rgba(246, 138, 51,
 }
 
 .add-btn {
-  background-color: #4CAF50;
+  background-color: #4caf50;
 }
 
 .view-btn {
   background-color: #5a837f;
 }
-.icon-padding{
-  padding-right:20px;
+.icon-padding {
+  padding-right: 20px;
 }

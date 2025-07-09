@@ -1,0 +1,74 @@
+<div class="container mt-3">
+  <!-- Nav Tabs -->
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        [class.active]="selectedTab === 'hazards'"
+        href="javascript:void(0)"
+        (click)="selectTab($event, 'hazards')"
+      >
+        <i class="bi bi-exclamation-triangle-fill"></i> Hazards
+      </a>
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        [class.active]="selectedTab === 'attendees'"
+        href="javascript:void(0)"
+        (click)="selectTab($event, 'attendees')"
+      >
+        <i class="bi bi-people-fill"></i> Attendees
+      </a>
+    </li>
+  </ul>
+
+  <div class="tab-content border p-4">
+    <div *ngIf="selectedTab === 'hazards'">
+      <h5>Hazards/Risks Identified & Control Measures</h5>
+      <div class="mb-3 d-flex  gap-2">
+        <button class="btn btn-outline-success">
+          <i class="bi bi-plus-lg"></i> Add Hazard/Risk
+        </button>
+
+        <button class="btn btn-outline-success">
+          <i class="bi bi-cloud-arrow-down"></i> Load Hazard Register
+        </button>
+      </div>
+
+      <!-- Topics Discussed -->
+      <div class="mb-3">
+        <label for="topics" class="form-label fw-bold">Topics Discussed</label>
+        <textarea
+          id="topics"
+          class="form-control"
+          rows="4"
+          placeholder="Enter topics discussed..."
+        ></textarea>
+      </div>
+
+      <!-- Confirmation Checkbox -->
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="confirmation" />
+        <label class="form-check-label" for="confirmation">
+          I confirm that the site is setup as per the approved TMP and that all
+          attendees acknowledge & understand the safety aspects of the TMP
+          covered in the briefing.
+        </label>
+      </div>
+
+      <!-- Save Button -->
+      <div class="text-end mt-3">
+        <button class="btn btn-success rounded-circle">
+          <i class="bi bi-save"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Attendees Tab -->
+    <div *ngIf="selectedTab === 'attendees'">
+      <h5>Attendees List</h5>
+      <!-- Add your Attendees content here -->
+    </div>
+  </div>
+</div>

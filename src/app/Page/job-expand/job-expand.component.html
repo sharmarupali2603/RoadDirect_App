@@ -37,12 +37,229 @@
     </div>
 
     <div class="d-flex gap-2 btn-group-job-actions">
-      <button class="btn btn-primary rd-bg-blue btn-job-action">
+      <button
+        class="btn btn-primary rd-bg-blue btn-job-action"
+        (click)="openMenu(menuTemplate)"
+      >
         <mat-icon class="md-18" aria-hidden="false">fact_check</mat-icon>
         Create OSR
       </button>
-
-      <button class="btn btn-primary rd-bg-blue btn-job-action" (click)="openJobStatus(jobs, jobDetails, jobDate)">
+      <ng-template #menuTemplate>
+        <div
+          class="container-fluid d-flex justify-content-center align-items-start"
+        >
+          <!-- <button class="btn-close" data-bs-dismiss="modal"></button> -->
+          <div class="menu-wrapper w-100 p-3 rounded-4">
+            <!-- General -->
+            <!-- <div class="d-grid gap-2 mb-4"> -->
+            <button
+              class="menu-btn btn btn-white d-flex justify-content-between align-items-center rounded-pill shadow-sm"
+              data-bs-toggle="collapse"
+              data-bs-target="#siteInspectionCollapse"
+            >
+              <span
+                ><mat-icon class="icon-padding md-18" aria-hidden="false"
+                  >checklist</mat-icon
+                >
+                Site Inspections</span
+              ><i class="bi bi-chevron-right"></i>
+            </button>
+            <div class="collapse ps-3" id="siteInspectionCollapse">
+              <button
+                (click)="
+                  navigateTo(
+                    '/site-inspection',
+                    'Add',
+                    jobs,
+                    jobDetails,
+                    jobDate
+                  )
+                "
+                class="menu-btn btn d-flex align-items-center mb-2 rounded-pill shadow-sm"
+                style="background-color: #9bd5c7"
+              >
+                <mat-icon class="icon-padding md-18" aria-hidden="false"
+                  >add</mat-icon
+                >
+                Add a Site Inspection
+              </button>
+              <button
+                class="menu-btn btn d-flex align-items-center rounded-pill shadow-sm"
+                style="background-color: #5caaa5"
+                (click)="
+                  navigateTo(
+                    '/site-inspection',
+                    'View',
+                    jobs,
+                    jobDetails,
+                    jobDate
+                  )
+                "
+              >
+                <mat-icon class="icon-padding md-18" aria-hidden="false"
+                  >view_list</mat-icon
+                >
+                View SiteInspection
+              </button>
+            </div>
+            <button
+              class="menu-btn btn btn-white d-flex justify-content-between align-items-center rounded-pill shadow-sm"
+              data-bs-toggle="collapse"
+              data-bs-target="#tslCollapse"
+            >
+              <span
+                ><mat-icon class="icon-padding md-18" aria-hidden="false"
+                  >speed</mat-icon
+                >
+                Temporary Speed Limits</span
+              ><i class="bi bi-chevron-right"></i>
+            </button>
+            <div class="collapse ps-3" id="tslCollapse">
+              <button
+                (click)="navigateTo('/tsl', 'Add', jobs, jobDetails, jobDate)"
+                class="menu-btn btn d-flex align-items-center mb-2 rounded-pill shadow-sm"
+                style="background-color: #9bd5c7"
+              >
+                <mat-icon class="icon-padding md-18" aria-hidden="false"
+                  >add</mat-icon
+                >
+                Add a TSL
+              </button>
+              <button
+                class="menu-btn btn d-flex align-items-center rounded-pill shadow-sm"
+                style="background-color: #5caaa5"
+                (click)="navigateTo('/tsl', 'View', jobs, jobDetails, jobDate)"
+              >
+                <mat-icon class="icon-padding md-18" aria-hidden="false"
+                  >view_list</mat-icon
+                >
+                View TSL
+              </button>
+            </div>
+            <button
+              class="menu-btn btn btn-white d-flex justify-content-between align-items-center rounded-pill shadow-sm"
+              data-bs-toggle="collapse"
+              data-bs-target="#handoverCollapse"
+            >
+              <span
+                ><mat-icon class="icon-padding md-18" aria-hidden="false"
+                  >handshake</mat-icon
+                >
+                Handovers and Delegations</span
+              ><i class="bi bi-chevron-right"></i>
+            </button>
+            <div class="collapse ps-3" id="handoverCollapse">
+              <button
+                (click)="
+                  navigateTo('/site-handover', 'Add', jobs, jobDetails, jobDate)
+                "
+                class="menu-btn btn d-flex align-items-center mb-2 rounded-pill shadow-sm"
+                style="background-color: #9bd5c7"
+              >
+                <mat-icon class="icon-padding md-18" aria-hidden="false"
+                  >add</mat-icon
+                >
+                Add a Site Handover
+              </button>
+              <button
+                class="menu-btn btn d-flex align-items-center rounded-pill shadow-sm"
+                style="background-color: #5caaa5"
+                (click)="
+                  navigateTo(
+                    '/site-handover',
+                    'View',
+                    jobs,
+                    jobDetails,
+                    jobDate
+                  )
+                "
+              >
+                <mat-icon class="icon-padding md-18" aria-hidden="false"
+                  >view_list</mat-icon
+                >
+                View Site Handover
+              </button>
+            </div>
+            <!-- Toolbox Briefings -->
+            <button
+              class="menu-btn btn btn-white d-flex justify-content-between align-items-center rounded-pill shadow-sm"
+              data-bs-toggle="collapse"
+              data-bs-target="#toolboxCollapse"
+            >
+              <span
+                ><mat-icon class="icon-padding md-18" aria-hidden="false"
+                  >playlist_add_check</mat-icon
+                >
+                Toolbox Briefings</span
+              ><i class="bi bi-chevron-right"></i>
+            </button>
+            <div class="collapse ps-3" id="toolboxCollapse">
+              <button
+                class="menu-btn btn d-flex align-items-center mb-2 rounded-pill shadow-sm"
+                style="background-color: #9bd5c7"
+              >
+                <mat-icon class="icon-padding md-18" aria-hidden="false"
+                  >add</mat-icon
+                >
+                Add a Toolbox
+              </button>
+              <button
+                class="menu-btn btn d-flex align-items-center rounded-pill shadow-sm"
+                style="background-color: #5caaa5"
+              >
+                <mat-icon class="icon-padding md-18" aria-hidden="false"
+                  >view_list</mat-icon
+                >
+                View Toolboxes
+              </button>
+            </div>
+            <!-- </div> -->
+            <button
+              class="menu-btn btn btn-white d-flex justify-content-between align-items-center rounded-pill shadow-sm"
+            >
+              <span
+                ><mat-icon class="icon-padding md-18" aria-hidden="false"
+                  >local_shipping</mat-icon
+                >
+                Generic TMP Checks</span
+              ><i class="bi bi-chevron-right"></i>
+            </button>
+            <button
+              class="menu-btn btn btn-white d-flex justify-content-between align-items-center rounded-pill shadow-sm"
+            >
+              <span
+                ><mat-icon class="icon-padding md-18" aria-hidden="false"
+                  >local_shipping</mat-icon
+                >
+                Vehicle Checks</span
+              ><i class="bi bi-chevron-right"></i>
+            </button>
+            <button
+              class="menu-btn btn btn-white d-flex justify-content-between align-items-center rounded-pill shadow-sm"
+            >
+              <span
+                ><mat-icon class="icon-padding md-18" aria-hidden="false"
+                  >list Auditing</mat-icon
+                >Auditing</span
+              ><i class="bi bi-chevron-right"></i>
+            </button>
+            <button
+              class="menu-btn btn btn-white d-flex justify-content-between align-items-center rounded-pill shadow-sm"
+            >
+              <span
+                ><mat-icon class="icon-padding md-18" aria-hidden="false"
+                  >local_shipping</mat-icon
+                >
+                Incident Reports</span
+              ><i class="bi bi-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </ng-template>
+      <button
+        class="btn btn-primary rd-bg-blue btn-job-action"
+        (click)="openJobStatus(jobs, jobDetails, jobDate)"
+      >
         <mat-icon class="md-18" aria-hidden="false">sms</mat-icon>
         Job Status
       </button>
@@ -257,31 +474,29 @@
       <!-- Display images only after button click -->
 
       <div class="modal fade" id="noteModal2" tabindex="-1">
-        
-          <div class="modal-dialog modal-md modal-dialog-centered">
-            <div
-              class="modal-content card-header d-flex justify-content-between align-items-center"
-            >
-              <div class="modal-header">
-                <h5 class="modal-title">Photos</h5>
-                <button class="btn-close" data-bs-dismiss="modal"></button>
-              </div>
+        <div class="modal-dialog modal-md modal-dialog-centered">
+          <div
+            class="modal-content card-header d-flex justify-content-between align-items-center"
+          >
+            <div class="modal-header">
+              <h5 class="modal-title">Photos</h5>
+              <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
 
-              <div class="row" *ngIf="images && images.length > 0">
-                <div class="col-6 mb-3" *ngFor="let image of images">
-                  <img
-                    [src]="'data:image/jpeg;base64,' + image.photoBlob"
-                    class="img-fluid border p-1"
-                    alt="Sign"
-                  />
-                </div>
+            <div class="row" *ngIf="images && images.length > 0">
+              <div class="col-6 mb-3" *ngFor="let image of images">
+                <img
+                  [src]="'data:image/jpeg;base64,' + image.photoBlob"
+                  class="img-fluid border p-1"
+                  alt="Sign"
+                />
               </div>
-              <div *ngIf="!images || images.length == 0">
-                <p class="text-center">No photos available.</p>
+            </div>
+            <div *ngIf="!images || images.length == 0">
+              <p class="text-center">No photos available.</p>
             </div>
           </div>
         </div>
-
       </div>
 
       <!--Map Location-->
@@ -304,16 +519,19 @@
       </p>
       <hr />
       <span *ngFor="let task of jobDate?.closures">
-      
-          <p>
-            <strong>TTM Road Set-Up-</strong>  <span *ngIf="task.closureType == 1">{{ getClosure(task.closures) }}</span>
-          </p>
-       
-          <p>
-            <strong>TTM FootPath Set-Up -</strong
-            > <span *ngIf="task.closureType != 1">{{ getClosure(task.closures) }}</span>
-          </p>
-      
+        <p>
+          <strong>TTM Road Set-Up-</strong>
+          <span *ngIf="task.closureType == 1">{{
+            getClosure(task.closures)
+          }}</span>
+        </p>
+
+        <p>
+          <strong>TTM FootPath Set-Up -</strong>
+          <span *ngIf="task.closureType != 1">{{
+            getClosure(task.closures)
+          }}</span>
+        </p>
       </span>
     </div>
 

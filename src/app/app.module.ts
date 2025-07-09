@@ -39,6 +39,9 @@ import { PhotoDialogComponent } from './Components/photo-dialog/photo-dialog.com
 import { MatDialogModule } from '@angular/material/dialog';
 import { SiteHandoverComponent } from './Page/site-handover/site-handover.component';
 import { JobstatusComponent } from './Page/jobstatus/jobstatus.component';
+import { TimesheetComponent } from './Page/timesheet/timesheet.component';
+import { VehicleCheckComponent } from './Page/vehicle-check/vehicle-check.component';
+import { ToolboxBriefingsComponent } from './Page/toolbox-briefings/toolbox-briefings.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +66,10 @@ import { JobstatusComponent } from './Page/jobstatus/jobstatus.component';
     MenuComponent,
     PhotoDialogComponent,
     SiteHandoverComponent,
-    JobstatusComponent
+    JobstatusComponent,
+    TimesheetComponent,
+    VehicleCheckComponent,
+    ToolboxBriefingsComponent
   ],
   imports: [
     BrowserModule,

@@ -14,27 +14,33 @@ import { SiteInspectionComponent } from './Page/site-inspection/site-inspection.
 import { TSLComponent } from './Page/tsl/tsl.component';
 import { SiteHandoverComponent } from './Page/site-handover/site-handover.component';
 import { JobstatusComponent } from './Page/jobstatus/jobstatus.component';
+import { TimesheetComponent } from './Page/timesheet/timesheet.component';
+import { VehicleCheckComponent } from './Page/vehicle-check/vehicle-check.component';
+import { ToolboxBriefingsComponent } from './Page/toolbox-briefings/toolbox-briefings.component';
 const routes: Routes = [
   { path: '', component: DashboardComponent },
   { path: 'dashboard', redirectTo: '' },
   { path: 'job-expand', component: JobExpandComponent },
   { path: 'tasks', component: TasksComponent },
   { path: 'location', component: LocationComponent },
-  {path: 'create-record-task', component: CreateRecordTaskComponent},
-  {path: 'edit-time', component: EditTimeComponent},
-  {path: 'edit-equipment', component: EditEquipmentComponent},
-  {path: 'client-signof', component: ClientSignofComponent},
-  {path: 'tasks', component: TasksComponent},
-  {path: 'job-status', component: JobStatusComponent},
-  {path: 'menu', component: MenuComponent},
-  {path: 'site-inspection', component: SiteInspectionComponent},
-  {path: 'tsl', component: TSLComponent},
-  {path: 'site-handover', component: SiteHandoverComponent},
-    {path: 'jobstatus', component: JobstatusComponent}
+  { path: 'create-record-task', component: CreateRecordTaskComponent },
+  { path: 'edit-time', component: EditTimeComponent },
+  { path: 'edit-equipment', component: EditEquipmentComponent },
+  { path: 'client-signof', component: ClientSignofComponent },
+  { path: 'tasks', component: TasksComponent },
+  { path: 'job-status', component: JobStatusComponent },
+  { path: 'menu', component: MenuComponent },
+  { path: 'site-inspection', component: SiteInspectionComponent },
+  { path: 'tsl', component: TSLComponent },
+  { path: 'site-handover', component: SiteHandoverComponent },
+  { path: 'jobstatus', component: JobstatusComponent },
+  { path: 'timesheet', component: TimesheetComponent },
+  { path: 'vehicle-check', component: VehicleCheckComponent },
+  { path: 'toolbox-briefings', component: ToolboxBriefingsComponent },
   // { path: '',   redirectTo: '/dashboard', pathMatch: 'full' }, // redirect to `first-component`
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

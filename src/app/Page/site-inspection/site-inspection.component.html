@@ -1,8 +1,14 @@
 <!-- Top Toolbar -->
-<div *ngIf="mode== 'Add'">
+<div *ngIf="mode == 'Add'">
   <nav class="navbar navbar-expand bg-success text-white p-2">
     <div class="container-fluid align-items-center">
       <div class="d-flex align-items-center">
+        <mat-icon
+          (click)="back()"
+          class="icon-padding md-18"
+          aria-hidden="false"
+          >arrow_back</mat-icon
+        >
         <img
           src="assets/icon.png"
           alt="Logo"
@@ -92,7 +98,12 @@
       </label>
       <span class="text-success fw-semibold">GPS Acquired</span>
     </span>
-
+    <select class="form-select"  [(ngModel)]="selectedJobDetailId" (change)="onSelectionChange()">
+      <!-- <option value="">All Types</option> -->
+      <option *ngFor="let job of job" [value]="job.jobDetails[0].jobDetailsId">
+        {{ getClientNamebyID(job.clientId) }}({{job.jobDetails[0].jobDetailsId}})
+      </option>
+    </select>
     <!-- Role Selection -->
     <div class="mb-3">
       <div class="d-flex justify-content-between align-items-center">
@@ -167,10 +178,17 @@
   </div>
 </div>
 
-<div *ngIf="mode== 'View'">
+<div *ngIf="mode == 'View'">
   <nav class="navbar navbar-expand bg-success text-white p-2">
     <div class="container-fluid align-items-center">
       <div class="d-flex align-items-center">
+        <mat-icon
+          (click)="back()"
+          class="icon-padding md-18"
+          aria-hidden="false"
+          >arrow_back</mat-icon
+        >
+
         <img
           src="assets/icon.png"
           alt="Logo"
@@ -260,6 +278,13 @@
       </label>
       <span class="text-success fw-semibold">GPS Acquired</span>
     </span>
+
+     <select class="form-select"  [(ngModel)]="selectedJobDetailId" (change)="onSelectionChange()">
+      <!-- <option value="">All Types</option> -->
+      <option *ngFor="let job of job" [value]="job.jobDetails[0].jobDetailsId">
+        {{ getClientNamebyID(job.clientId) }}({{job.jobDetails[0].jobDetailsId}})
+      </option>
+    </select>
 
     <!-- Role Selection -->
     <div class="mb-3">

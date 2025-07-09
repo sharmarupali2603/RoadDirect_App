@@ -1,0 +1,29 @@
+<form [formGroup]="locationForm">
+  <div class="mb-3">
+    <label for="countrySelect" class="form-label">Client</label>
+    <select class="form-select" id="countrySelect" formControlName="client" (change)="onClientChange()">
+      <option value="">Select Client</option>
+      <option *ngFor="let job of job" [ngValue]="job">
+       
+        {{ job.clientId }}, <span *ngFor="let jobDetails of job.jobDetails">
+           ({{ jobDetails.location }}) 
+        </span></option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="stateSelect" class="form-label">Location</label>
+    <select class="form-select" id="stateSelect" formControlName="location" [disabled]="!locationForm.get('client')?.value" (change)="onLocationChange()">
+      <option value="">Select Location</option>
+      <option *ngFor="let jobDetails of selectedJob?.jobDetails" [ngValue]="jobDetails">{{ jobDetails.location }}</option>
+    </select>
+  </div>
+
+  <!-- <div class="mb-3">
+    <label for="citySelect" class="form-label">City</label>
+    <select class="form-select" id="citySelect" formControlName="city" [disabled]="!locationForm.get('state')?.value">
+      <option value="">Select City</option>
+      <option *ngFor="let city of selectedState?.cities" [ngValue]="city">{{ city.name }}</option>
+    </select>
+  </div> -->
+</form>

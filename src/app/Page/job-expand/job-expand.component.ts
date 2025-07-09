@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, TemplateRef } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import moment from 'moment';
 import { JobsService } from 'src/app/Services/Jobs/jobs.service';
 import { PdfService } from 'src/app/Services/pdf/pdf.service';
@@ -48,39 +50,39 @@ export class JobExpandComponent implements OnInit {
   updatedTime: any;
   finishTime: any;
   submitTime: any;
-  userId:any;
-  equipments:any[]=[];
+  userId: any;
+  equipments: any[] = [];
   editEquipmentData: any;
-  productList:any[]=[];
-  equipmentList:any[]=[];
-  clientSignOf:any[]=[];
+  productList: any[] = [];
+  equipmentList: any[] = [];
+  clientSignOf: any[] = [];
   base64Data: string | null = null;
   imageUrl: string | null = null;
-  thumbnail:any;
-   showHistory = false;
-    notes : any[]=[];
-     searchTerm = '';
-     attachment:any;
+  thumbnail: any;
+  showHistory = false;
+  notes: any[] = [];
+  searchTerm = '';
+  attachment: any;
   invoiceOnly = false;
   taskOnly = false;
+  modalRef?: BsModalRef;
   constructor(
     private route: Router,
     public jobService: JobsService,
     public pdfService: PdfService,
     public trackingService: TrackingService, // private modalService: NgbModal
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private modalService: BsModalService
   ) {
-  
-    if (localStorage.getItem ('User')) {
+    if (localStorage.getItem('User')) {
       const userData = localStorage.getItem('User');
       this.User = userData ? JSON.parse(userData) : null;
       console.log('User:', this.User);
-      this.FirstName= this.User.firstName;
-      this.LastName= this.User.lastName;
+      this.FirstName = this.User.firstName;
+      this.LastName = this.User.lastName;
       console.log('FirstName:', this.FirstName);
       console.log('LastName:', this.LastName);
-      
-  }
+    }
     const navigation = this.route.getCurrentNavigation();
     this.jobs = navigation?.extras.state?.['data'] || {};
     console.log('Job>>>>>>>>>>>', this.jobs);
@@ -129,7 +131,6 @@ export class JobExpandComponent implements OnInit {
       console.log('FirstName:', this.FirstName);
       console.log('LastName:', this.LastName);
     }
-    
   }
 
   ngOnInit(): void {
@@ -158,7 +159,6 @@ export class JobExpandComponent implements OnInit {
       console.log('submitTime:', this.submitTime);
       // this.fetchTrackingTaskById(this.taskId);
     }
-   
   }
 
   //  filteredNotes() {
@@ -208,7 +208,10 @@ export class JobExpandComponent implements OnInit {
     this.trackingService.getAllProducts(queryParams).subscribe(
       (response) => {
         this.productList = response;
-        this.productList = response.map((item: any) => ({ ...item, quantity: 0 }));
+        this.productList = response.map((item: any) => ({
+          ...item,
+          quantity: 0,
+        }));
 
         // localStorage.setItem('VehicleList', JSON.stringify(this.vehicles));
         console.log('productList:', this.productList);
@@ -437,7 +440,7 @@ export class JobExpandComponent implements OnInit {
       jobs: jobs,
       jobDetails: jobDetails,
       jobDate: jobDate,
-      clientID: this.clientID
+      clientID: this.clientID,
     };
     console.log('clientID:', this.clientID);
     this.pdfService.generatePdf(details);
@@ -446,13 +449,12 @@ export class JobExpandComponent implements OnInit {
   loadImages() {
     this.getPhotosByJobDetailsId();
     // this.images = this.jobDetails.photoLookups;
-
   }
 
   openImage(photoBlob: Blob) {
-    debugger
-    const image ='data:image/jpeg;base64,' + photoBlob;
-    this.thumbnail = this.sanitizer.bypassSecurityTrustUrl(image)
+    debugger;
+    const image = 'data:image/jpeg;base64,' + photoBlob;
+    this.thumbnail = this.sanitizer.bypassSecurityTrustUrl(image);
   }
   addRecordTask(jobs: any, jobDetails: any, jobDate: any) {
     console.log('clientID:', this.clientID);
@@ -553,7 +555,13 @@ export class JobExpandComponent implements OnInit {
     localStorage.setItem('submitTime', '');
   }
 
-  editTime(jobs: any, jobDetails: any, jobDate: any,SubmitTime:any,taskId:any) {
+  editTime(
+    jobs: any,
+    jobDetails: any,
+    jobDate: any,
+    SubmitTime: any,
+    taskId: any
+  ) {
     console.log('clientID:', this.clientID);
     this.route.navigate(['/edit-time'], {
       state: {
@@ -564,13 +572,20 @@ export class JobExpandComponent implements OnInit {
         clientID: this.clientID,
         date: this.currentDate,
         lastdate: this.lastDate,
-        SubmitTime:SubmitTime,
-        finishTime:'',
-        taskId:taskId
+        SubmitTime: SubmitTime,
+        finishTime: '',
+        taskId: taskId,
       },
     });
   }
-  navigateToFinishTime(jobs: any, jobDetails: any, jobDate: any, SubmitTime: any, finishTimeParam: any,taskId:any) {
+  navigateToFinishTime(
+    jobs: any,
+    jobDetails: any,
+    jobDate: any,
+    SubmitTime: any,
+    finishTimeParam: any,
+    taskId: any
+  ) {
     console.log('clientID:', this.clientID);
     this.route.navigate(['/edit-time'], {
       state: {
@@ -581,265 +596,297 @@ export class JobExpandComponent implements OnInit {
         clientID: this.clientID,
         date: this.currentDate,
         lastdate: this.lastDate,
-        SubmitTime:SubmitTime,
-        finishTime:finishTimeParam,
-        taskId:taskId
+        SubmitTime: SubmitTime,
+        finishTime: finishTimeParam,
+        taskId: taskId,
       },
     });
   }
   fileName = '';
-  file='';
-// fileChanged(evt: Event) {
-//   debugger
-//   const f = (evt.target as HTMLInputElement).files;
-//   if (f?.length) this.fileName = f[0].name;
-//   // if (f?.length) this.file = f.data;
-// }
-fileChanged(event: Event): void {
-  const input = event.target as HTMLInputElement;
-  if (!input.files?.length) return;
+  file = '';
+  // fileChanged(evt: Event) {
+  //   debugger
+  //   const f = (evt.target as HTMLInputElement).files;
+  //   if (f?.length) this.fileName = f[0].name;
+  //   // if (f?.length) this.file = f.data;
+  // }
+  fileChanged(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) return;
 
-  const file = input.files[0];
-  const reader = new FileReader();
+    const file = input.files[0];
+    const reader = new FileReader();
 
-  reader.onload = () => {
-    // This will include the data URI prefix like "data:image/png;base64,..."
-    this.base64Data = reader.result as string;
-    console.log('Base64:', this.base64Data);
-  };
+    reader.onload = () => {
+      // This will include the data URI prefix like "data:image/png;base64,..."
+      this.base64Data = reader.result as string;
+      console.log('Base64:', this.base64Data);
+    };
 
-  reader.onerror = (error) => {
-    console.error('FileReader error:', error);
-  };
+    reader.onerror = (error) => {
+      console.error('FileReader error:', error);
+    };
 
-  reader.readAsDataURL(file); // reads file as base64
-}
-onSubmit(val: any) {
-  console.log('Form data', val);
-  if (localStorage.getItem('User')) {
-    const user = localStorage.getItem('User');
-    this.userId = user ? JSON.parse(user) : null;
+    reader.readAsDataURL(file); // reads file as base64
   }
-  this.userId = this.userId.userId;
-  // if(this.base64Data)
-    const postData = [{
-      jobId:this.jobDetails.jobId,
-      note: val.note,
-      noteType: 3,
-      userId:this.userId,
-      attachment: this.base64Data,
-      timestamp: this.currentDate,
-    }];
- 
-  
-
-  this.trackingService.addTrackingNotes(postData).subscribe({
-    next: (res) => {
-      alert('✅ Note added successfully!');
-      // val.reset();
-
-    },
-    error: (err) => {
-      alert('❌ Task submission failed!');
-      console.error(err);
-    },
-  });
-}
-
-editEquipment(jobs: any, jobDetails: any, jobDate: any,taskId:any){
-  console.log("fbdhsbfuhasdbuyyfbsaduyubfuyshd",taskId);
-  
-  this.route.navigate(['/edit-equipment'], {
-    state: {
-      data: jobs,
-      jobDetails: jobDetails,
-      jobDate: jobDate,
-      clientID: this.clientID,
-      date: this.currentDate,
-      lastdate: this.lastDate,
-      taskId:taskId
-    },
-  })
-}
-
-fetchLatestJobItemCounts() {
-  const queryParams = {
-    jobId: this.jobDetails.jobId
-  };
-
-  this.trackingService.getLatestJobItemCounts(queryParams).subscribe(
-    (response) => {
-      this.equipments = response;
-      const filtered = this.equipments.filter(item => item.quantity > 0);
-    
-      this.equipmentList = filtered.map(item => ({
-        title:this.getTitleByProductId(item.productId),
-        icon:this.getIconbyProductId(item.productId),
-        product: item.product,
-        productId: item.productId,        // or item.productId depending on your API response
-        quantity: item.quantity,
-        jobId:item.jobId,
-        price:item.price,
-        id:item.id
-      }));
-      // localStorage.setItem('VehicleList', JSON.stringify(this.vehicles));
-      console.log('equipments:', this.equipmentList);
-    },
-    (error) => {
-      console.error('Error fetching data:', error);
+  onSubmit(val: any) {
+    console.log('Form data', val);
+    if (localStorage.getItem('User')) {
+      const user = localStorage.getItem('User');
+      this.userId = user ? JSON.parse(user) : null;
     }
-  );
-}
-getIconbyProductId(productId: any) {
+    this.userId = this.userId.userId;
+    // if(this.base64Data)
+    const postData = [
+      {
+        jobId: this.jobDetails.jobId,
+        note: val.note,
+        noteType: 3,
+        userId: this.userId,
+        attachment: this.base64Data,
+        timestamp: this.currentDate,
+      },
+    ];
 
+    this.trackingService.addTrackingNotes(postData).subscribe({
+      next: (res) => {
+        alert('✅ Note added successfully!');
+        // val.reset();
+      },
+      error: (err) => {
+        alert('❌ Task submission failed!');
+        console.error(err);
+      },
+    });
+  }
 
-  const product = this.productList.find((c) => c.id == productId); // Find vehicle by ID
-  return product ? product.icon : String(productId); // Return ShortName if found, otherwise return the vehicleId as a string
-}
+  editEquipment(jobs: any, jobDetails: any, jobDate: any, taskId: any) {
+    console.log('fbdhsbfuhasdbuyyfbsaduyubfuyshd', taskId);
 
-getTitleByProductId(productId: any) {
-  const product = this.productList.find((c) => c.id == productId); // Find vehicle by ID
-  return product ? product.title : String(productId); // Return ShortName if found, otherwise return the vehicleId as a string
-}
+    this.route.navigate(['/edit-equipment'], {
+      state: {
+        data: jobs,
+        jobDetails: jobDetails,
+        jobDate: jobDate,
+        clientID: this.clientID,
+        date: this.currentDate,
+        lastdate: this.lastDate,
+        taskId: taskId,
+      },
+    });
+  }
 
-clientSignOff(jobs: any, jobDetails: any, jobDate: any,taskId:any) {
-  console.log('clientID:', this.clientID);
-  this.route.navigate(['/client-signof'], {
-    state: {
-      title: 'Client Sign Off',
-      data: jobs,
-      jobDetails: jobDetails,
-      jobDate: jobDate,
-      clientID: this.clientID,
-      date: this.currentDate,
-      lastdate: this.lastDate,
-      taskId:taskId,
-      equipmentList:this.equipmentList,
-      updatedTime:this.updatedTime,
-      submitTime:this.submitTime,
-    },
-  });
-}
-fetchClientSignof() {
-  const queryParams = {
-    id: this.jobDetails.jobId
-  };
+  fetchLatestJobItemCounts() {
+    const queryParams = {
+      jobId: this.jobDetails.jobId,
+    };
 
-  this.trackingService.getClientSignOffsByJobId(queryParams).subscribe(
-    (response) => {
-      this.clientSignOf = response;
-      // const filtered = this.equipments.filter(item => item.quantity > 0);
-    
-      // this.equipmentList = filtered.map(item => ({
-      //   title:this.getTitleByProductId(item.productId),
-      //   icon:this.getIconbyProductId(item.productId),
-      //   product: item.product,
-      //   productId: item.productId,        // or item.productId depending on your API response
-      //   quantity: item.quantity,
-      //   jobId:item.jobId,
-      //   price:item.price,
-      //   id:item.id
-      // }));
-      // localStorage.setItem('VehicleList', JSON.stringify(this.vehicles));
-      console.log('clientSignOf:', this.clientSignOf);
-    },
-    (error) => {
-      console.error('Error fetching data:', error);
-    }
-  );
-}
+    this.trackingService.getLatestJobItemCounts(queryParams).subscribe(
+      (response) => {
+        this.equipments = response;
+        const filtered = this.equipments.filter((item) => item.quantity > 0);
 
-getPhotosByJobDetailsId() {
-  const queryParams = {
-    id: this.jobDetails.jobDetailsId
-  };
+        this.equipmentList = filtered.map((item) => ({
+          title: this.getTitleByProductId(item.productId),
+          icon: this.getIconbyProductId(item.productId),
+          product: item.product,
+          productId: item.productId, // or item.productId depending on your API response
+          quantity: item.quantity,
+          jobId: item.jobId,
+          price: item.price,
+          id: item.id,
+        }));
+        // localStorage.setItem('VehicleList', JSON.stringify(this.vehicles));
+        console.log('equipments:', this.equipmentList);
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+      }
+    );
+  }
+  getIconbyProductId(productId: any) {
+    const product = this.productList.find((c) => c.id == productId); // Find vehicle by ID
+    return product ? product.icon : String(productId); // Return ShortName if found, otherwise return the vehicleId as a string
+  }
 
-  this.jobService.getPhotosByJobDetailsId(queryParams).subscribe(
-    (response) => {
-      this.images = response;
-      console.log("images>>>>>",this.images);
-    },
-    (error) => {
-      console.error('Error fetching data:', error);
-    }
-  );
-}
+  getTitleByProductId(productId: any) {
+    const product = this.productList.find((c) => c.id == productId); // Find vehicle by ID
+    return product ? product.title : String(productId); // Return ShortName if found, otherwise return the vehicleId as a string
+  }
 
-viewClientSignOf(jobs: any, jobDetails: any, jobDate: any,taskId:any,clientSignOf:any){
-  console.log('clientID:', this.clientID);
-  this.route.navigate(['/client-signof'], {
-    state: {
-      title: 'view',
-      data: jobs,
-      jobDetails: jobDetails,
-      jobDate: jobDate,
-      clientID: this.clientID,
-      date: this.currentDate,
-      lastdate: this.lastDate,
-      taskId:taskId,
-      equipmentList:this.equipmentList,
-      updatedTime:this.updatedTime,
-      submitTime:this.submitTime,
-      clientSignOf:clientSignOf
-    },
-  });
-}
+  clientSignOff(jobs: any, jobDetails: any, jobDate: any, taskId: any) {
+    console.log('clientID:', this.clientID);
+    this.route.navigate(['/client-signof'], {
+      state: {
+        title: 'Client Sign Off',
+        data: jobs,
+        jobDetails: jobDetails,
+        jobDate: jobDate,
+        clientID: this.clientID,
+        date: this.currentDate,
+        lastdate: this.lastDate,
+        taskId: taskId,
+        equipmentList: this.equipmentList,
+        updatedTime: this.updatedTime,
+        submitTime: this.submitTime,
+      },
+    });
+  }
+  fetchClientSignof() {
+    const queryParams = {
+      id: this.jobDetails.jobId,
+    };
 
-getTrackingNotesByJobId() {
-  const queryParams = {
-    jobId: this.jobDetails.jobId
-  };
+    this.trackingService.getClientSignOffsByJobId(queryParams).subscribe(
+      (response) => {
+        this.clientSignOf = response;
+        // const filtered = this.equipments.filter(item => item.quantity > 0);
 
-  this.trackingService.getTrackingNotesByJobId(queryParams).subscribe(
-    (response) => {
-      this.notes = response;
-      console.log('notes:', this.notes);
-    },
-    (error) => {
-      console.error('Error fetching data:', error);
-    }
-  );
-}
+        // this.equipmentList = filtered.map(item => ({
+        //   title:this.getTitleByProductId(item.productId),
+        //   icon:this.getIconbyProductId(item.productId),
+        //   product: item.product,
+        //   productId: item.productId,        // or item.productId depending on your API response
+        //   quantity: item.quantity,
+        //   jobId:item.jobId,
+        //   price:item.price,
+        //   id:item.id
+        // }));
+        // localStorage.setItem('VehicleList', JSON.stringify(this.vehicles));
+        console.log('clientSignOf:', this.clientSignOf);
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+      }
+    );
+  }
+
+  getPhotosByJobDetailsId() {
+    const queryParams = {
+      id: this.jobDetails.jobDetailsId,
+    };
+
+    this.jobService.getPhotosByJobDetailsId(queryParams).subscribe(
+      (response) => {
+        this.images = response;
+        console.log('images>>>>>', this.images);
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+      }
+    );
+  }
+
+  viewClientSignOf(
+    jobs: any,
+    jobDetails: any,
+    jobDate: any,
+    taskId: any,
+    clientSignOf: any
+  ) {
+    console.log('clientID:', this.clientID);
+    this.route.navigate(['/client-signof'], {
+      state: {
+        title: 'view',
+        data: jobs,
+        jobDetails: jobDetails,
+        jobDate: jobDate,
+        clientID: this.clientID,
+        date: this.currentDate,
+        lastdate: this.lastDate,
+        taskId: taskId,
+        equipmentList: this.equipmentList,
+        updatedTime: this.updatedTime,
+        submitTime: this.submitTime,
+        clientSignOf: clientSignOf,
+      },
+    });
+  }
+
+  getTrackingNotesByJobId() {
+    const queryParams = {
+      jobId: this.jobDetails.jobId,
+    };
+
+    this.trackingService.getTrackingNotesByJobId(queryParams).subscribe(
+      (response) => {
+        this.notes = response;
+        console.log('notes:', this.notes);
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+      }
+    );
+  }
 
   filteredNotes() {
-    return this.notes.filter(note => {
-      const matchesSearch = note.note?.toLowerCase().includes(this.searchTerm.toLowerCase());
+    return this.notes.filter((note) => {
+      const matchesSearch = note.note
+        ?.toLowerCase()
+        .includes(this.searchTerm.toLowerCase());
       const matchesInvoice = !this.invoiceOnly || note.noteType == 1;
       const matchesTask = !this.taskOnly || note.noteType == 3;
       return matchesSearch && matchesInvoice && matchesTask;
     });
   }
 
-  getTrackingNoteAttachmentById(id:any) {
-  const queryParams = {
-    noteId: id
-  };
+  getTrackingNoteAttachmentById(id: any) {
+    const queryParams = {
+      noteId: id,
+    };
 
-  this.trackingService.getTrackingNoteAttachmentById(queryParams).subscribe(
-    (response) => {
-      this.attachment = response;
-      console.log('attachment:', this.attachment);
-    },
-    (error) => {
-      console.error('Error fetching data:', error);
-    }
-  );
-}
+    this.trackingService.getTrackingNoteAttachmentById(queryParams).subscribe(
+      (response) => {
+        this.attachment = response;
+        console.log('attachment:', this.attachment);
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+      }
+    );
+  }
 
-openJobStatus(jobs: any, jobDetails: any, jobDate: any){
-  this.route.navigate(['/jobstatus'], {
-    state: {
-      title: 'view',
-      data: jobs,
-      jobDetails: jobDetails,
-      jobDate: jobDate,
-      clientID: this.clientID,
-      date: this.currentDate,
-      lastdate: this.lastDate,
-      equipmentList:this.equipmentList,
-      updatedTime:this.updatedTime,
-      submitTime:this.submitTime,
-    },
-  });
-}
+  openJobStatus(jobs: any, jobDetails: any, jobDate: any) {
+    this.route.navigate(['/jobstatus'], {
+      state: {
+        title: 'view',
+        data: jobs,
+        jobDetails: jobDetails,
+        jobDate: jobDate,
+        clientID: this.clientID,
+        date: this.currentDate,
+        lastdate: this.lastDate,
+        equipmentList: this.equipmentList,
+        updatedTime: this.updatedTime,
+        submitTime: this.submitTime,
+      },
+    });
+  }
+
+  openMenu(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, {
+      class: 'modal-dialog-centered modal-lg',
+    });
+  }
+
+  navigateTo(
+    path: string,
+    mode: string,
+    jobs: any,
+    jobDetails: any,
+    jobDate: any
+  ) {
+    this.modalRef?.hide();
+    this.route.navigate([path], {
+      state: {
+        mode: mode,
+        data: jobs,
+        jobDetails: jobDetails,
+        jobDate: jobDate,
+        clientID: this.clientID,
+        date: this.currentDate,
+        lastdate: this.lastDate,
+      },
+    }); // Navigate to route
+  }
 }

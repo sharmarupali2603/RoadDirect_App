@@ -1,0 +1,125 @@
+<div *ngIf="mode == 'Add'">
+ <nav class="navbar navbar-expand bg-success text-white p-2">
+    <div class="container-fluid align-items-center">
+      <div class="d-flex align-items-center">
+        <mat-icon
+          (click)="back()"
+          class="icon-padding md-18"
+          aria-hidden="false"
+          >arrow_back</mat-icon
+        >
+        <img
+          src="assets/icon.png"
+          alt="Logo"
+          width="32"
+          height="32"
+          class="rounded-circle me-2"
+        />
+        <span class="navbar-brand mb-0 text-white">Vehicle Check</span>
+      </div>
+
+      <div class="d-flex ms-auto">
+        <button
+          class="btn btn-success text-white me-2"
+          data-bs-toggle="modal"
+          data-bs-target="#noteModal2"
+          (click)="openCamera()"
+        >
+          <!-- <mat-icon class="icon-padding md-18" aria-hidden="false">camera_alt</mat-icon> -->
+          <mat-icon class="icon-padding md-18" aria-hidden="false"
+            >add_a_photo</mat-icon
+          >
+        </button>
+
+        <div class="modal fade" id="noteModal2" tabindex="-1">
+          <div class="modal-dialog modal-md modal-dialog-centered">
+            <div
+              class="modal-content card-header d-flex justify-content-between align-items-center"
+            >
+              <div *ngIf="!cameraOpen" style="background-color: white">
+                <h2 style="color: black">Choose an Option</h2>
+                <button (click)="takePhoto()">Take Picture</button>
+                <button (click)="uploadPhoto()">Choose from Gallery</button>
+                <input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  #fileInput
+                  (change)="onFileSelected($event)"
+                />
+              </div>
+
+              <span *ngIf="cameraOpen && stream" class="d-flex flex-column">
+                <div class="modal-header" style="background-color: white">
+                  <h5 class="modal-title" style="color: black">Camera</h5>
+                  <button
+                    class="btn-close"
+                    (click)="closeCamera()"
+                    style="color: black"
+                    data-bs-dismiss="modal"
+                  ></button>
+                </div>
+
+                <!-- <div>
+                <button (click)="checkPermission()">
+                  Check the cam permission
+                </button>
+                <p *ngIf="status">Status: {{ status }}</p>
+              </div> -->
+                <div *ngIf="stream">
+                  <!-- web cam imae will be shown here-->
+                  <webcam
+                    [trigger]="$trigger"
+                    (imageCapture)="snapshot($event)"
+                  ></webcam>
+                  <button (click)="captureImage()">{{ buttonLabel }}</button>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-success text-white">
+          <mat-icon class="icon-padding md-18" aria-hidden="false"
+            >photo_library</mat-icon
+          >
+        </button>
+      </div>
+    </div>
+  </nav>
+<div class="container mt-4">
+  <!-- <h4 class="text-success">Vehicle Check</h4> -->
+  <form [formGroup]="vehicleCheckForm">
+    <div class="mb-3">
+      <label class="form-label">Vehicle Plate Number</label>
+      <input type="text" class="form-control" formControlName="plateNumber">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Vehicle Name</label>
+      <input type="text" class="form-control" formControlName="vehicleName">
+    </div>
+
+    <div *ngFor="let item of checklist; let i = index" 
+    class="bordered mb-2 d-flex justify-content-between align-items-center p-2 rounded">
+      <span>{{ item }}</span>
+      <button type="button" class="btn btn-outline-secondary btn-sm"
+        [ngClass]="{ 'btn-success': !isFail(i), 'text-white': !isFail(i) }"
+        (click)="toggleFail(i)">
+        {{ isFail(i) ? 'FAIL' : 'PASS' }}
+      </button>
+    </div>
+
+    <div class="mb-3 mt-3">
+      <label>Comments on any issues or failures</label>
+      <textarea rows="3" class="form-control" formControlName="comments"></textarea>
+    </div>
+
+    <!-- Floating Save Button -->
+    <button type="submit" class="btn btn-success rounded-circle " (click)="onSubmit()" 
+          style="bottom: 20px; right: 20px; width: 60px; height: 60px;">
+      <i class="bi bi-save fs-4"></i>
+    </button>
+  </form>
+</div>
+</div>
