@@ -1,0 +1,27 @@
+.nav-tabs .nav-link.active {
+  color: #28a745; /* Bootstrap green */
+  border-color: #28a745 #28a745 #fff;
+  font-weight: 600;
+}
+
+.nav-tabs .nav-link i {
+  font-size: 1rem;
+}
+
+h6 {
+  color: #6c757d; /* Bootstrap secondary text */
+}
+
+.bottom-confirmation {
+        position: fixed;
+    bottom: 10%;
+    right: 4%;
+    left: 4%;
+}
+.upper-div{
+   position: relative;
+    right: 2%;
+    left: 2%;
+    /* top: 2%; */
+    padding-top: 5%;
+}

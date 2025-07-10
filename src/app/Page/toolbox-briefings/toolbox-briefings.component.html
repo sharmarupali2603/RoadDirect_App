@@ -1,7 +1,7 @@
 <div class="container mt-3">
   <!-- Nav Tabs -->
   <ul class="nav nav-tabs">
-    <li class="nav-item">
+    <li class="nav-item" style="width: 50%">
       <a
         class="nav-link"
         [class.active]="selectedTab === 'hazards'"
@@ -23,52 +23,299 @@
     </li>
   </ul>
 
-  <div class="tab-content border p-4">
-    <div *ngIf="selectedTab === 'hazards'">
+  <div *ngIf="selectedTab === 'hazards'">
+    <!-- class="tab-content border p-4" -->
+    <div class="upper-div">
       <h5>Hazards/Risks Identified & Control Measures</h5>
-      <div class="mb-3 d-flex  gap-2">
-        <button class="btn btn-outline-success">
-          <i class="bi bi-plus-lg"></i> Add Hazard/Risk
+      <div class="mb-3 d-flex gap-2">
+        <button
+          type="button"
+          class="btn btn-outline-success"
+          data-bs-toggle="modal"
+          data-bs-target="#addHazardModal"
+        >
+          <i class="bi bi-plus-circle me-1"></i> Add Hazard/Risk
         </button>
+        <div
+          class="modal fade"
+          id="addHazardModal"
+          tabindex="-1"
+          aria-labelledby="addHazardModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" style="top: 25%">
+            <div class="modal-content">
+              <!-- Modal Header -->
+              <div class="modal-header">
+                <h5 class="modal-title" id="addHazardModalLabel">
+                  Add Hazard/Risk
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
 
-        <button class="btn btn-outline-success">
+              <!-- Modal Body -->
+              <div class="modal-body">
+                <form>
+                  <div class="mb-3">
+                    <label class="form-label">Hazard/Risk Identified</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="hazard"
+                      name="hazard"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label"
+                      >Controls used to manage risk</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="controls"
+                      name="controls"
+                    />
+                  </div>
+                </form>
+              </div>
+
+              <!-- Modal Footer -->
+              <div class="modal-footer justify-content-between">
+                <button
+                  type="button"
+                  class="btn btn-link text-danger"
+                  data-bs-dismiss="modal"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-link text-success"
+                  (click)="saveHazard()"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button
+          class="btn btn-outline-success"
+          data-bs-toggle="modal"
+          data-bs-target="#loadHazardModal"
+        >
           <i class="bi bi-cloud-arrow-down"></i> Load Hazard Register
         </button>
-      </div>
 
-      <!-- Topics Discussed -->
-      <div class="mb-3">
-        <label for="topics" class="form-label fw-bold">Topics Discussed</label>
-        <textarea
-          id="topics"
-          class="form-control"
-          rows="4"
-          placeholder="Enter topics discussed..."
-        ></textarea>
-      </div>
+        <!-- Load Hazard Register Modal -->
+        <div
+          class="modal fade"
+          id="loadHazardModal"
+          tabindex="-1"
+          aria-labelledby="loadHazardModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <!-- Modal Header -->
+              <div class="modal-header border-0">
+                <h5 class="modal-title" id="loadHazardModalLabel">
+                  Load Hazard Register
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
 
-      <!-- Confirmation Checkbox -->
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="confirmation" />
-        <label class="form-check-label" for="confirmation">
-          I confirm that the site is setup as per the approved TMP and that all
-          attendees acknowledge & understand the safety aspects of the TMP
-          covered in the briefing.
-        </label>
-      </div>
+              <!-- Modal Body -->
+              <div class="modal-body">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="hazardOption"
+                    id="hazard1"
+                    [(ngModel)]="selectedHazard"
+                    value="Testing"
+                  />
+                  <label class="form-check-label" for="hazard1">
+                    TESTING
+                  </label>
+                </div>
+              </div>
 
-      <!-- Save Button -->
-      <div class="text-end mt-3">
-        <button class="btn btn-success rounded-circle">
-          <i class="bi bi-save"></i>
-        </button>
+              <!-- Modal Footer -->
+              <div class="modal-footer border-0 justify-content-between">
+                <button
+                  type="button"
+                  class="btn btn-link text-danger"
+                  data-bs-dismiss="modal"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-link text-success"
+                  (click)="loadSelectedHazard()"
+                >
+                  Load
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
 
-    <!-- Attendees Tab -->
-    <div *ngIf="selectedTab === 'attendees'">
-      <h5>Attendees List</h5>
-      <!-- Add your Attendees content here -->
+  <!-- Attendees Tab -->
+  <div *ngIf="selectedTab === 'attendees'">
+    <h5>Attendees List</h5>
+    <div class="upper-div">
+      <h5>Hazards/Risks Identified & Control Measures</h5>
+      <div class="mb-3 d-flex gap-2">
+        <button
+          type="button"
+          class="btn btn-outline-success"
+          data-bs-toggle="modal"
+          data-bs-target="#addAttendeeModal"
+        >
+          <i class="bi bi-plus-circle me-1"></i> Add Attendees
+        </button>
+        <!-- Add New Attendee Modal -->
+        <div
+          class="modal fade"
+          id="addAttendeeModal"
+          tabindex="-1"
+          aria-labelledby="addAttendeeModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <!-- Modal Header -->
+              <div class="modal-header border-0">
+                <h5 class="modal-title" id="addAttendeeModalLabel">
+                  Add New Attendee
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+
+              <!-- Modal Body -->
+              <div class="modal-body">
+                <form>
+                  <!-- Name -->
+                  <div class="mb-3">
+                    <label class="form-label">Attendee Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="attendeeName"
+                      name="attendeeName"
+                    />
+                  </div>
+                  <!-- Phone -->
+                  <div class="mb-3">
+                    <label class="form-label">Attendee Phone Number</label>
+                    <input
+                      type="tel"
+                      class="form-control"
+                      [(ngModel)]="attendeePhone"
+                      name="attendeePhone"
+                    />
+                  </div>
+                  <!-- Signature -->
+                  <div class="mb-3">
+                    <label class="form-label">Attendee Signature</label>
+                    <!-- <canvas
+                      #signaturePad
+                      width="300"
+                      height="120"
+                      class="border border-primary rounded w-100"
+                    ></canvas> -->
+                    <canvas
+                      #canvas
+                      class="signature-canvas"
+                      ngDefaultControl
+                      style="touch-action: none; border: solid #e6d2d2 1px"
+                    ></canvas>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Modal Footer -->
+              <div class="modal-footer border-0 flex-column align-items-start">
+                <div class="w-100 d-flex justify-content-between">
+                  <button
+                    type="button"
+                    class="btn btn-link text-success"
+                    (click)="saveAttendee()"
+                  >
+                    SAVE
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-link text-danger"
+                    data-bs-dismiss="modal"
+                  >
+                    CANCEL
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  class="btn btn-link text-secondary p-0"
+                  (click)="resetSignature()"
+                >
+                  RESET SIGNATURE
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Add your Attendees content here -->
+  </div>
+  <div class="bottom-confirmation">
+    <!-- Topics Discussed -->
+    <div class="mb-3">
+      <label for="topics" class="form-label fw-bold">Topics Discussed</label>
+      <textarea
+        id="topics"
+        class="form-control"
+        rows="4"
+        placeholder="Enter topics discussed..."
+      ></textarea>
+    </div>
+
+    <!-- Confirmation Checkbox -->
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="confirmation" />
+      <label class="form-check-label" for="confirmation">
+        I confirm that the site is setup as per the approved TMP and that all
+        attendees acknowledge & understand the safety aspects of the TMP covered
+        in the briefing.
+      </label>
+    </div>
+
+    <!-- Save Button -->
+    <div class="text-end mt-3">
+      <button class="btn btn-success rounded-circle">
+        <i class="bi bi-save"></i>
+      </button>
     </div>
   </div>
 </div>
