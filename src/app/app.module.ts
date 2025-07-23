@@ -42,6 +42,8 @@ import { JobstatusComponent } from './Page/jobstatus/jobstatus.component';
 import { TimesheetComponent } from './Page/timesheet/timesheet.component';
 import { VehicleCheckComponent } from './Page/vehicle-check/vehicle-check.component';
 import { ToolboxBriefingsComponent } from './Page/toolbox-briefings/toolbox-briefings.component';
+import { GenericTmpCheckComponent } from './Page/generic-tmp-check/generic-tmp-check.component';
+import { MobilePreStartCheckComponent } from './Page/mobile-pre-start-check/mobile-pre-start-check.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +71,9 @@ import { ToolboxBriefingsComponent } from './Page/toolbox-briefings/toolbox-brie
     JobstatusComponent,
     TimesheetComponent,
     VehicleCheckComponent,
-    ToolboxBriefingsComponent
+    ToolboxBriefingsComponent,
+    GenericTmpCheckComponent,
+    MobilePreStartCheckComponent
   ],
   imports: [
     BrowserModule,

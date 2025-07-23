@@ -1,0 +1,51 @@
+<div class="container mt-4">
+  <h4>Generic TMP Checks</h4>
+  
+  <form>
+    <!-- Site Reference -->
+    <div class="mb-3">
+      <label for="siteReference" class="form-label">Site Reference</label>
+      <input id="siteReference" type="text" class="form-control" [(ngModel)]="formData.siteReference" name="siteReference">
+    </div>
+
+    <!-- Site Name -->
+    <div class="mb-3">
+      <label for="siteName" class="form-label">Site Name</label>
+      <input id="siteName" type="text" class="form-control" [(ngModel)]="formData.siteName" name="siteName">
+    </div>
+
+    <!-- Example Section -->
+    <div *ngFor="let section of sections" class="mb-4 border-bottom pb-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <strong>{{section.title}}</strong>
+        <div class="btn-group">
+          <input type="radio" class="btn-check"
+                 [id]="'yes-' + section.key"
+                 [name]="section.key"
+                 [(ngModel)]="formData[section.key]"
+                 [value]="true">
+          <label class="btn btn-outline-success btn-sm" [for]="'yes-' + section.key">YES</label>
+
+          <input type="radio" class="btn-check"
+                 [id]="'no-' + section.key"
+                 [name]="section.key"
+                 [(ngModel)]="formData[section.key]"
+                 [value]="false">
+          <label class="btn btn-outline-danger btn-sm" [for]="'no-' + section.key">NO</label>
+        </div>
+      </div>
+
+      <small class="text-muted">{{section.description}}</small>
+
+      <div class="mt-2">
+        <textarea class="form-control" rows="2" placeholder="Comment / Mitigation"
+                  [(ngModel)]="formData[section.key + 'Comment']"
+                  [name]="section.key + 'Comment'"></textarea>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-primary w-100" (click)="saveForm()">
+      <i class="bi bi-save"></i> Save
+    </button>
+  </form>
+</div>

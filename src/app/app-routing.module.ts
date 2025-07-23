@@ -17,6 +17,8 @@ import { JobstatusComponent } from './Page/jobstatus/jobstatus.component';
 import { TimesheetComponent } from './Page/timesheet/timesheet.component';
 import { VehicleCheckComponent } from './Page/vehicle-check/vehicle-check.component';
 import { ToolboxBriefingsComponent } from './Page/toolbox-briefings/toolbox-briefings.component';
+import { GenericTmpCheckComponent } from './Page/generic-tmp-check/generic-tmp-check.component';
+import { MobilePreStartCheckComponent } from './Page/mobile-pre-start-check/mobile-pre-start-check.component';
 const routes: Routes = [
   { path: '', component: DashboardComponent },
   { path: 'dashboard', redirectTo: '' },
@@ -37,6 +39,8 @@ const routes: Routes = [
   { path: 'timesheet', component: TimesheetComponent },
   { path: 'vehicle-check', component: VehicleCheckComponent },
   { path: 'toolbox-briefings', component: ToolboxBriefingsComponent },
+  { path: 'generic-tmp-check', component: GenericTmpCheckComponent },
+  { path: 'mobile-pre-start-check', component: MobilePreStartCheckComponent },
   // { path: '',   redirectTo: '/dashboard', pathMatch: 'full' }, // redirect to `first-component`
 ];
 @NgModule({
