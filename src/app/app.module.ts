@@ -44,6 +44,9 @@ import { VehicleCheckComponent } from './Page/vehicle-check/vehicle-check.compon
 import { ToolboxBriefingsComponent } from './Page/toolbox-briefings/toolbox-briefings.component';
 import { GenericTmpCheckComponent } from './Page/generic-tmp-check/generic-tmp-check.component';
 import { MobilePreStartCheckComponent } from './Page/mobile-pre-start-check/mobile-pre-start-check.component';
+import { OperationnalRecordComponent } from './Page/operationnal-record/operationnal-record.component';
+import { AuditViewComponent } from './Page/audit-view/audit-view.component';
+import { IncidentReportComponent } from './Page/incident-report/incident-report.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +76,10 @@ import { MobilePreStartCheckComponent } from './Page/mobile-pre-start-check/mobi
     VehicleCheckComponent,
     ToolboxBriefingsComponent,
     GenericTmpCheckComponent,
-    MobilePreStartCheckComponent
+    MobilePreStartCheckComponent,
+    OperationnalRecordComponent,
+    AuditViewComponent,
+    IncidentReportComponent
   ],
   imports: [
     BrowserModule,
